@@ -1,5 +1,5 @@
 @extends('auth.master')
 
 @section('content')
-    <h1>Login</h1>
+    <x-auth.auth-layout :title="'Admin Kasir'" :route="'admin.store'" />
 @endsection

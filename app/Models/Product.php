@@ -18,6 +18,6 @@ class Product extends Model
         'price_retail',
         'price_pack',
         'items_per_pack',
-        'image_product'
+        'photo'
     ];
 }

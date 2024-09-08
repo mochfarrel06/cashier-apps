@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price_retail', 10, 2);
             $table->decimal('price_pack', 10, 2);
             $table->unsignedInteger('items_per_pack');
-            $table->string('image_product');
+            $table->string('photo');
             $table->timestamps();
         });
     }
