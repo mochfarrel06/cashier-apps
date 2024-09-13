@@ -7,15 +7,15 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Tambah Data Barang'" :breadcrumbs="[
+        <x-content.heading-page :title="'Tambah Data Produk'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Data Barang', 'url' => route('admin.product.index')],
+            ['title' => 'Data Produk', 'url' => route('admin.product.index')],
             ['title' => 'Tambah'],
         ]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Tambah Data Barang'" :icon="'fas fa-solid fa-plus'" />
+            <x-content.table-header :title="'Tambah Data Produk'" :icon="'fas fa-solid fa-plus'" />
 
             <x-content.card-body>
                 <form id="main-form" action="{{ route('admin.product.store') }}" method="POST">
@@ -24,41 +24,41 @@
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="form-group">
-                                <label for="code">Kode Barang</label>
+                                <label for="code">Kode Produk</label>
                                 <input type="text" class="form-control @error('code') is-invalid @enderror" name="code"
-                                    id="code" value="{{ old('code') }}" placeholder="Masukkan kode barang">
+                                    id="code" value="{{ old('code') }}" placeholder="Masukkan kode produk">
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Nama Barang</label>
+                                <label for="name">Nama Produk</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     name="name" id="name" value="{{ old('name') }}"
-                                    placeholder="Masukkan nama Barang">
+                                    placeholder="Masukkan nama produk">
                             </div>
 
                             <div class="form-group">
                                 <label for="description">Deskripsi Produk</label>
                                 <input type="text" class="form-control @error('description') is-invalid @enderror"
                                     name="description" id="description" value="{{ old('description') }}"
-                                    placeholder="Masukkan deskripsi barang">
+                                    placeholder="Masukkan deskripsi produk">
                             </div>
 
                             <div class="form-group">
-                                <label for="price_retail">Harga barang eceran</label>
+                                <label for="price_retail">Harga Produk Eceran</label>
                                 <input type="number" class="form-control @error('price_retail') is-invalid @enderror"
                                     name="price_retail" id="price_retail" value="{{ old('price_retail') }}"
-                                    placeholder="Masukkan harga barang eceran">
+                                    placeholder="Masukkan harga produk eceran">
                             </div>
 
                             <div class="form-group">
-                                <label for="price_pack">Harga barang per pack</label>
+                                <label for="price_pack">Harga Produk Per Pack</label>
                                 <input type="number" class="form-control @error('price_pack') is-invalid @enderror"
                                     name="price_pack" id="price_pack" value="{{ old('price_pack') }}"
-                                    placeholder="Masukkan harga barang per pack">
+                                    placeholder="Masukkan harga produk per pack">
                             </div>
 
                             <div class="form-group">
-                                <label for="items_per_pack">Jumlah produk per pack</label>
+                                <label for="items_per_pack">Jumlah Produk Per Pack</label>
                                 <input type="number" class="form-control @error('items_per_pack') is-invalid @enderror"
                                     name="items_per_pack" id="items_per_pack" value="{{ old('items_per_pack') }}"
                                     placeholder="Masukkan jumlah produk per pack">
@@ -136,7 +136,7 @@
                     contentType: false, // Prevent jQuery from setting the content type
                     success: function(response) {
                         if (response.success) {
-                            sessionStorage.setItem('success', 'Data barang berhasil disubmit.');
+                            sessionStorage.setItem('success', 'Data produk berhasil disubmit.');
                             window.location.href =
                                 "{{ route('admin.product.index') }}"; // Redirect to index page
                         } else {
@@ -160,7 +160,7 @@
                         }
 
                         const message = response.responseJSON.message ||
-                            'Terdapat kesalahan pada proses data barang';
+                            'Terdapat kesalahan pada proses data produk';
                         $('#flash-messages').html('<div class="alert alert-danger">' + message +
                             '</div>');
                     },

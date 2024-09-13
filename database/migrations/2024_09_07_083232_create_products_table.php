@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->text('description');
-            $table->decimal('price_retail', 10, 2);
-            $table->decimal('price_pack', 10, 2);
+            $table->decimal('price_retail', 20, 2);
+            $table->decimal('price_pack', 20, 2);
             $table->unsignedInteger('items_per_pack');
             $table->string('photo');
             $table->timestamps();

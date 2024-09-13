@@ -19,11 +19,19 @@ class UserSeeder extends Seeder
     {
         User::insert([
             [
-                'name' => 'admin',
+                'name' => 'admin 1',
                 'avatar' => '/uploads/profile/admin-avatar.png',
-                'username' => 'admin',
+                'username' => 'admin1',
                 'email' => 'admin@gmail.com',
                 'role' => 'admin',
+                'password' => static::$password ??= Hash::make('password'),
+            ],
+            [
+                'name' => 'kasir 1',
+                'avatar' => '/uploads/profile/admin-avatar.png',
+                'username' => 'kasir1',
+                'email' => 'kasir@gmail.com',
+                'role' => 'cashier',
                 'password' => static::$password ??= Hash::make('password'),
             ],
         ]);

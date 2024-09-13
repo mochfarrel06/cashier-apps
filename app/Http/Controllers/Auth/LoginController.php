@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Login\AuthRequest;
@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('admin.login.index');
+        return view('auth.login');
     }
 
     public function store(AuthRequest $request)
@@ -20,12 +20,15 @@ class LoginController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        if ($request->user()->role === 'admin') {
-            session()->flash('success', 'Berhasil masuk aplikasi');
+        if ($request->user()->role == 'admin') {
+            session()->flash('success', 'Berhasil masuk halaman dashbaord Admin');
             return redirect()->intended(RouteServiceProvider::ADMIN);
-        } else if ($request->user()->role === 'cashier') {
+        }else if ($request->user()->role == 'kasir') {
+            session()->flash('success', 'Berhasil masuk halaman dashbaord Kasir');
+            return redirect()->intended(RouteServiceProvider::CASHIER);
+        }else {
             Auth::logout();
-            session()->flash('error', "Login untuk kasir tidak diizinkan di halaman ini.");
+            session()->flash('error', "Anda tidak memiliki akses untuk masuk ke aplikasi");
             return redirect()->back();
         }
     }
@@ -38,6 +41,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         session()->flash('success', 'Berhasil keluar aplikasi');
-        return redirect('/admin/login');
+        return redirect('/login');
     }
 }

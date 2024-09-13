@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\LoginController;
+// use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('cashier.login.index');
+    return view('auth.login');
 });
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('login', [LoginController::class, 'index'])->name('login');
-    Route::post('login', [LoginController::class, 'store'])->name('store');
-    Route::post('logout', [LoginController::class, 'destroy'])->name('destroy');
-});
+Route::get('login', [LoginController::class, 'index'])->name('login');
+Route::post('login', [LoginController::class, 'store'])->name('store');
+Route::post('logout', [LoginController::class, 'destroy'])->name('destroy');

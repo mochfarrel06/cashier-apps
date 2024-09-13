@@ -7,15 +7,15 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Edit Data Barang'" :breadcrumbs="[
+        <x-content.heading-page :title="'Edit Data Produk'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Data Barang', 'url' => route('admin.product.index')],
+            ['title' => 'Data Produk', 'url' => route('admin.product.index')],
             ['title' => 'Edit'],
         ]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Edit Data Barang'" :icon="'fas fa-solid fa-edit'" />
+            <x-content.table-header :title="'Edit Data Produk'" :icon="'fas fa-solid fa-edit'" />
 
             <x-content.card-body>
                 <form id="main-form" action="{{ route('admin.product.update', $product->id) }}" method="POST"
@@ -26,13 +26,13 @@
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="form-group">
-                                <label for="code">Kode Barang</label>
+                                <label for="code">Kode Produk</label>
                                 <input type="text" class="form-control @error('code') is-invalid @enderror" name="code"
                                     id="code" value="{{ old('code', $product->code) }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Nama Barang</label>
+                                <label for="name">Nama Produk</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     name="name" id="name" value="{{ old('name', $product->name) }}">
                             </div>
@@ -45,20 +45,20 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="price_retail">Harga barang eceran</label>
+                                <label for="price_retail">Harga Produk Eceran</label>
                                 <input type="number" class="form-control @error('price_retail') is-invalid @enderror"
                                     name="price_retail" id="price_retail"
                                     value="{{ old('price_retail', $product->price_retail) }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="price_pack">Harga barang per pack</label>
+                                <label for="price_pack">Harga Produk Per Pack</label>
                                 <input type="number" class="form-control @error('price_pack') is-invalid @enderror"
                                     name="price_pack" id="price_pack" value="{{ old('price_pack', $product->price_pack) }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="items_per_pack">Jumlah produk per pack</label>
+                                <label for="items_per_pack">Jumlah Produk Per Pack</label>
                                 <input type="number" class="form-control @error('items_per_pack') is-invalid @enderror"
                                     name="items_per_pack" id="items_per_pack"
                                     value="{{ old('items_per_pack', $product->items_per_pack) }}">
@@ -121,7 +121,7 @@
                     if (response.success) {
                         // Flash message sukses
                         sessionStorage.setItem('success',
-                            'produk berhasil disubmit.');
+                            'Data produk berhasil disubmit.');
                         window.location.href =
                             "{{ route('admin.product.index') }}"; // Redirect to index page
                     } else if (response.info) {
@@ -153,7 +153,7 @@
                     }
 
                     const message = response.responseJSON.message ||
-                        'Terdapat kesalahan pada jenis barang.';
+                        'Terdapat kesalahan pada jenis Produk.';
                     $('#flash-messages').html('<div class="alert alert-danger">' + message +
                         '</div>');
                 },

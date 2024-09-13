@@ -16,7 +16,7 @@
             <!-- Main Content -->
             <x-master.content>
                 <!-- Topbar -->
-                <x-navbar :routeActive="'admin.profile.*'" :routeLink="'admin.profile.index'" routeStore="{{ route('admin.destroy') }}" />
+                <x-navbar :routeActive="'admin.profile.*'" :routeLink="'admin.profile.index'" routeStore="{{ route('destroy') }}" />
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->

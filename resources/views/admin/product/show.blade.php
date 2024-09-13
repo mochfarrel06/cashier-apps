@@ -7,12 +7,11 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Lihat Data Barang'" :breadcrumbs="[
+        <x-content.heading-page :title="'Lihat Data Produk'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Data Barang', 'url' => route('admin.product.index')],
+            ['title' => 'Data Produk', 'url' => route('admin.product.index')],
             ['title' => 'Lihat'],
         ]" />
-
         <div class="row">
             <div class="col-lg-5 mb-4">
                 <div class="card shadow">
@@ -30,20 +29,20 @@
 
                 <x-content.table-container>
 
-                    <x-content.table-header :title="'Informasi Data Barang'" :icon="'fas fa-solid fa-eye'" />
+                    <x-content.table-header :title="'Informasi Data Produk'" :icon="'fas fa-solid fa-eye'" />
 
                     <div class="card-body">
                         <form>
                             @csrf
 
                             <div class="form-group">
-                                <label for="code">Kode Barang</label>
+                                <label for="code">Kode Produk</label>
                                 <input type="text" class="form-control" name="code" id="code"
                                     value="{{ $product->code }}" disabled>
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Nama Barang</label>
+                                <label for="name">Nama Produk</label>
                                 <input type="text" class="form-control" name="name" id="name"
                                     value="{{ $product->name }}" disabled>
                             </div>
@@ -55,19 +54,19 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="price_retail">Harga barang eceran</label>
+                                <label for="price_retail">Harga Produk Eceran</label>
                                 <input type="text" class="form-control" name="price_retail" id="price_retail"
                                     value="Rp {{ number_format($product->price_retail ?? '0', '0', ',', '.') }}" disabled>
                             </div>
 
                             <div class="form-group">
-                                <label for="price_pack">Harga barang per pack</label>
+                                <label for="price_pack">Harga Produk Per Pack</label>
                                 <input type="text" class="form-control" name="price_pack" id="price_pack"
                                     value="Rp {{ number_format($product->price_pack ?? '0', '0', ',', '.') }}" disabled>
                             </div>
 
                             <div class="form-group">
-                                <label for="items_per_pack">Jumlah produk per pack</label>
+                                <label for="items_per_pack">Jumlah Produk Per Pack</label>
                                 <input type="number" class="form-control" name="items_per_pack" id="items_per_pack"
                                     value="{{ $product->items_per_pack }}" disabled>
                             </div>

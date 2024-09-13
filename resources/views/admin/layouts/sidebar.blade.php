@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <x-sidebar.layout>
     <!-- Sidebar title -->
-    <x-sidebar.title :name="'FarrCode'" :icon="'fas fa-solid fa-book'" :addRoute="'admin.dashboard'" />
+    <x-sidebar.title :name="'ViaVio'" :icon="'fas fa-solid fa-book'" :addRoute="'admin.dashboard'" />
     <!-- End sidebar title -->
 
     <!-- Nav item dashboard -->
@@ -9,8 +9,8 @@
     <!-- End nav item dashboard -->
 
     <!-- Nav item barang -->
-    <x-sidebar.nav-item title="Master" icon="fa-box" label="Barang" collapseId="collapseItem" :routes="['admin.product.*']"
-        :subItems="[['route' => 'admin.product.index', 'label' => 'Data Barang']]" />
+    <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*']"
+        :subItems="[['route' => 'admin.product.index', 'label' => 'Data Produk']]" />
     <!-- End nav item -->
 
     <!-- Nav item incoming item -->

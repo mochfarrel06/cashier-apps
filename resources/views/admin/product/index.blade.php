@@ -1,24 +1,24 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Barang
+    Product
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Data Barang'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Data Barang']]" />
+        <x-content.heading-page :title="'Halaman Data Produk'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Produk']]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Tabel Data Barang'" :icon="'fas fa-box'" :addRoute="'admin.product.create'" />
+            <x-content.table-header :title="'Tabel Data Produk'" :icon="'fas fa-box'" :addRoute="'admin.product.create'" />
 
             <x-content.table-body>
 
                 <x-content.thead :items="[
                     'No',
-                    'Kode Barang',
-                    'Nama Barang',
+                    'Kode Produk',
+                    'Nama Produk',
                     'Deskripsi',
                     'Harga Eceran',
                     'Harga Perpack',
