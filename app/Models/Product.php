@@ -20,4 +20,9 @@ class Product extends Model
         'items_per_pack',
         'photo'
     ];
+
+    public function flavor()
+    {
+        return $this->hasMany(Flavor::class);
+    }
 }

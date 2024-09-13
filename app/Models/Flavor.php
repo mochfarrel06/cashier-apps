@@ -14,4 +14,9 @@ class Flavor extends Model
         'product_id',
         'flavor_name',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

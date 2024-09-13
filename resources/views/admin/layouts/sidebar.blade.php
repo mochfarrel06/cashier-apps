@@ -9,8 +9,11 @@
     <!-- End nav item dashboard -->
 
     <!-- Nav item barang -->
-    <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*']"
-        :subItems="[['route' => 'admin.product.index', 'label' => 'Data Produk']]" />
+    <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*', 'admin.flavor.*']"
+        :subItems="[
+            ['route' => 'admin.product.index', 'label' => 'Data Produk'],
+            ['route' => 'admin.flavor.index', 'label' => 'Varian Produk'],
+        ]" />
     <!-- End nav item -->
 
     <!-- Nav item incoming item -->

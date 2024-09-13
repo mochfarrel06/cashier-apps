@@ -23,10 +23,10 @@ class LoginController extends Controller
         if ($request->user()->role == 'admin') {
             session()->flash('success', 'Berhasil masuk halaman dashbaord Admin');
             return redirect()->intended(RouteServiceProvider::ADMIN);
-        }else if ($request->user()->role == 'kasir') {
+        } else if ($request->user()->role == 'cashier') {
             session()->flash('success', 'Berhasil masuk halaman dashbaord Kasir');
             return redirect()->intended(RouteServiceProvider::CASHIER);
-        }else {
+        } else {
             Auth::logout();
             session()->flash('error', "Anda tidak memiliki akses untuk masuk ke aplikasi");
             return redirect()->back();

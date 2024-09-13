@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
+use App\Http\Controllers\Admin\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -17,5 +18,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::get('profile/edit-password', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
     Route::put('profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 
+    // Route Product
     Route::resource('product', ProductController::class);
+
+    // Route Flavor
+    Route::resource('flavor', FlavorController::class);
 });
