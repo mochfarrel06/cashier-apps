@@ -15,4 +15,9 @@ class Cart extends Model
         'name',
         'location'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

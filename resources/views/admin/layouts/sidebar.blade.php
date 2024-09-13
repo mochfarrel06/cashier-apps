@@ -8,7 +8,7 @@
     <x-sidebar.nav-item route="admin.dashboard" icon="fa-tachometer-alt" label="Dashboard" />
     <!-- End nav item dashboard -->
 
-    <!-- Nav item barang -->
+    <!-- Nav item Produk -->
     <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*', 'admin.flavor.*']"
         :subItems="[
             ['route' => 'admin.product.index', 'label' => 'Data Produk'],
@@ -16,13 +16,10 @@
         ]" />
     <!-- End nav item -->
 
-    <!-- Nav item incoming item -->
-    {{-- <x-sidebar.nav-item title="Transaksi" icon="fa-folder" label="Transaksi" collapseId="collapsePages" :routes="['admin.incoming-item.*', 'admin.outgoing-item.*']"
-        :subItems="[
-            ['route' => 'admin.incoming-item.index', 'label' => 'Barang Masuk'],
-            ['route' => 'admin.outgoing-item.index', 'label' => 'Barang Keluar'],
-        ]" /> --}}
-    <!-- End nav item incoming item -->
+    <!-- Nav item carts -->
+    <x-sidebar.nav-item title="Kasir" icon="fa-shop" label="Kasir" collapseId="collapsePages" :routes="['admin.cart.*']"
+        :subItems="[['route' => 'admin.cart.index', 'label' => 'Data Kasir']]" />
+    <!-- End nav item carts -->
 
     <!-- Nav item report -->
     {{-- <x-sidebar.nav-item title="Laporan" icon="fa-wrench" label="Laporan" collapseId="collapseReport" :routes="['admin.item-report.*', 'admin.incoming-report.*', 'admin.outgoing-report.*']"
@@ -46,6 +43,6 @@
     <!-- End nav item report -->
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
 
 </x-sidebar.layout>
