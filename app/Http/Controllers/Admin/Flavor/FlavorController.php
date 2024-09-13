@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Flavor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Flavor\FlavorStoreRequest;
 use App\Models\Flavor;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class FlavorController extends Controller
 {
@@ -57,7 +56,10 @@ class FlavorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $flavor = Flavor::findOrFail($id);
+        $product = $flavor->product;
+
+        return view('admin.flavor.show', compact('flavor', 'product'));
     }
 
     /**
@@ -65,15 +67,39 @@ class FlavorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $flavor = Flavor::findOrFail($id);
+        $products = Product::all();
+
+        return view('admin.flavor.edit', compact('flavor', 'products'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FlavorStoreRequest $request, string $id)
     {
-        //
+        try {
+            $flavor = Flavor::findOrFail($id);
+            $product = Product::findOrFail($request->product_id);
+
+            $flavors = $request->all();
+            $flavors['product_id'] = $product->id;
+
+            $flavor->fill($flavors);
+
+            if ($flavor->isDirty()) {
+                $flavor->save();
+
+                session()->flash('success', 'Berhasil melakukan perubahan pada varian produk');
+                return response()->json(['success' => true], 200);
+            } else {
+                session()->flash('info', 'Tidak melakukan perubahan pada varian produk');
+                return response()->json(['info' => true], 200);
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Terdapat kesalahan pada varian produk: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
@@ -81,6 +107,14 @@ class FlavorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $flavor = Flavor::findOrFail($id);
+            $flavor->delete();
+
+            return response(['status' => 'success', 'message' => 'Berhasil menghapus varian produk']);
+        } catch (\Exception $e) {
+            // Menangani exception jika terjadi kesalahan saat menghapus
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 }

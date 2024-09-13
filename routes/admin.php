@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
-use App\Http\Controllers\Admin\FlavorController;
+use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
