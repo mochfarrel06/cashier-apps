@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Cart\CartController;
+use App\Http\Controllers\Admin\CartProduct\CartProductController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
@@ -27,4 +28,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
 
     // Cart
     Route::resource('cart', CartController::class);
+
+    // Cart Product
+    Route::resource('cart-product', CartProductController::class);
 });
