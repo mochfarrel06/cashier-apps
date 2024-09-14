@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CartProduct\CartProductController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Report\ReportStockController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
 
     // Cart Product
     Route::resource('cart-product', CartProductController::class);
+
+    // Report Stok
+    Route::get('report', [ReportStockController::class, 'index'])->name('report.index');
 });

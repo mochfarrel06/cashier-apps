@@ -12,6 +12,7 @@
             ['title' => 'Data Produk', 'url' => route('admin.product.index')],
             ['title' => 'Lihat'],
         ]" />
+
         <div class="row">
             <div class="col-lg-5 mb-4">
                 <div class="card shadow">
