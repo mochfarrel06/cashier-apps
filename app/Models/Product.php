@@ -30,4 +30,14 @@ class Product extends Model
     {
         return $this->hasMany(CartProduct::class);
     }
+
+    public function details()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function cashierProduct()
+    {
+        return $this->hasMany(CashierProduct::class);
+    }
 }

@@ -9,24 +9,24 @@
 
         <x-content.heading-page :title="'Halaman Kasir'" />
 
-        <x-content.table-container>
-            <x-content.table-header :title="'Tambah Produk'" :icon="'fas fa-solid fa-shop'" />
+        <div class="row">
 
-            <div class="card-body">
-                <form id="addProductForm">
-                    @csrf
+            <div class="col-lg-6 mb-4">
+                <x-content.table-container>
+                    <x-content.table-header :title="'Tambah Produk'" :icon="'fas fa-solid fa-shop'" />
 
-                    <!-- Tanggal Transaksi -->
-                    <div class="row">
-                        <div class="col-lg-6">
+                    <div class="card-body">
+                        <form id="addProductForm">
+                            @csrf
+
+                            <!-- Tanggal Transaksi -->
                             <div class="form-group">
                                 <label for="transaction_date">Tanggal Transaksi</label>
                                 <input type="text" class="form-control" id="transaction_date_display" disabled>
                                 <input type="hidden" name="transaction_date" id="transaction_date">
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Pilih Produk -->
                             <div class="form-group">
                                 <label for="cart_product_id">Produk (Nama Produk - Rasa Produk)</label>
                                 <select name="cart_product_id" id="cart_product_id" class="form-control">
@@ -40,16 +40,14 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Stok Produk -->
                             <div class="form-group">
                                 <label for="stock">Stok Produk</label>
                                 <input type="number" class="form-control" name="stock" id="stock" disabled>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Jenis Pembelian -->
                             <div class="form-group">
                                 <label for="purchase_type">Jenis Pembelian</label>
                                 <select name="purchase_type" id="purchase_type" class="form-control">
@@ -58,88 +56,80 @@
                                     <option value="pack">Pack</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Harga -->
                             <div class="form-group">
                                 <label for="price">Harga</label>
                                 <input type="text" class="form-control" name="price" id="price" disabled>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Jumlah Pembelian -->
                             <div class="form-group">
                                 <label for="quantity">Jumlah Pembelian</label>
                                 <input type="number" class="form-control" name="quantity" id="quantity"
                                     placeholder="Masukkan jumlah pembelian">
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
+                            <!-- Total Harga -->
                             <div class="form-group">
                                 <label for="total">Total Harga</label>
                                 <input type="text" class="form-control" name="total" id="total" disabled>
                             </div>
-                        </div>
+
+                            <button type="button" id="addProductBtn" class="btn btn-primary">Tambah Produk</button>
+                        </form>
                     </div>
-
-                    <button type="button" id="addProductBtn" class="btn btn-primary">Tambah Produk</button>
-                </form>
+                </x-content.table-container>
             </div>
-        </x-content.table-container>
 
-        <div class="row">
-
-            <div class="col-lg-8">
+            <!-- Kolom Kanan: Daftar Produk dan Selesaikan Transaksi -->
+            <div class="col-lg-6 mb-4">
                 <x-content.table-container>
-                    <x-content.table-header :title="'Keranjang Belanja'" :icon="'fas fa-shopping-cart'" />
+                    <x-content.table-header :title="'Daftar Produk'" :icon="'fas fa-solid fa-eye'" />
 
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <x-content.thead :items="['Nama Produk', 'Varian', 'Jenis Beli', 'Qty', 'Harga', 'Subtotal', 'Aksi']" />
+                        <form id="transactionForm" action="{{ route('cashier.transaction.store') }}" method="POST">
+                            @csrf
 
+                            <!-- Tabel Daftar Produk -->
+                            <table class="table table-striped" id="productTable">
+                                <thead>
+                                    <tr>
+                                        <th>Produk</th>
+                                        <th>Stok</th>
+                                        <th>Jenis Pembelian</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="productTableBody">
                                     <!-- Baris akan ditambahkan secara dinamis -->
                                 </tbody>
-
                             </table>
-                        </div>
+
+                            <!-- Jenis Pembayaran -->
+                            <div class="form-group">
+                                <label for="payment_type">Jenis Pembayaran</label>
+                                <select name="payment_type" id="payment_type" class="form-control">
+                                    <option value="">-- Pilih Jenis Pembayaran --</option>
+                                    <option value="tunai">Tunai</option>
+                                    <option value="nontunai">Non Tunai</option>
+                                </select>
+                            </div>
+
+                            <!-- Total Harga -->
+                            <div class="form-group">
+                                <label for="total">Total Harga</label>
+                                <input type="text" class="form-control" name="total" id="total" disabled>
+                            </div>
+
+                            <button type="submit" id="submit-btn" class="btn btn-success">Selesaikan Transaksi</button>
+                        </form>
                     </div>
                 </x-content.table-container>
             </div>
 
-            <div class="col-lg-4">
-                <x-content.table-container>
-                    <x-content.table-header :title="'Pembayaran'" :icon="'fas fa-money-bill'" />
-
-                    <x-content.card-body>
-                        <form id="payment-form" action="" method="POST">
-                            @csrf
-
-                            {{-- <div class="form-group">
-                                <label for="total_price">Total Harga</label>
-                                <input type="text" class="form-control" id="total_price" name="total_price"
-                                    value="{{ number_format($totalPrice, 2) }}" readonly>
-                            </div> --}}
-
-                            <div class="form-group">
-                                <label for="payment_amount">Bayar</label>
-                                <input type="number" id="payment_amount" name="payment_amount" class="form-control"
-                                    placeholder="Masukkan jumlah pembayaran">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="change_amount">Kembalian</label>
-                                <input type="number" id="change_amount" name="change_amount" class="form-control"
-                                    value="0" readonly>
-                            </div>
-
-                            <button type="submit" class="btn btn-success">Selesaikan Transaksi</button>
-                        </form>
-                    </x-content.card-body>
-                </x-content.table-container>
-            </div>
         </div>
 
     </x-content.container-fluid>
@@ -261,55 +251,6 @@
 
                 calculateTotal(); // Menghitung total harga setelah harga diperbarui
             }
-
-            function addProductToCart() {
-                const productSelect = document.getElementById('cart_product_id');
-                const selectedOption = productSelect.options[productSelect.selectedIndex];
-                const productId = selectedOption.value;
-                const productName = selectedOption.text;
-                const stock = document.getElementById('stock').value;
-                const purchaseType = document.getElementById('purchase_type').value;
-                const price = document.getElementById('price').value;
-                const quantity = document.getElementById('quantity').value;
-                const total = document.getElementById('total').value;
-
-                // Inisialisasi variabel untuk total harga transaksi
-                let totalPriceTransaction = 0;
-
-                // Fungsi untuk menghitung ulang total harga
-                function updateTotalPriceTransaction() {
-                    document.getElementById('total_price').value = formatRupiah(totalPriceTransaction);
-                }
-
-                // Validasi jika produk sudah ada di keranjang
-                if (document.querySelector(`#productTableBody tr[data-product-id="${productId}"]`)) {
-                    alert('Produk sudah ada di keranjang.');
-                    return;
-                }
-
-                // Tambahkan produk ke tabel daftar produk
-                const row = `<tr data-product-id="${productId}">
-                            <td>${productName}</td>
-                            <td>${stock}</td>
-                            <td>${purchaseType}</td>
-                            <td>${price}</td>
-                            <td>${quantity}</td>
-                            <td>${quantity}</td>
-                            <td><button type="button" class="btn btn-danger btn-sm remove-btn">Hapus</button></td>
-                         </tr>`;
-                document.getElementById('productTableBody').insertAdjacentHTML('beforeend', row);
-
-                // Update total transaksi
-                totalPriceTransaction += parseInt(total.replace(/\D/g, ''));
-                updateTotalPriceTransaction();
-
-                // Reset form setelah produk ditambahkan
-                document.getElementById('addProductForm').reset();
-                document.getElementById('price').value = '';
-                document.getElementById('total').value = '';
-            }
-
-            document.getElementById('addProductBtn').addEventListener('click', addProductToCart);
 
             // Event listener untuk update stok dan harga saat produk dipilih
             cartProductSelect.addEventListener('change', updateStockAndPrice);

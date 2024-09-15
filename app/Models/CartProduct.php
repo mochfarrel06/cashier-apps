@@ -31,4 +31,14 @@ class CartProduct extends Model
     {
         return $this->belongsTo(Flavor::class);
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
 }

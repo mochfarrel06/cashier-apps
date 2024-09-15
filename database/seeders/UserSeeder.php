@@ -34,6 +34,14 @@ class UserSeeder extends Seeder
                 'role' => 'cashier',
                 'password' => static::$password ??= Hash::make('password'),
             ],
+            [
+                'name' => 'kasir 2',
+                'avatar' => '/uploads/profile/admin-avatar.png',
+                'username' => 'kasir2',
+                'email' => 'kasir2@gmail.com',
+                'role' => 'cashier',
+                'password' => static::$password ??= Hash::make('password'),
+            ],
         ]);
     }
 }

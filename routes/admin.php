@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Cart\CartController;
 use App\Http\Controllers\Admin\CartProduct\CartProductController;
+use App\Http\Controllers\Admin\CashierProduct\CashierProductController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
@@ -27,6 +28,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     // Route Flavor
     Route::resource('flavor', FlavorController::class);
 
+    // Route Cashier Product
+    Route::resource('cashier-product', CashierProductController::class);
+    Route::get('products/{product_id}/flavors', [CashierProductController::class, 'getFlavorsByProduct'])->name('products.flavors');
+
     // Cart
     Route::resource('cart', CartController::class);
 
@@ -35,4 +40,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
 
     // Report Stok
     Route::get('report', [ReportStockController::class, 'index'])->name('report.index');
+
+    // Flavor
+
 });

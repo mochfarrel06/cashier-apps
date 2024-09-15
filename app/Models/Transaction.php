@@ -11,20 +11,22 @@ class Transaction extends Model
     protected $table = 'transactions';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'cart_id', 'user_id', 'transaction_number', 'total', 'payment_type',
+        'user_id',
+        'transaction_date',
+        'transaction_number',
+        'total',
+        'payment_type',
+        'paid_amount',
+        'change_amount',
     ];
 
-    public function transactionDetail()
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function transactionDetails()
     {
         return $this->hasMany(TransactionDetail::class);
-    }
-
-    public function cart()
-    {
-        return $this->belongsTo(Cart::class);
-    }
-
-    public function user(){
-        return $this->belongsTo(User::class);
     }
 }

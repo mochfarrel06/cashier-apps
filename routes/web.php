@@ -26,9 +26,13 @@ Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'store'])->name('store');
 Route::post('logout', [LoginController::class, 'destroy'])->name('destroy');
 
+
 Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:cashier'], function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::post('transaction/add', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');
+    Route::delete('transaction/remove/{id}', [TransactionController::class, 'removeFromCart'])->name('transaction.remove');
+    Route::post('transaction/store', [TransactionController::class, 'storeTransaction'])->name('transaction.store');
 });

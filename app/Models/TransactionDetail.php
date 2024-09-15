@@ -9,7 +9,21 @@ class TransactionDetail extends Model
 {
     use HasFactory;
 
-    public function transaction(){
-        return $this->hasMany(Transaction::class);
+    protected $fillable = [
+        'transaction_id',
+        'cart_product_id',
+        'quantity',
+        'price',
+        'purchase_type',
+    ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function cartProduct()
+    {
+        return $this->belongsTo(CartProduct::class);
     }
 }

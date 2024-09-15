@@ -9,19 +9,20 @@
     <!-- End nav item dashboard -->
 
     <!-- Nav item Produk -->
-    <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*', 'admin.flavor.*']"
+    <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*', 'admin.flavor.*', 'admin.cashier-product.*']"
         :subItems="[
             ['route' => 'admin.product.index', 'label' => 'Data Produk'],
             ['route' => 'admin.flavor.index', 'label' => 'Varian Produk'],
+            ['route' => 'admin.cashier-product.index', 'label' => 'Produk kasir'],
         ]" />
     <!-- End nav item -->
 
     <!-- Nav item carts -->
-    <x-sidebar.nav-item title="Kasir" icon="fa-shop" label="Kasir" collapseId="collapsePages" :routes="['admin.cart.*', 'admin.cart-product.*']"
+    {{-- <x-sidebar.nav-item title="Kasir" icon="fa-shop" label="Kasir" collapseId="collapsePages" :routes="['admin.cart.*', 'admin.cart-product.*']"
         :subItems="[
             ['route' => 'admin.cart.index', 'label' => 'Data Kasir'],
             ['route' => 'admin.cart-product.index', 'label' => 'Produk Kasir'],
-        ]" />
+        ]" /> --}}
     <!-- End nav item carts -->
 
     <!-- Nav item report -->

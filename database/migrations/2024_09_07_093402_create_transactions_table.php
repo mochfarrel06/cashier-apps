@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('user_id');
 
+            $table->date('transaction_date');
             $table->string('transaction_number')->unique();
             $table->decimal('total', 20, 2);
-            $table->string('payment_type'); // Contoh: cash, card
+            $table->string('payment_type');
+            $table->decimal('paid_amount', 20, 2); // Jumlah yang dibayarkan
+            $table->decimal('change_amount', 20, 2); // Kembalian
 
             $table->timestamps();
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
