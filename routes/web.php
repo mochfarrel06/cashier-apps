@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Cashier\Dashboard\DashboardController;
+use App\Http\Controllers\Cashier\Report\ReportDetailController;
 use App\Http\Controllers\Cashier\Transaction\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,9 @@ Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:c
     Route::get('transaction/receipt/{id}', [TransactionController::class, 'receipt'])->name('transaction.receipt');
 
     Route::get('transaction/{id}/pdf', [TransactionController::class, 'generatePDF'])->name('transaction.pdf');
+
+    // Route
+    Route::get('report/daily-report', [ReportDetailController::class, 'dailyReport'])->name('report.dailyReport');
+    Route::get('report/{id}/detail', [ReportDetailController::class, 'showReportDetail'])->name('report.showReportDetail');
+    Route::get('report/daily/download', [ReportDetailController::class, 'downloadAllDailyReport'])->name('report.downloadAll');
 });

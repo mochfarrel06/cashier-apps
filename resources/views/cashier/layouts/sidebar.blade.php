@@ -11,11 +11,8 @@
     <x-sidebar.nav-item route="cashier.transaction.index" icon="fa-shop" label="Kasir" />
 
     <!-- Nav item Produk -->
-    {{-- <x-sidebar.nav-item title="Master" icon="fa-box" label="Produk" collapseId="collapseItem" :routes="['admin.product.*', 'admin.flavor.*']"
-        :subItems="[
-            ['route' => 'admin.product.index', 'label' => 'Data Produk'],
-            ['route' => 'admin.flavor.index', 'label' => 'Varian Produk'],
-        ]" /> --}}
+    <x-sidebar.nav-item title="Master" icon="fa-shop" label="Laporan" collapseId="collapseItem" :routes="['cashier.report.*']"
+        :subItems="[['route' => 'cashier.report.dailyReport', 'label' => 'Laporan Harian']]" />
     <!-- End nav item -->
 
     <!-- Nav item carts -->
