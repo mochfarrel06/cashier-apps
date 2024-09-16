@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Cashier\Dashboard\DashboardController;
 use App\Http\Controllers\Cashier\Report\ReportDetailController;
+use App\Http\Controllers\Cashier\Report\ReportIncomeController;
 use App\Http\Controllers\Cashier\Transaction\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,7 @@ Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:c
     Route::get('report/daily-report', [ReportDetailController::class, 'dailyReport'])->name('report.dailyReport');
     Route::get('report/{id}/detail', [ReportDetailController::class, 'showReportDetail'])->name('report.showReportDetail');
     Route::get('report/daily/download', [ReportDetailController::class, 'downloadAllDailyReport'])->name('report.downloadAll');
+
+    Route::get('report/income', [ReportIncomeController::class, 'dailyIncome'])->name('report-income.income');
+    Route::get('report/download', [ReportIncomeController::class, 'downloadDailyIncome'])->name('report-income.income.download');
 });
