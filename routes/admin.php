@@ -40,7 +40,4 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
 
     // Report Stok
     Route::get('report', [ReportStockController::class, 'index'])->name('report.index');
-
-    // Flavor
-
 });

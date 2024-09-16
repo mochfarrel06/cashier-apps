@@ -25,15 +25,6 @@
         ]" /> --}}
     <!-- End nav item carts -->
 
-    <!-- Nav item report -->
-    {{-- <x-sidebar.nav-item title="Laporan" icon="fa-wrench" label="Laporan" collapseId="collapseReport" :routes="['admin.item-report.*', 'admin.incoming-report.*', 'admin.outgoing-report.*']"
-        :subItems="[
-            ['route' => 'admin.item-report.index', 'label' => 'Laporan Data Barang'],
-            ['route' => 'admin.incoming-report.index', 'label' => 'Laporan Barang Masuk'],
-            ['route' => 'admin.outgoing-report.index', 'label' => 'Laporan Barang Keluar'],
-        ]" /> --}}
-    <!-- End nav item report -->
-
     <!-- Heading -->
     {{-- <div class="sidebar-heading">
         Manajemen Pengguna

@@ -28,8 +28,8 @@
         <div class="form-group">
             <label for="exampleInputPassword">Password</label>
             <div class="input-group">
-                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                    id="exampleInputPassword" placeholder="Masukkan password" autofocus>
+                <input type="password" class="form-control password-input @error('password') is-invalid @enderror"
+                    name="password" id="exampleInputPassword" placeholder="Masukkan password" autofocus>
                 <div class="input-group-append">
                     <span class="input-group-text bg-transparent" id="togglePassword">
                         <i class="fas fa-eye"></i>
