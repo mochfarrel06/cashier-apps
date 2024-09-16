@@ -32,7 +32,11 @@ Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:c
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
-    Route::post('transaction/add', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');
-    Route::delete('transaction/remove/{id}', [TransactionController::class, 'removeFromCart'])->name('transaction.remove');
-    Route::post('transaction/store', [TransactionController::class, 'storeTransaction'])->name('transaction.store');
+    Route::post('transaction/add-to-cart', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');
+    Route::post('transaction/checkout', [TransactionController::class, 'checkout'])->name('transaction.checkout');
+    Route::post('transaction/remove-from-cart/{id}', [TransactionController::class, 'removeFromCart'])->name('transaction.removeFromCart');
+
+    Route::get('transaction/receipt/{id}', [TransactionController::class, 'receipt'])->name('transaction.receipt');
+
+    Route::get('transaction/{id}/pdf', [TransactionController::class, 'generatePDF'])->name('transaction.pdf');
 });

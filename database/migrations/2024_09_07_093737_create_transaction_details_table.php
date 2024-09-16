@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaction_id');
-            $table->unsignedBigInteger('cart_product_id');
+            $table->unsignedBigInteger('cashier_product_id');
 
             $table->unsignedInteger('quantity');
             $table->decimal('price', 20, 2);
@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->timestamps();
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
-            $table->foreign('cart_product_id')->references('id')->on('cart_products')->onDelete('cascade');
+            $table->foreign('cashier_product_id')->references('id')->on('cashier_products')->onDelete('cascade');
         });
     }
 

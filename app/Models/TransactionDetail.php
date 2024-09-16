@@ -11,7 +11,7 @@ class TransactionDetail extends Model
 
     protected $fillable = [
         'transaction_id',
-        'cart_product_id',
+        'cashier_product_id',
         'quantity',
         'price',
         'purchase_type',
@@ -22,8 +22,8 @@ class TransactionDetail extends Model
         return $this->belongsTo(Transaction::class);
     }
 
-    public function cartProduct()
+    public function cashierProduct()
     {
-        return $this->belongsTo(CartProduct::class);
+        return $this->belongsTo(CashierProduct::class);
     }
 }

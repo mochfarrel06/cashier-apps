@@ -29,4 +29,9 @@ class CashierProduct extends Model
     {
         return $this->belongsTo(Flavor::class);
     }
+
+    public function transactionDetail()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
 }
