@@ -11,7 +11,7 @@
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Tabel Varian Produk'" :icon="'fas fa-bread-slice'" :addRoute="'admin.flavor.create'" />
+            <x-content.table-header :title="'Tabel Varian Produk'" :icon="'fas fa-solid fa-lemon'" :addRoute="'admin.flavor.create'" />
 
             <x-content.table-body>
 

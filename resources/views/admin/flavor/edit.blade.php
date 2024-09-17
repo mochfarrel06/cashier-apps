@@ -31,7 +31,8 @@
                                     <option value="">-- Pilih Produk --</option>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}"
-                                            {{ $product->id == $flavor->product_id ? 'selected' : '' }}>{{ $product->name }}
+                                            {{ $product->id == $flavor->product_id ? 'selected' : '' }}>{{ $product->code }}
+                                            - {{ $product->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -108,7 +109,7 @@
                     }
 
                     const message = response.responseJSON.message ||
-                        'Terdapat kesalahan pada jenis barang.';
+                        'Terdapat kesalahan pada varian produk.';
                     $('#flash-messages').html('<div class="alert alert-danger">' + message +
                         '</div>');
                 },

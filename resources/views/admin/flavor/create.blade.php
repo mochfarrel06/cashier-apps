@@ -27,9 +27,10 @@
                                 <label for="product_id">Data Produk</label>
                                 <select name="product_id" id="product_id"
                                     class="form-control @error('product_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Produk --</option>
+                                    <option value="">-- Pilih Data Produk --</option>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        <option value="{{ $product->id }}">{{ $product->code }} - {{ $product->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -96,7 +97,7 @@
                         }
 
                         const message = response.responseJSON.message ||
-                            'Terdapat kesalahan pada proses varian rasa';
+                            'Terdapat kesalahan pada proses varian produk';
                         $('#flash-messages').html('<div class="alert alert-danger">' + message +
                             '</div>');
                     },
