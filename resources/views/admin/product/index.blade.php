@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Product
+    Data Produk
 @endsection
 
 @section('content')
@@ -19,7 +19,6 @@
                     'No',
                     'Kode Produk',
                     'Nama Produk',
-                    'Deskripsi',
                     'Harga Eceran',
                     'Harga Perpack',
                     'Isi per pack',
@@ -32,7 +31,6 @@
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $product->code }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->description }}</td>
                             <td>Rp {{ number_format($product->price_retail ?? '0', '0', ',', '.') }}</td>
                             <td>Rp {{ number_format($product->price_pack ?? '0', '0', ',', '.') }}</td>
                             <td>{{ $product->items_per_pack }}</td>

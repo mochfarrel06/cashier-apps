@@ -18,6 +18,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit-profile', [ProfileController::class, 'editProfile'])->name('profile.editProfile');
     Route::put('profile/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.updateProfile');
+
     // Route untuk password
     Route::get('profile/edit-password', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
     Route::put('profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
@@ -31,12 +32,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     // Route Cashier Product
     Route::resource('cashier-product', CashierProductController::class);
     Route::get('products/{product_id}/flavors', [CashierProductController::class, 'getFlavorsByProduct'])->name('products.flavors');
-
-    // Cart
-    Route::resource('cart', CartController::class);
-
-    // Cart Product
-    Route::resource('cart-product', CartProductController::class);
 
     // Report Stok
     Route::get('report', [ReportStockController::class, 'index'])->name('report.index');

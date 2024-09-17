@@ -102,14 +102,14 @@ class ProductController extends Controller
             if ($product->isDirty()) {
                 $product->save();
 
-                session()->flash('success', 'Berhasil melakukan perubahan pada data barang');
+                session()->flash('success', 'Berhasil melakukan perubahan pada data produk');
                 return response()->json(['success' => true], 200);
             } else {
-                session()->flash('info', 'Tidak melakukan perubahan pada data barang');
+                session()->flash('info', 'Tidak melakukan perubahan pada data produk');
                 return response()->json(['info' => true], 200);
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Terdapat kesalahan pada data barang: ' . $e->getMessage());
+            session()->flash('error', 'Terdapat kesalahan pada data produk: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
@@ -131,7 +131,7 @@ class ProductController extends Controller
 
             $product->delete();
 
-            return response(['status' => 'success', 'message' => 'Berhasil menghapus data barang']);
+            return response(['status' => 'success', 'message' => 'Berhasil menghapus data produk']);
         } catch (\Exception $e) {
             // Menangani exception jika terjadi kesalahan saat menghapus
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

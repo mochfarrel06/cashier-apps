@@ -35,14 +35,14 @@ class ProductCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'code.required' => 'Kode Barang tidak boleh kosong',
-            'code.unique' => 'Kode barang sudah di tambahkan',
-            'name.required' => 'Kode Barang tidak boleh kosong',
-            'description.required' => 'Kode Barang tidak boleh kosong',
-            'price_retail.required' => 'Kode Barang tidak boleh kosong',
-            'price_pack.required' => 'Kode Barang tidak boleh kosong',
-            'items_per_pack.required' => 'Kode Barang tidak boleh kosong',
-            'photo.required' => 'Gambar Barang tidak boleh kosong',
+            'code.required' => 'Kode produk tidak boleh kosong',
+            'code.unique' => 'Kode produk sudah di tambahkan',
+            'name.required' => 'Nama produk tidak boleh kosong',
+            'description.required' => 'Deskripsi produk tidak boleh kosong',
+            'price_retail.required' => 'Harga Produk Eceran tidak boleh kosong',
+            'price_pack.required' => 'Harga Produk Per Pack tidak boleh kosong',
+            'items_per_pack.required' => 'Jumlah Produk Per Pack tidak boleh kosong',
+            'photo.required' => 'Gambar produk tidak boleh kosong',
             'photo.image' => 'File harus berupa gambar',
             'photo.max' => 'Ukuran gambar tidak boleh lebih dari 1000 KB',
             'photo.mimes' => 'Format gambar harus berupa PNG, JPG, atau JPEG'

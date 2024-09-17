@@ -38,9 +38,8 @@
 
                             <div class="form-group">
                                 <label for="description">Deskripsi Produk</label>
-                                <input type="text" class="form-control @error('description') is-invalid @enderror"
-                                    name="description" id="description" value="{{ old('description') }}"
-                                    placeholder="Masukkan deskripsi produk">
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description"
+                                    rows="4" placeholder="Masukkan deskripsi produk">{{ old('description') }}</textarea>
                             </div>
 
                             <div class="form-group">

@@ -39,9 +39,8 @@
 
                             <div class="form-group">
                                 <label for="description">Deskripsi Produk</label>
-                                <input type="text" class="form-control @error('description') is-invalid @enderror"
-                                    name="description" id="description"
-                                    value="{{ old('description', $product->description) }}">
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description"
+                                    rows="4">{{ old('description', $product->description) }}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -127,7 +126,7 @@
                     } else if (response.info) {
                         // Flash message info
                         sessionStorage.setItem('info',
-                            'Tidak melakukan perubahan data pada produk.');
+                            'Tidak melakukan perubahan data produk.');
                         window.location.href =
                             "{{ route('admin.product.index') }}"; // Redirect to index page
                     } else {
@@ -153,7 +152,7 @@
                     }
 
                     const message = response.responseJSON.message ||
-                        'Terdapat kesalahan pada jenis Produk.';
+                        'Terdapat kesalahan pada data produk.';
                     $('#flash-messages').html('<div class="alert alert-danger">' + message +
                         '</div>');
                 },

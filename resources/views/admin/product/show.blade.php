@@ -50,8 +50,8 @@
 
                             <div class="form-group">
                                 <label for="description">Deskripsi Produk</label>
-                                <input type="text" class="form-control" name="description" id="description"
-                                    value="{{ $product->description }}" disabled>
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description"
+                                    rows="4" placeholder="Masukkan deskripsi produk" disabled>{{ $product->description }}</textarea>
                             </div>
 
                             <div class="form-group">
