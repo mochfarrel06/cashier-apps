@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
 use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Cashier\Report\ReportProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin'], function () {
@@ -34,5 +35,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     // Report Transaction
     Route::get('report/detail-report', [ReportDetailController::class, 'detailReport'])->name('report.detailReport');
     Route::get('report/export-excel', [ReportDetailController::class, 'exportExcel'])->name('report.export.excel');
-    // Report Stock Produk
+    // Report Stock Product
+    Route::get('report-product/product-report', [ReportProductController::class, 'productReport'])->name('report-product.productReport');
+    Route::get('report-product/excel-product', [ReportProductController::class, 'exportExcel'])->name('report-product.export.product');
 });

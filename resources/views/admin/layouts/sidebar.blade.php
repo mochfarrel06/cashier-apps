@@ -18,8 +18,11 @@
     <!-- End nav item -->
 
     <!-- Nav item carts -->
-    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report.*']"
-        :subItems="[['route' => 'admin.report.detailReport', 'label' => 'Laporan Transaksi']]" />
+    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report.*', 'admin.report-product.*']"
+        :subItems="[
+            ['route' => 'admin.report.detailReport', 'label' => 'Laporan Transaksi'],
+            ['route' => 'admin.report-product.productReport', 'label' => 'Laporan Produk'],
+        ]" />
     <!-- End nav item carts -->
 
     <!-- Heading -->
