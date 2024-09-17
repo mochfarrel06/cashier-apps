@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Report;
 
+use App\Exports\TransactionsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportDetailController extends Controller
 {
@@ -41,10 +43,28 @@ class ReportDetailController extends Controller
         // Mengambil data kasir untuk ditampilkan di dropdown
         $users = User::where('role', 'cashier')->get();
 
-        // Mengambil transaksi berdasarkan filter yang diterapkan
-        $transactions = $this->getFilteredData($startDate, $endDate, $cashierId);
+        // Jika tidak ada filter, set transactions sebagai koleksi kosong
+        $transactions = collect();
+
+        // Jika ada filter, baru jalankan query untuk mendapatkan transaksi
+        if ($cashierId || $startDate || $endDate) {
+            $transactions = $this->getFilteredData($startDate, $endDate, $cashierId);
+        }
 
         // Menampilkan view dengan data yang difilter
         return view('admin.report.report-detail.index', compact('transactions', 'users', 'cashierId', 'startDate', 'endDate'));
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $cashierId = $request->input('cashier_id');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Ambil data transaksi yang difilter
+        $transactions = $this->getFilteredData($startDate, $endDate, $cashierId);
+
+        // Download data transaksi dalam format Excel
+        return Excel::download(new TransactionsExport($transactions, $startDate, $endDate), 'laporan-transaksi.xlsx');
     }
 }

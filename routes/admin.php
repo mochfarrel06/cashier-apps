@@ -31,6 +31,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::resource('cashier-product', CashierProductController::class);
     Route::get('products/{product_id}/flavors', [CashierProductController::class, 'getFlavorsByProduct'])->name('products.flavors');
 
-    // Report Stok
+    // Report Transaction
     Route::get('report/detail-report', [ReportDetailController::class, 'detailReport'])->name('report.detailReport');
+    Route::get('report/export-excel', [ReportDetailController::class, 'exportExcel'])->name('report.export.excel');
+    // Report Stock Produk
 });
