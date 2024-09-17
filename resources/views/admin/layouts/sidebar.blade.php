@@ -18,11 +18,8 @@
     <!-- End nav item -->
 
     <!-- Nav item carts -->
-    {{-- <x-sidebar.nav-item title="Kasir" icon="fa-shop" label="Kasir" collapseId="collapsePages" :routes="['admin.cart.*', 'admin.cart-product.*']"
-        :subItems="[
-            ['route' => 'admin.cart.index', 'label' => 'Data Kasir'],
-            ['route' => 'admin.cart-product.index', 'label' => 'Produk Kasir'],
-        ]" /> --}}
+    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report.*']"
+        :subItems="[['route' => 'admin.report.detailReport', 'label' => 'Laporan Transaksi']]" />
     <!-- End nav item carts -->
 
     <!-- Heading -->
