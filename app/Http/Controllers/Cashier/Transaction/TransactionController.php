@@ -28,8 +28,21 @@ class TransactionController extends Controller
             ->firstOrFail(); // Menggunakan firstOrFail untuk memastikan produk ditemukan
 
         // Tentukan harga berdasarkan jenis pembelian (retail atau pack)
-        $price = $request->purchase_type == 'retail' ? $cashierProduct->product->price_retail : $cashierProduct->product->price_pack;
+        $price = $request->purchase_type == 'retail' ? $cashierProduct->flavor->price_retail : $cashierProduct->flavor->price_pack;
         $total = $price * $request->quantity;
+
+        // Cek apakah pembelian dalam kelipatan pack
+        $itemsPerPack = $cashierProduct->product->items_per_pack; // Ambil jumlah item per pack dari produk
+        $quantity = $request->quantity;
+
+        // Jika pembelian retail dan kelipatan jumlah isi pack, gunakan harga pack
+        if ($request->purchase_type == 'retail' && $quantity % $itemsPerPack == 0) {
+            $packs = $quantity / $itemsPerPack; // Jumlah pack yang dibeli
+            $price = $cashierProduct->flavor->price_pack; // Harga pack
+            $total = $price * $packs; // Total harga berdasarkan jumlah pack
+        } else {
+            $total = $price * $quantity; // Total harga berdasarkan jumlah eceran
+        }
 
         // Ambil keranjang dari session
         $cart = session()->get('cart', []);
@@ -97,11 +110,14 @@ class TransactionController extends Controller
             return redirect()->back()->with('error', 'Jumlah bayar tidak cukup!');
         }
 
+        // Ambil kode transaksi dari user yang sedang login
+        $user = auth()->user();
+        $transactionCode = $user->transaction_code; // Kolom transaction_code di tabel users
 
         // Buat transaksi baru
         $transaction = Transaction::create([
             'user_id' => auth()->user()->id,
-            'transaction_number' => 'TRX-' . time(),
+            'transaction_number' => $transactionCode . '-' . time(),
             'transaction_date' => now(),
             'total' => $total,
             'payment_type' => $request->payment_type,

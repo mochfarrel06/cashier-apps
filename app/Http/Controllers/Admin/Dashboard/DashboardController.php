@@ -7,14 +7,28 @@ use App\Models\CashierProduct;
 use App\Models\Flavor;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function getFilteredData($cashierId = null)
+    {
+        $query = CashierProduct::query();
+
+        if ($cashierId) {
+            $query->where('user_id', $cashierId);
+        }
+
+        return $query->with('product')->get();
+    }
+
+    public function index(Request $request)
     {
         $cashierCount = User::where('role', 'cashier')->get()->count();
         $productCount = Product::all()->count();
         $flavorCount = Flavor::all()->count();
+
+        $cashierId = $request->input('cashier_id');
 
         $cards = [
             [
@@ -37,8 +51,13 @@ class DashboardController extends Controller
             ]
         ];
 
-        $cashierProducts = CashierProduct::with(['user', 'product', 'flavor'])->get();
+        $users = User::where('role', 'cashier')->get();
 
-        return view('admin.dashboard.index', compact('cards', 'cashierProducts'));
+        $cashierProducts = collect();
+        if ($cashierId) {
+            $cashierProducts = $this->getFilteredData($cashierId);
+        }
+
+        return view('admin.dashboard.index', compact('cards', 'cashierProducts', 'users', 'cashierId'));
     }
 }

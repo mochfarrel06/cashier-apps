@@ -16,42 +16,56 @@
                 <form action="{{ route('cashier.transaction.addToCart') }}" method="POST">
                     @csrf
 
-                    <div class="form-group">
-                        <label for="cashier_product_id">Pilih Produk</label>
-                        <select class="form-control" name="cashier_product_id" id="cashier_product_id" required>
-                            <option value="">-- Pilih Produk --</option>
-                            @foreach ($cashierProducts as $product)
-                                <option value="{{ $product->id }}" data-stock="{{ $product->stock }}"
-                                    data-flavor="{{ $product->flavor->flavor_name }}">{{ $product->product->name }} -
-                                    {{ $product->flavor->flavor_name }} </option>
-                            @endforeach
-                        </select>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="cashier_product_id">Pilih Produk</label>
+                                <select class="form-control" name="cashier_product_id" id="cashier_product_id" required>
+                                    <option value="">-- Pilih Produk --</option>
+                                    @foreach ($cashierProducts as $product)
+                                        <option value="{{ $product->id }}" data-stock="{{ $product->stock }}"
+                                            data-flavor="{{ $product->flavor->flavor_name }}">{{ $product->product->name }}
+                                            -
+                                            {{ $product->flavor->flavor_name }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Stok Tersedia</label>
+                                <input type="number" id="stock" class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Varian Rasa</label>
+                                <input type="text" class="form-control" id="flavor" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="purchase_type">Jenis Pembelian</label>
+                                <select class="form-control" name="purchase_type" id="purchase_type" required>
+                                    <option value="">-- Jenis Pembelian --</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="pack">Pack</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="quantity">Jumlah</label>
+                                <input type="number" class="form-control" name="quantity" id="quantity"
+                                    placeholder="Masukkan jumlah" required>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Stok Tersedia</label>
-                        <input type="number" id="stock" class="form-control" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Varian Rasa</label>
-                        <input type="text" class="form-control" id="flavor" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="purchase_type">Jenis Pembelian</label>
-                        <select class="form-control" name="purchase_type" id="purchase_type" required>
-                            <option value="">-- Jenis Pembelian --</option>
-                            <option value="retail">Eceran</option>
-                            <option value="pack">Pack</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Jumlah</label>
-                        <input type="number" class="form-control" name="quantity" id="quantity"
-                            placeholder="Masukkan jumlah" required>
-                    </div>
                     <button type="submit" class="btn btn-primary">Tambah ke Keranjang</button>
                 </form>
             </div>

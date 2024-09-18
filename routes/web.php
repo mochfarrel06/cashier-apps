@@ -1,7 +1,5 @@
 <?php
 
-// use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Cashier\Dashboard\DashboardController;
 use App\Http\Controllers\Cashier\Report\ReportDetailController;
