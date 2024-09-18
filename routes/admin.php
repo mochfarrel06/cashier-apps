@@ -5,8 +5,8 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
+use App\Http\Controllers\Admin\Report\ReportTransactionController;
 use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\Cashier\Report\ReportProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin'], function () {
@@ -33,9 +33,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::get('products/{product_id}/flavors', [CashierProductController::class, 'getFlavorsByProduct'])->name('products.flavors');
 
     // Report Transaction
-    Route::get('report/detail-report', [ReportDetailController::class, 'detailReport'])->name('report.detailReport');
-    Route::get('report/export-excel', [ReportDetailController::class, 'exportExcel'])->name('report.export.excel');
-    // Report Stock Product
-    Route::get('report-product/product-report', [ReportProductController::class, 'productReport'])->name('report-product.productReport');
-    Route::get('report-product/excel-product', [ReportProductController::class, 'exportExcel'])->name('report-product.export.product');
+    Route::get('report-transaction', [ReportTransactionController::class, 'index'])->name('report-transaction.index');
+    Route::get('report-transaction/export-excel', [ReportTransactionController::class, 'exportExcel'])->name('report-transaction.exportExcel');
+
+    // Report detail transaction
+    Route::get('report-detail', [ReportDetailController::class, 'index'])->name('report-detail.index');
+    Route::get('report-detail/export-excel', [ReportDetailController::class, 'exportExcel'])->name('report-detail.exportExcel');
 });

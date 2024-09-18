@@ -1,13 +1,13 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Laporan Transaksi
+    Laporan Produk Terjual
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Transaksi'" />
+        <x-content.heading-page :title="'Halaman Laporan Produk Terjual'" />
 
         <x-content.table-container>
 
@@ -73,6 +73,7 @@
 
                 <x-content.thead :items="[
                     'No',
+                    'Tgl Transaksi',
                     'Kode Transaksi',
                     'Nama Produk',
                     'Varian Produk',
@@ -86,6 +87,8 @@
                     @foreach ($transactionDetails as $transactionDetail)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($transactionDetail->transaction->transaction_date)->format('d-m-Y') }}
+                            </td>
                             <td>{{ $transactionDetail->transaction->transaction_number }}</td>
                             <td>{{ $transactionDetail->cashierProduct->product->name }}</td>
                             <td>{{ $transactionDetail->cashierProduct->flavor->flavor_name }}</td>

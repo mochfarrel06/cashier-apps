@@ -1,13 +1,13 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Laporan Produk Terjual
+    Laporan Transaksi
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Produk Terjual'" />
+        <x-content.heading-page :title="'Halaman Laporan Transaksi'" />
 
         <x-content.table-container>
 
@@ -18,7 +18,7 @@
                     @csrf
 
                     <div class="row">
-                        {{-- <div class="col-lg-6">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="cashier_id">Pilih Kasir</label>
                                 <select name="cashier_id" id="cashier_id" class="form-control" required>
@@ -30,7 +30,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -53,9 +53,9 @@
                         <button type="submit"
                             class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2 mr-3">Tampilkan
                             Data</button>
-                        {{-- <a href="{{ route('admin.report.export.excel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
+                        <a href="{{ route('admin.report-transaction.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i
-                                class="fa-solid fa-file-excel"></i> Export Excel</a> --}}
+                                class="fa-solid fa-file-excel"></i> Export Excel</a>
                     </div>
                 </form>
             </div>
@@ -71,31 +71,18 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="[
-                    'No',
-                    'Tgl Transaksi',
-                    'Kode Transaksi',
-                    'Nama Produk',
-                    'Varian Produk',
-                    'Jenis Pembelian',
-                    'Qty',
-                    'Harga',
-                    'Total',
-                ]" />
+                <x-content.thead :items="['No', 'Tanggal Transaksi', 'Kode Transaksi', 'Qty', 'Total', 'Jumlah Bayar', 'Kembalian']" />
 
                 <x-content.tbody>
-                    @foreach ($transactionDetails as $transactionDetail)
+                    @foreach ($transactions as $transaction)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($transactionDetail->transaction->transaction_date)->format('d-m-Y') }}
-                            </td>
-                            <td>{{ $transactionDetail->transaction->transaction_number }}</td>
-                            <td>{{ $transactionDetail->cashierProduct->product->name }}</td>
-                            <td>{{ $transactionDetail->cashierProduct->flavor->flavor_name }}</td>
-                            <td>{{ $transactionDetail->purchase_type }}</td>
-                            <td>{{ $transactionDetail->quantity }}</td>
-                            <td>Rp {{ number_format($transactionDetail->price, 0, ',', '.') }}</td>
-                            <td>Rp {{ $transactionDetail->quantity * $transactionDetail->price }}</td>
+                            <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
+                            <td>{{ $transaction->transaction_number }}</td>
+                            <td>{{ $transaction->transactionDetails->sum('quantity') }}</td>
+                            <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($transaction->paid_amount ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($transaction->change_amount ?? 0, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </x-content.tbody>

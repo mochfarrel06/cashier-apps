@@ -18,10 +18,10 @@
     <!-- End nav item -->
 
     <!-- Nav item carts -->
-    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report.*', 'admin.report-product.*']"
+    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report-transaction.*', 'admin.report-detail.*']"
         :subItems="[
-            ['route' => 'admin.report.detailReport', 'label' => 'Laporan Transaksi'],
-            ['route' => 'admin.report-product.productReport', 'label' => 'Laporan Produk'],
+            ['route' => 'admin.report-transaction.index', 'label' => 'Laporan Transaksi'],
+            ['route' => 'admin.report-detail.index', 'label' => 'Laporan Detail'],
         ]" />
     <!-- End nav item carts -->
 
