@@ -15,8 +15,6 @@ class Product extends Model
         'code',
         'name',
         'description',
-        'price_retail',
-        'price_pack',
         'items_per_pack',
         'photo'
     ];
@@ -24,11 +22,6 @@ class Product extends Model
     public function flavor()
     {
         return $this->hasMany(Flavor::class);
-    }
-
-    public function cartProduct()
-    {
-        return $this->hasMany(CartProduct::class);
     }
 
     public function details()

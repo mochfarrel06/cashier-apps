@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
 use App\Http\Controllers\Admin\Report\ReportTransactionController;
+use App\Http\Controllers\Admin\Transaction\TransactionCashierController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     // Route Cashier Product
     Route::resource('cashier-product', CashierProductController::class);
     Route::get('products/{product_id}/flavors', [CashierProductController::class, 'getFlavorsByProduct'])->name('products.flavors');
+
+    // Route Transaction Cashier
+    Route::get('transaction-cashier', [TransactionCashierController::class, 'index'])->name('transaction-cashier.index');
+    Route::get('transaction-cashier/{id}/show', [TransactionCashierController::class, 'show'])->name('transaction-cashier.show');
 
     // Report Transaction
     Route::get('report-transaction', [ReportTransactionController::class, 'index'])->name('report-transaction.index');

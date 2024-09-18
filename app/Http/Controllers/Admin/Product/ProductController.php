@@ -7,7 +7,6 @@ use App\Http\Requests\Product\ProductCreateRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Models\Product;
 use App\Traits\FileUploadTrait;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -42,8 +41,6 @@ class ProductController extends Controller
                 'code' => $request->code,
                 'name' => $request->name,
                 'description' => $request->description,
-                'price_retail' => $request->price_retail,
-                'price_pack' => $request->price_pack,
                 'items_per_pack' => $request->items_per_pack,
                 'photo' => isset($imagePath) ? $imagePath : 'photo'
             ]);

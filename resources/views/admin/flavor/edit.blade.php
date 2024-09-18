@@ -47,6 +47,23 @@
                                     value="{{ old('flavor_name', $flavor->flavor_name) }}">
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="price_retail">Harga Produk Eceran</label>
+                                <input type="number" class="form-control @error('price_retail') is-invalid @enderror"
+                                    name="price_retail" id="price_retail"
+                                    value="{{ old('price_retail', $flavor->price_retail) }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="price_pack">Harga Produk Per Pack</label>
+                                <input type="number" class="form-control @error('price_pack') is-invalid @enderror"
+                                    name="price_pack" id="price_pack" value="{{ old('price_pack', $flavor->price_pack) }}">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mt-4">

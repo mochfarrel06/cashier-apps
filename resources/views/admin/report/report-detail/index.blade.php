@@ -11,7 +11,7 @@
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Filter Laporan Transaksi'" :icon="'fas fa-solid fa-filter'" />
+            <x-content.table-header :title="'Filter Laporan Produk Terjual'" :icon="'fas fa-solid fa-filter'" />
 
             <div class="card-body">
                 <form action="{{ route('admin.report-detail.index') }}" method="GET">
@@ -54,9 +54,9 @@
                         <button type="submit"
                             class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2 mr-3">Tampilkan
                             Data</button>
-                        {{-- <a href="{{ route('admin.report.export.excel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
+                        <a href="{{ route('admin.report-detail.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i
-                                class="fa-solid fa-file-excel"></i> Export Excel</a> --}}
+                                class="fa-solid fa-file-excel"></i> Export Excel</a>
                     </div>
                 </form>
             </div>

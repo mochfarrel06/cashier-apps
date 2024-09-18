@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\TransactionDetail;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -18,12 +17,14 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     protected $transactionDetails;
     protected $startDate;
     protected $endDate;
+    protected $index = 1;
 
     public function __construct($transactionDetails, $startDate, $endDate)
     {
         $this->transactionDetails = $transactionDetails;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->index = 1;
     }
 
     // Mengambil data dari collection transactionDetails
@@ -53,7 +54,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     public function map($transactionDetail): array
     {
         return [
-            $transactionDetail->id, // No
+            $this->index++, // No
             Carbon::parse($transactionDetail->transaction->transaction_date)->format('d-m-Y'),
             $transactionDetail->transaction->transaction_number,
             $transactionDetail->transaction->user->name,
@@ -71,7 +72,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     {
         // Mengatur warna header, garis tabel, dan rata tengah
         $sheet->mergeCells('A1:H1');
-        $sheet->setCellValue('A1', 'Laporan Transaksi');
+        $sheet->setCellValue('A1', 'Laporan Produk Terjual');
         // Cek jika startDate dan endDate sama
         if ($this->startDate === $this->endDate) {
             $sheet->mergeCells('A2:H2');
@@ -81,12 +82,15 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
-
         // Total Pendapatan di baris akhir setelah data
         $lastRow = $this->transactionDetails->count() + 4; // Menghitung total baris data
-        $sheet->setCellValue('E' . ($lastRow + 1), 'Total Pendapatan');
-        $totalPendapatanCell = 'F' . ($lastRow + 1);
-        $sheet->setCellValue($totalPendapatanCell, $this->transactionDetails->sum('total'));
+        $sheet->setCellValue('G' . ($lastRow + 1), 'Total');
+        $totalProduct = 'H' . ($lastRow + 1);
+        $sheet->setCellValue($totalProduct, $this->transactionDetails->sum('quantity'));
+        $totalPrice = 'I' . ($lastRow + 1);
+        $sheet->setCellValue($totalPrice, $this->transactionDetails->sum('price'));
+        $total = 'J' . ($lastRow + 1);
+        $sheet->setCellValue($total, '=SUM(J4:J' . $lastRow . ')');
 
         // Style untuk border
         $styleArray = [
@@ -99,18 +103,19 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         ];
 
         // Mengatur border pada range sel tabel (A4 sampai H$lastRow)
-        $sheet->getStyle('A4:H' . ($lastRow + 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A4:J' . ($lastRow + 1))->applyFromArray($styleArray);
+
         // Format untuk kolom Rupiah (F, G, H)
-        $sheet->getStyle('F4:F' . $lastRow)
+        $sheet->getStyle('I4:I' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
-        $sheet->getStyle('G4:G' . $lastRow)
+        $sheet->getStyle('J4:J' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
-        $sheet->getStyle('H4:H' . $lastRow)
+        $sheet->getStyle($totalPrice)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
-        $sheet->getStyle($totalPendapatanCell)
+        $sheet->getStyle($total)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
 
@@ -129,6 +134,8 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'F' => ['alignment' => ['horizontal' => 'center']],
             'G' => ['alignment' => ['horizontal' => 'center']],
             'H' => ['alignment' => ['horizontal' => 'center']],
+            'I' => ['alignment' => ['horizontal' => 'center']],
+            'J' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
 
@@ -151,6 +158,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'F' => 20,  // Total
             'G' => 20,  // Jumlah Bayar
             'H' => 20,  // Kembalian
+            'I' => 20,  // Kembalian
         ];
     }
 }

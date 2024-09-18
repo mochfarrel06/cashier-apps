@@ -43,20 +43,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="price_retail">Harga Produk Eceran</label>
-                                <input type="number" class="form-control @error('price_retail') is-invalid @enderror"
-                                    name="price_retail" id="price_retail" value="{{ old('price_retail') }}"
-                                    placeholder="Masukkan harga produk eceran">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="price_pack">Harga Produk Per Pack</label>
-                                <input type="number" class="form-control @error('price_pack') is-invalid @enderror"
-                                    name="price_pack" id="price_pack" value="{{ old('price_pack') }}"
-                                    placeholder="Masukkan harga produk per pack">
-                            </div>
-
-                            <div class="form-group">
                                 <label for="items_per_pack">Jumlah Produk Per Pack</label>
                                 <input type="number" class="form-control @error('items_per_pack') is-invalid @enderror"
                                     name="items_per_pack" id="items_per_pack" value="{{ old('items_per_pack') }}"

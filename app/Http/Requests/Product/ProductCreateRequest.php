@@ -25,8 +25,6 @@ class ProductCreateRequest extends FormRequest
             'code' => ['required', 'string', 'unique:products,code'],
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
-            'price_retail' => ['required', 'numeric'],
-            'price_pack' => ['required', 'numeric'],
             'items_per_pack' => ['required', 'numeric'],
             'photo' => ['required', 'image', 'max:1000', 'mimes:png,jpg,jpeg']
         ];
@@ -39,8 +37,6 @@ class ProductCreateRequest extends FormRequest
             'code.unique' => 'Kode produk sudah di tambahkan',
             'name.required' => 'Nama produk tidak boleh kosong',
             'description.required' => 'Deskripsi produk tidak boleh kosong',
-            'price_retail.required' => 'Harga Produk Eceran tidak boleh kosong',
-            'price_pack.required' => 'Harga Produk Per Pack tidak boleh kosong',
             'items_per_pack.required' => 'Jumlah Produk Per Pack tidak boleh kosong',
             'photo.required' => 'Gambar produk tidak boleh kosong',
             'photo.image' => 'File harus berupa gambar',

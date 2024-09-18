@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('location')->nullable();
+            $table->string('transaction_code')->nullable();
             $table->enum('role', ['admin', 'cashier']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

@@ -38,7 +38,9 @@ class FlavorController extends Controller
 
             $flavor = new Flavor([
                 'product_id' => $product->id,
-                'flavor_name' => $request->flavor_name
+                'flavor_name' => $request->flavor_name,
+                'price_retail' => $request->price_retail,
+                'price_pack' => $request->price_pack
             ]);
 
             $flavor->save();

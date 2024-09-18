@@ -13,16 +13,13 @@ class Flavor extends Model
     protected $fillable = [
         'product_id',
         'flavor_name',
+        'price_retail',
+        'price_pack'
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function cartProduct()
-    {
-        return $this->hasMany(CartProduct::class);
     }
 
     public function details()

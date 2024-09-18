@@ -15,15 +15,7 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="[
-                    'No',
-                    'Kode Produk',
-                    'Nama Produk',
-                    'Harga Eceran',
-                    'Harga Perpack',
-                    'Isi per pack',
-                    'Aksi',
-                ]" />
+                <x-content.thead :items="['No', 'Kode Produk', 'Nama Produk', 'Isi per pack', 'Aksi']" />
 
                 <x-content.tbody>
                     @foreach ($products as $product)
@@ -31,8 +23,6 @@
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $product->code }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>Rp {{ number_format($product->price_retail ?? '0', '0', ',', '.') }}</td>
-                            <td>Rp {{ number_format($product->price_pack ?? '0', '0', ',', '.') }}</td>
                             <td>{{ $product->items_per_pack }}</td>
                             <td>
                                 <a href="{{ route('admin.product.show', $product->id) }}" class="btn btn-warning mr-2 mb-2"><i

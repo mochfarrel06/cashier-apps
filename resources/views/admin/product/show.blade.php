@@ -55,18 +55,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="price_retail">Harga Produk Eceran</label>
-                                <input type="text" class="form-control" name="price_retail" id="price_retail"
-                                    value="Rp {{ number_format($product->price_retail ?? '0', '0', ',', '.') }}" disabled>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="price_pack">Harga Produk Per Pack</label>
-                                <input type="text" class="form-control" name="price_pack" id="price_pack"
-                                    value="Rp {{ number_format($product->price_pack ?? '0', '0', ',', '.') }}" disabled>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="items_per_pack">Jumlah Produk Per Pack</label>
                                 <input type="number" class="form-control" name="items_per_pack" id="items_per_pack"
                                     value="{{ $product->items_per_pack }}" disabled>

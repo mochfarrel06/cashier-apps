@@ -18,12 +18,14 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     protected $transactions;
     protected $startDate;
     protected $endDate;
+    protected $index = 1;
 
     public function __construct($transactions, $startDate, $endDate)
     {
         $this->transactions = $transactions;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->index = 1;
     }
 
     // Mengambil data dari collection transactions
@@ -51,7 +53,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     public function map($transaction): array
     {
         return [
-            $transaction->id, // No
+            $this->index++, // No
             Carbon::parse($transaction->transaction_date)->format('d-m-Y'), // Tanggal Transaksi
             $transaction->transaction_number, // Kode Transaksi
             $transaction->user->name, // Nama kasir
