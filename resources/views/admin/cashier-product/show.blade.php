@@ -55,7 +55,8 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('admin.cashier-product.index') }}" class="btn btn-warning mt-4">Kembali</a>
+                    <a href="{{ route('admin.cashier-product.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-4">Kembali</a>
                 </form>
             </div>
 

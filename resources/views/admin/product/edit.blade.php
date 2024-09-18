@@ -75,8 +75,10 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit" id="submit-btn" class="btn btn-success">Edit</button>
-                        <a href="{{ route('admin.product.index') }}" class="btn btn-warning ml-2">Kembali</a>
+                        <button type="submit" id="submit-btn"
+                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm">Edit</button>
+                        <a href="{{ route('admin.product.index') }}"
+                            class="d-sm-inline-block btn btn-sm btn-warning shadow-sm ml-2">Kembali</a>
                     </div>
                 </form>
             </x-content.card-body>

@@ -26,11 +26,14 @@
                             <td>{{ $cashierProduct->flavor->flavor_name }}</td>
                             <td>
                                 <a href="{{ route('admin.cashier-product.show', $cashierProduct->id) }}"
-                                    class="btn btn-warning mr-2 mb-2"><i class="fas fa-eye"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mr-2 mb-2"><i
+                                        class="fas fa-eye"></i></a>
                                 <a href="{{ route('admin.cashier-product.edit', $cashierProduct->id) }}"
-                                    class="btn btn-success mr-2 mb-2"><i class="fas fa-edit"></i></a>
+                                    class="bd-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
+                                        class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.cashier-product.destroy', $cashierProduct->id) }}"
-                                    class="btn btn-danger mr-2 mb-2 delete-item"><i class="fas fa-trash"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-danger shadow-sm mr-2 mb-2 delete-item"><i
+                                        class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

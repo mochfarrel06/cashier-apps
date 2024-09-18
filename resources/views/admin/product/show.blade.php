@@ -60,7 +60,8 @@
                                     value="{{ $product->items_per_pack }}" disabled>
                             </div>
 
-                            <a href="{{ route('admin.product.index') }}" class="btn btn-warning mt-3">Kembali</a>
+                            <a href="{{ route('admin.product.index') }}"
+                                class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-3">Kembali</a>
                         </form>
                     </div>
 

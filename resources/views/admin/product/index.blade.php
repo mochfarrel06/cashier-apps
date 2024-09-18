@@ -21,16 +21,19 @@
                     @foreach ($products as $product)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ $product->code }}</td>
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->items_per_pack }}</td>
+                            <td>{{ $product->code ?? '' }}</td>
+                            <td>{{ $product->name ?? '' }}</td>
+                            <td>{{ $product->items_per_pack ?? '' }}</td>
                             <td>
-                                <a href="{{ route('admin.product.show', $product->id) }}" class="btn btn-warning mr-2 mb-2"><i
+                                <a href="{{ route('admin.product.show', $product->id) }}"
+                                    class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mr-2 mb-2"><i
                                         class="fas fa-eye"></i></a>
-                                <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-success mr-2 mb-2"><i
+                                <a href="{{ route('admin.product.edit', $product->id) }}"
+                                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
                                         class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.product.destroy', $product->id) }}"
-                                    class="btn btn-danger mr-2 mb-2 delete-item"><i class="fas fa-trash"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-danger shadow-sm mr-2 mb-2 delete-item"><i
+                                        class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

@@ -9,7 +9,6 @@ use App\Models\CashierProduct;
 use App\Models\Flavor;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class CashierProductController extends Controller
 {

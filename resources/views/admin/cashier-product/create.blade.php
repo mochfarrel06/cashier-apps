@@ -69,8 +69,10 @@
                     </div>
 
                     <div class="mt-4">
-                        <button type="submit" id="submit-btn" class="btn btn-primary">Tambah</button>
-                        <a href="{{ route('admin.cashier-product.index') }}" class="btn btn-warning ml-2">Kembali</a>
+                        <button type="submit" id="submit-btn"
+                            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tambah</button>
+                        <a href="{{ route('admin.cashier-product.index') }}"
+                            class="d-sm-inline-block btn btn-sm btn-warning shadow-sm ml-2">Kembali</a>
                     </div>
                 </form>
             </x-content.card-body>
@@ -125,7 +127,7 @@
 
                         if (response.responseJSON.error) {
                             window.location.href =
-                            "{{ route('admin.cashier-product.create') }}";
+                                "{{ route('admin.cashier-product.create') }}";
                         }
                     },
                     complete: function() {

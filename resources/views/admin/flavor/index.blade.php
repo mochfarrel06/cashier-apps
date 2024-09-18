@@ -21,17 +21,20 @@
                     @foreach ($flavors as $flavor)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ $flavor->product->name }}</td>
-                            <td>{{ $flavor->flavor_name }}</td>
+                            <td>{{ $flavor->product->name ?? '' }}</td>
+                            <td>{{ $flavor->flavor_name ?? '' }}</td>
                             <td>Rp {{ number_format($flavor->price_retail ?? '0', '0', ',', '.') }}</td>
                             <td>Rp {{ number_format($flavor->price_pack ?? '0', '0', ',', '.') }}</td>
                             <td>
-                                <a href="{{ route('admin.flavor.show', $flavor->id) }}" class="btn btn-warning mr-2 mb-2"><i
+                                <a href="{{ route('admin.flavor.show', $flavor->id) }}"
+                                    class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mr-2 mb-2"><i
                                         class="fas fa-eye"></i></a>
-                                <a href="{{ route('admin.flavor.edit', $flavor->id) }}" class="btn btn-success mr-2 mb-2"><i
+                                <a href="{{ route('admin.flavor.edit', $flavor->id) }}"
+                                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
                                         class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.flavor.destroy', $flavor->id) }}"
-                                    class="btn btn-danger mr-2 mb-2 delete-item"><i class="fas fa-trash"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-danger shadow-sm mr-2 mb-2 delete-item"><i
+                                        class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach
