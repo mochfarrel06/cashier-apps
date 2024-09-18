@@ -14,23 +14,24 @@
             <x-content.table-header :title="'Filter Laporan Transaksi'" :icon="'fas fa-solid fa-filter'" />
 
             <div class="card-body">
-                <form action="" method="GET">
+                <form action="{{ route('admin.report-detail.index') }}" method="GET">
                     @csrf
 
                     <div class="row">
-                        {{-- <div class="col-lg-6">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="cashier_id">Pilih Kasir</label>
                                 <select name="cashier_id" id="cashier_id" class="form-control" required>
                                     <option value="">-- Pilih Kasir --</option>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" {{ $cashierId == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }}
+                                    @foreach ($cashiers as $cashier)
+                                        <option value="{{ $cashier->id }}"
+                                            {{ request('cashier_id') == $cashier->id ? 'selected' : '' }}>
+                                            {{ $cashier->name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
