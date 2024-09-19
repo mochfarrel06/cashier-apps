@@ -21,10 +21,11 @@
         :routes="['admin.transaction-cashier.*']" :subItems="[['route' => 'admin.transaction-cashier.index', 'label' => 'Data Transaksi']]" />
 
     <!-- Nav item carts -->
-    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report-transaction.*', 'admin.report-detail.*']"
+    <x-sidebar.nav-item title="Laporan" icon="fa-file" label="Laporan" collapseId="collapsePages" :routes="['admin.report-transaction.*', 'admin.report-detail.*', 'admin.report-product.*']"
         :subItems="[
             ['route' => 'admin.report-transaction.index', 'label' => 'Laporan Transaksi'],
             ['route' => 'admin.report-detail.index', 'label' => 'Laporan Detail'],
+            ['route' => 'admin.report-product.index', 'label' => 'Laporan Produk'],
         ]" />
     <!-- End nav item carts -->
 

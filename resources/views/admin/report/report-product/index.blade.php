@@ -6,12 +6,11 @@
 
 @section('content')
     <x-content.container-fluid>
-
         <x-content.heading-page :title="'Halaman Laporan Produk Terjual'" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Filter Laporan Transaksi'" :icon="'fas fa-solid fa-filter'" />
+            <x-content.table-header :title="'Filter Laporan Produk Terjual'" :icon="'fas fa-solid fa-filter'" />
 
             {{-- <div class="card-body">
                 <form action="" method="GET">
@@ -79,8 +78,7 @@
                     'Varian Produk',
                     'Jenis Pembelian',
                     'Qty',
-                    'Harga',
-                    'Total',
+                    'Jumlah Produk',
                 ]" />
 
                 <x-content.tbody>
@@ -94,8 +92,13 @@
                             <td>{{ $transactionDetail->cashierProduct->flavor->flavor_name }}</td>
                             <td>{{ $transactionDetail->purchase_type }}</td>
                             <td>{{ $transactionDetail->quantity }}</td>
-                            <td>Rp {{ number_format($transactionDetail->price, 0, ',', '.') }}</td>
-                            <td>Rp {{ $transactionDetail->quantity * $transactionDetail->price }}</td>
+                            <td>
+                                @if ($transactionDetail->purchase_type === 'retail')
+                                    {{ $transactionDetail->quantity }}
+                                @elseif ($transactionDetail->purchase_type === 'pack')
+                                    {{ $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack }}
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </x-content.tbody>

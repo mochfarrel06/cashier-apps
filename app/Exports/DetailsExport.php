@@ -44,6 +44,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'Nama Produk',
             'Varian Produk',
             'Jenis Pembelian',
+            'Qty',
             'Jumlah Produk',
             'Harga',
             'Total'
@@ -53,15 +54,21 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     // Memetakan data transaksi ke dalam format Excel
     public function map($transactionDetail): array
     {
+        // Menghitung jumlah produk berdasarkan jenis pembelian
+        $jumlahProduk = $transactionDetail->purchase_type === 'retail'
+            ? $transactionDetail->quantity
+            : $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack;
+
         return [
-            $this->index++, // No
+            $this->index++,
             Carbon::parse($transactionDetail->transaction->transaction_date)->format('d-m-Y'),
             $transactionDetail->transaction->transaction_number,
             $transactionDetail->transaction->user->name,
-            $transactionDetail->cashierProduct->product->name, // Jumlah Produk
-            $transactionDetail->cashierProduct->flavor->flavor_name, // Total
-            $transactionDetail->purchase_type, // Jumlah Bayar
-            $transactionDetail->quantity, // Kembalian
+            $transactionDetail->cashierProduct->product->name,
+            $transactionDetail->cashierProduct->flavor->flavor_name,
+            ucfirst($transactionDetail->purchase_type),
+            $transactionDetail->quantity,
+            $jumlahProduk, // Jumlah Produk
             $transactionDetail->price,
             $transactionDetail->quantity * $transactionDetail->price
         ];
@@ -71,26 +78,46 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     public function styles(Worksheet $sheet)
     {
         // Mengatur warna header, garis tabel, dan rata tengah
-        $sheet->mergeCells('A1:J1');
+        $sheet->mergeCells('A1:K1');
         $sheet->setCellValue('A1', 'Laporan Detail Transaksi');
-        // Cek jika startDate dan endDate sama
         if ($this->startDate === $this->endDate) {
-            $sheet->mergeCells('A2:J2');
+            $sheet->mergeCells('A2:K2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y'));
         } else {
-            $sheet->mergeCells('A2:J2');
+            $sheet->mergeCells('A2:K2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
         // Total Pendapatan di baris akhir setelah data
         $lastRow = $this->transactionDetails->count() + 4; // Menghitung total baris data
-        $sheet->setCellValue('G' . ($lastRow + 1), 'Total');
+        $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
+        $sheet->mergeCells('C' . ($lastRow + 1) . ':G' . ($lastRow + 1));
+
+        $sheet->setCellValue('A' . ($lastRow + 1), 'Total');
+
         $totalProduct = 'H' . ($lastRow + 1);
         $sheet->setCellValue($totalProduct, $this->transactionDetails->sum('quantity'));
-        $totalPrice = 'I' . ($lastRow + 1);
+
+        $totalAll = 'I' . ($lastRow + 1);
+        $totalQuantity = $this->transactionDetails->reduce(function ($carry, $detail) {
+            // Ambil nilai items_per_pack, default ke 1 jika tidak ada
+            $itemsPerPack = $detail->cashierProduct->product->items_per_pack ?? 1;
+
+            // Hitung quantity berdasarkan jenis pembelian
+            $productQuantity = ($detail->purchase_type === 'eceran')
+                ? $detail->quantity // Jika eceran, ambil quantity langsung
+                : $detail->quantity * $itemsPerPack; // Jika pack, kalikan dengan items_per_pack
+
+            // Tambahkan jumlah produk ke total akumulasi
+            return $carry + $productQuantity;
+        }, 0);
+        $sheet->setCellValue($totalAll, $totalQuantity);
+
+        $totalPrice = 'J' . ($lastRow + 1);
         $sheet->setCellValue($totalPrice, $this->transactionDetails->sum('price'));
-        $total = 'J' . ($lastRow + 1);
-        $sheet->setCellValue($total, '=SUM(J4:J' . $lastRow . ')');
+
+        $total = 'K' . ($lastRow + 1);
+        $sheet->setCellValue($total, '=SUM(K4:K' . $lastRow . ')');
 
         // Style untuk border
         $styleArray = [
@@ -102,14 +129,14 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             ],
         ];
 
-        // Mengatur border pada range sel tabel (A4 sampai H$lastRow)
-        $sheet->getStyle('A4:J' . ($lastRow + 1))->applyFromArray($styleArray);
+        // Mengatur border pada range sel tabel (A4 sampai K$lastRow)
+        $sheet->getStyle('A4:K' . ($lastRow + 1))->applyFromArray($styleArray);
 
-        // Format untuk kolom Rupiah (F, G, H)
-        $sheet->getStyle('I4:I' . $lastRow)
+        // Format untuk kolom Rupiah (I, J, K)
+        $sheet->getStyle('J4:J' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
-        $sheet->getStyle('J4:J' . $lastRow)
+        $sheet->getStyle('K4:K' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPrice)
@@ -120,12 +147,9 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             ->setFormatCode('"Rp " #,##0');
 
         return [
-            // Style untuk judul dan periode
             1 => ['font' => ['bold' => true, 'size' => 14], 'alignment' => ['horizontal' => 'center']],
             2 => ['font' => ['bold' => true, 'size' => 12], 'alignment' => ['horizontal' => 'center']],
-            // Style untuk header tabel
             4 => ['font' => ['bold' => true, 'color' => ['rgb' => '000000']], 'alignment' => ['horizontal' => 'center'], 'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'ADD8E6']]],
-            // Rata tengah untuk isi tabel
             'A' => ['alignment' => ['horizontal' => 'center']],
             'B' => ['alignment' => ['horizontal' => 'center']],
             'C' => ['alignment' => ['horizontal' => 'center']],
@@ -136,9 +160,9 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'H' => ['alignment' => ['horizontal' => 'center']],
             'I' => ['alignment' => ['horizontal' => 'center']],
             'J' => ['alignment' => ['horizontal' => 'center']],
+            'K' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
-
 
     // Mengatur kolom dimulai dari baris ke-4 (karena baris 1 dan 2 untuk heading custom)
     public function startCell(): string
@@ -154,11 +178,13 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'B' => 20,  // Tanggal Transaksi
             'C' => 20,  // Kode Transaksi
             'D' => 20,  // Kasir
-            'E' => 20,  // Jumlah Produk
-            'F' => 25,  // Total
-            'G' => 20,  // Jumlah Bayar
-            'H' => 20,  // Kembalian
-            'I' => 25,  // Kembalian
+            'E' => 20,  // Nama Produk
+            'F' => 25,  // Varian Produk
+            'G' => 20,  // Jenis Pembelian
+            'H' => 10,  // Qty
+            'I' => 15,  // Jumlah Produk
+            'J' => 20,  // Harga
+            'K' => 25,  // Total
         ];
     }
 }
