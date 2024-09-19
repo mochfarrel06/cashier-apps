@@ -9,31 +9,30 @@
 
         <x-content.heading-page :title="'Halaman Dashboard Kasir'" />
 
-        {{-- <x-content.card-row>
+        <x-content.card-row>
             @foreach ($cards as $card)
                 <x-content.card-dashboard :title="$card['title']" :bgColor="$card['bg_color']" :value="$card['value']" :icon="$card['icon']" />
             @endforeach
-        </x-content.card-row> --}}
+        </x-content.card-row>
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Tabel Data Barang Minimum'" :icon="'fas fa-circle-exclamation'" />
+            <x-content.table-header :title="'Tabel Stok Produk Hari ini'" :icon="'fas fa-circle-exclamation'" />
 
             <x-content.table-body>
 
-                {{-- <x-content.thead :items="['No', 'Kode Barang', 'Nama Barang', 'Jenis Barang', 'Satuan', 'Stock']" /> --}}
+                <x-content.thead :items="['No', 'Nama Produk', 'Varian Produk', 'Stok']" />
 
-                {{-- <x-content.tbody>
-                    @foreach ($data as $item)
-                        <x-content.table-row :index="$loop->index + 1" :item="$item" :columns="[
-                            $item->item_code,
-                            $item->name,
-                            $item->itemType->name,
-                            $item->unitType->name,
-                            $item->stock,
-                        ]" />
+                <x-content.tbody>
+                    @foreach ($cashierProducts as $cashierProduct)
+                        <tr>
+                            <td class="index">{{ $loop->index + 1 }}</td>
+                            <td>{{ $cashierProduct->product->name ?? '' }}</td>
+                            <td>{{ $cashierProduct->flavor->flavor_name }}</td>
+                            <td>{{ $cashierProduct->stock ?? '' }}</td>
+                        </tr>
                     @endforeach
-                </x-content.tbody> --}}
+                </x-content.tbody>
             </x-content.table-body>
 
         </x-content.table-container>

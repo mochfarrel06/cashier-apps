@@ -5,7 +5,7 @@
     <!-- End sidebar title -->
 
     <!-- Nav item dashboard -->
-    {{-- <x-sidebar.nav-item route="cashier.dashboard.index" icon="fa-tachometer-alt" label="Dashboard" /> --}}
+    <x-sidebar.nav-item route="cashier.dashboard.index" icon="fa-tachometer-alt" label="Dashboard" />
     <!-- End nav item dashboard -->
 
     <x-sidebar.nav-item route="cashier.transaction.index" icon="fa-shop" label="Kasir" />
