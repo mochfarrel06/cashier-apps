@@ -7,7 +7,7 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Kasir'" />
+        <x-content.heading-page :title="'Halaman Kasir'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
 
         <x-content.table-container>
             <x-content.table-header :title="'Tambah Produk'" :icon="'fas fa-solid fa-shop'" />
@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="cashier_product_id">Pilih Produk</label>
+                                <label for="cashier_product_id">Produk Tersedia</label>
                                 <select class="form-control" name="cashier_product_id" id="cashier_product_id" required>
                                     <option value="">-- Pilih Produk --</option>
                                     @foreach ($cashierProducts as $product)
@@ -66,13 +66,13 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Tambah ke Keranjang</button>
+                    <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mt-3">Tambah ke
+                        Keranjang</button>
                 </form>
             </div>
         </x-content.table-container>
 
         <div class="row">
-
             <div class="col-lg-8">
                 <x-content.table-container>
                     <x-content.table-header :title="'Keranjang Belanja'" :icon="'fas fa-shopping-cart'" />
@@ -106,7 +106,8 @@
                                                         action="{{ route('cashier.transaction.removeFromCart', $index) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                                        <button type="submit"
+                                                            class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">Hapus</button>
                                                     </form>
                                                 </td>
                                                 @php $total += $item['total']; @endphp
@@ -153,7 +154,9 @@
                             </div>
 
 
-                            <button type="submit" class="btn btn-success">Selesaikan Transaksi</button>
+                            <button type="submit"
+                                class="d-sm-inline-block btn btn-sm btn-success shadow-sm mt-3">Selesaikan
+                                Transaksi</button>
                         </form>
                     </x-content.card-body>
                 </x-content.table-container>

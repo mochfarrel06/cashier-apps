@@ -7,74 +7,82 @@
 @section('content')
     <x-content.container-fluid>
 
+        <x-content.heading-page :title="'Detail Transaksi'" />
+
         <x-content.table-container>
 
-            <x-content.table-header :title="'Detail Transaksi'" :icon="'fas fa-shopping-cart'" />
-
-            <div class="row mx-2 mt-3">
-                <div class="col-lg-8">
-                    <p><strong>Nomor Transaksi:</strong> {{ $transaction->transaction_number }}</p>
-                    <p><strong>Tanggal:</strong> {{ $transaction->transaction_date }}</p>
-                </div>
-
-                <div class="col-lg-4 justify-end">
-                    <p><strong>Total:</strong> Rp {{ number_format($transaction->total, 0, ',', '.') }}</p>
-                    <p><strong>Bayar:</strong> Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</p>
-                    <p><strong>Kembalian:</strong> Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</p>
+            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-shop"></i>
+                    Detail Transaksi
+                </h6>
+                <div class="d-flex">
+                    <a href="{{ route('cashier.transaction.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">Kembali ke Daftar
+                        Transaksi</a>
+                    <a href="{{ route('cashier.transaction.pdf', $transaction->id) }}"
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Cetak
+                        PDF</a>
                 </div>
             </div>
 
 
+            <x-content.table-body>
 
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nama Produk</th>
-                                <th>Rasa</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($transaction->transactionDetails as $detail)
-                                <tr>
-                                    <td>{{ $detail->cashierProduct->product->name }}</td>
-                                    <td>{{ $detail->cashierProduct->flavor->flavor_name }}</td>
-                                    <td>{{ $detail->quantity }}</td>
-                                    <td>Rp {{ number_format($detail->price, 0, ',', '.') }}</td>
-                                    <td>Rp {{ number_format($detail->quantity * $detail->price, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3"></td>
-                                <td><strong>Total:</strong></td>
-                                <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"></td>
-                                <td><strong>Bayar:</strong></td>
-                                <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"></td>
-                                <td><strong>Kembalian:</strong></td>
-                                <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <x-content.thead :items="['Kode Transaksi', 'Tanggal Transaksi', 'Total Bayar', 'Kembalian']" />
 
-                </div>
+                <x-content.tbody>
+                    <tr>
+                        <td>{{ $transaction->transaction_number }}</td>
+                        <td>{{ $transaction->transaction_date }}</td>
+                        <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
+                    </tr>
 
-                <a href="{{ route('cashier.transaction.index') }}" class="btn btn-primary mt-5">Kembali ke Daftar
-                    Transaksi</a>
-                <a href="{{ route('cashier.transaction.pdf', $transaction->id) }}" class="btn btn-secondary mt-5">Cetak
-                    PDF</a>
-            </div>
+                </x-content.tbody>
+
+            </x-content.table-body>
+
+        </x-content.table-container>
+
+        <x-content.table-container>
+            <x-content.table-header :title="'Rincian Produk'" :icon="'fas fa-bread-slice'" />
+
+            <x-content.table-body>
+
+                <x-content.thead :items="['Nama Produk', 'Varian Produk', 'Jenis Pembelian', 'Jumlah', 'Harga', 'Total']" />
+
+                <tbody>
+                    @foreach ($transaction->transactionDetails as $detail)
+                        <tr>
+                            <td>{{ $detail->cashierProduct->product->name }}</td>
+                            <td>{{ $detail->cashierProduct->flavor->flavor_name }}</td>
+                            <td>{{ ucfirst($detail->purchase_type) }}</td>
+                            <td>{{ $detail->quantity }}</td>
+                            <td>Rp {{ number_format($detail->price, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($detail->price * $detail->quantity, 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><strong>Total:</strong></td>
+                        <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><strong>Bayar:</strong></td>
+                        <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><strong>Kembalian:</strong></td>
+                        <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
+                    </tr>
+                </tfoot>
+
+            </x-content.table-body>
         </x-content.table-container>
 
     </x-content.container-fluid>
