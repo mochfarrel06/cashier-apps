@@ -43,9 +43,9 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'Kode Transaksi',
             'Kasir',
             'Jumlah Produk',
-            'Total (Rp)',
             'Jumlah Bayar (Rp)',
-            'Kembalian (Rp)'
+            'Kembalian (Rp)',
+            'Total (Rp)',
         ];
     }
 
@@ -58,9 +58,9 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             $transaction->transaction_number, // Kode Transaksi
             $transaction->user->name, // Nama kasir
             $transaction->transactionDetails->sum('quantity'), // Jumlah Produk
-            $transaction->total, // Total
             $transaction->paid_amount, // Jumlah Bayar
-            $transaction->change_amount // Kembalian
+            $transaction->change_amount, // Kembalian
+            $transaction->total, // Total
         ];
     }
 
@@ -79,11 +79,11 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
-
         // Total Pendapatan di baris akhir setelah data
         $lastRow = $this->transactions->count() + 4; // Menghitung total baris data
-        $sheet->setCellValue('E' . ($lastRow + 1), 'Total Pendapatan');
-        $totalPendapatanCell = 'F' . ($lastRow + 1);
+        $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
+        $sheet->setCellValue('A' . ($lastRow + 1), 'Total Pendapatan');
+        $totalPendapatanCell = 'H' . ($lastRow + 1);
         $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('total'));
 
         // Style untuk border

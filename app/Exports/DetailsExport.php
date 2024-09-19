@@ -71,14 +71,14 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     public function styles(Worksheet $sheet)
     {
         // Mengatur warna header, garis tabel, dan rata tengah
-        $sheet->mergeCells('A1:H1');
-        $sheet->setCellValue('A1', 'Laporan Produk Terjual');
+        $sheet->mergeCells('A1:J1');
+        $sheet->setCellValue('A1', 'Laporan Detail Transaksi');
         // Cek jika startDate dan endDate sama
         if ($this->startDate === $this->endDate) {
-            $sheet->mergeCells('A2:H2');
+            $sheet->mergeCells('A2:J2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y'));
         } else {
-            $sheet->mergeCells('A2:H2');
+            $sheet->mergeCells('A2:J2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
@@ -155,10 +155,10 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             'C' => 20,  // Kode Transaksi
             'D' => 20,  // Kasir
             'E' => 20,  // Jumlah Produk
-            'F' => 20,  // Total
+            'F' => 25,  // Total
             'G' => 20,  // Jumlah Bayar
             'H' => 20,  // Kembalian
-            'I' => 20,  // Kembalian
+            'I' => 25,  // Kembalian
         ];
     }
 }

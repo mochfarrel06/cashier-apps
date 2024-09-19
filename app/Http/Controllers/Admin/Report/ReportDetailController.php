@@ -67,6 +67,6 @@ class ReportDetailController extends Controller
         }
 
         // Download data transaksi dalam format Excel
-        return Excel::download(new DetailsExport($transactionDetails, $startDate, $endDate), 'laporan-transaksi.xlsx');
+        return Excel::download(new DetailsExport($transactionDetails, $startDate, $endDate), 'laporan-detail-transaksi.xlsx');
     }
 }

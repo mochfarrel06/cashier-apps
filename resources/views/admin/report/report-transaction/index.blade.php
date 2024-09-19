@@ -7,14 +7,14 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Transaksi'" />
+        <x-content.heading-page :title="'Halaman Laporan Transaksi'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Laporan Transaksi']]" />
 
         <x-content.table-container>
 
             <x-content.table-header :title="'Filter Laporan Transaksi'" :icon="'fas fa-solid fa-filter'" />
 
             <div class="card-body">
-                <form action="" method="GET">
+                <form action="{{ route('admin.report-transaction.index') }}" method="GET">
                     @csrf
 
                     <div class="row">

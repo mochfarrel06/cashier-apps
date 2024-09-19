@@ -1,17 +1,20 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Laporan Produk Terjual
+    Laporan Detail Transaksi
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Produk Terjual'" />
+        <x-content.heading-page :title="'Halaman Laporan Detail Transaksi'" :breadcrumbs="[
+            ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['title' => 'Laporan Detail Transaksi'],
+        ]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Filter Laporan Produk Terjual'" :icon="'fas fa-solid fa-filter'" />
+            <x-content.table-header :title="'Filter Laporan Detail Transaksi'" :icon="'fas fa-solid fa-filter'" />
 
             <div class="card-body">
                 <form action="{{ route('admin.report-detail.index') }}" method="GET">
@@ -93,7 +96,7 @@
                             <td>{{ $transactionDetail->transaction->transaction_number }}</td>
                             <td>{{ $transactionDetail->cashierProduct->product->name }}</td>
                             <td>{{ $transactionDetail->cashierProduct->flavor->flavor_name }}</td>
-                            <td>{{ $transactionDetail->purchase_type }}</td>
+                            <td>{{ ucfirst($transactionDetail->purchase_type) }}</td>
                             <td>{{ $transactionDetail->quantity }}</td>
                             <td>Rp {{ number_format($transactionDetail->price, 0, ',', '.') }}</td>
                             <td>Rp {{ $transactionDetail->quantity * $transactionDetail->price }}</td>
