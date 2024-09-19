@@ -42,6 +42,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'Tanggal Transaksi',
             'Kode Transaksi',
             'Kasir',
+            'Qty',
             'Jumlah Produk',
             'Jumlah Bayar (Rp)',
             'Kembalian (Rp)',
@@ -52,12 +53,25 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     // Memetakan data transaksi ke dalam format Excel
     public function map($transaction): array
     {
+        $totalProducts = 0;
+
+        // Menghitung jumlah produk retail dan pack dalam transaksi
+        foreach ($transaction->transactionDetails as $transactionDetail) {
+            $jumlahProduk = $transactionDetail->purchase_type === 'retail'
+                ? $transactionDetail->quantity
+                : $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack;
+
+            // Menambahkan jumlah produk dari setiap item di transaksi
+            $totalProducts += $jumlahProduk;
+        }
+
         return [
             $this->index++, // No
             Carbon::parse($transaction->transaction_date)->format('d-m-Y'), // Tanggal Transaksi
             $transaction->transaction_number, // Kode Transaksi
             $transaction->user->name, // Nama kasir
             $transaction->transactionDetails->sum('quantity'), // Jumlah Produk
+            $totalProducts,
             $transaction->paid_amount, // Jumlah Bayar
             $transaction->change_amount, // Kembalian
             $transaction->total, // Total
@@ -68,14 +82,14 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     public function styles(Worksheet $sheet)
     {
         // Mengatur warna header, garis tabel, dan rata tengah
-        $sheet->mergeCells('A1:H1');
+        $sheet->mergeCells('A1:I1');
         $sheet->setCellValue('A1', 'Laporan Transaksi');
         // Cek jika startDate dan endDate sama
         if ($this->startDate === $this->endDate) {
-            $sheet->mergeCells('A2:H2');
+            $sheet->mergeCells('A2:I2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y'));
         } else {
-            $sheet->mergeCells('A2:H2');
+            $sheet->mergeCells('A2:I2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
@@ -83,7 +97,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
         $lastRow = $this->transactions->count() + 4; // Menghitung total baris data
         $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
         $sheet->setCellValue('A' . ($lastRow + 1), 'Total Pendapatan');
-        $totalPendapatanCell = 'H' . ($lastRow + 1);
+        $totalPendapatanCell = 'I' . ($lastRow + 1);
         $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('total'));
 
         // Style untuk border
@@ -97,15 +111,15 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
         ];
 
         // Mengatur border pada range sel tabel (A4 sampai H$lastRow)
-        $sheet->getStyle('A4:H' . ($lastRow + 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A4:I' . ($lastRow + 1))->applyFromArray($styleArray);
         // Format untuk kolom Rupiah (F, G, H)
-        $sheet->getStyle('F4:F' . $lastRow)
-            ->getNumberFormat()
-            ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle('G4:G' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle('H4:H' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('I4:I' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPendapatanCell)
@@ -127,6 +141,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'F' => ['alignment' => ['horizontal' => 'center']],
             'G' => ['alignment' => ['horizontal' => 'center']],
             'H' => ['alignment' => ['horizontal' => 'center']],
+            'I' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
 
@@ -149,6 +164,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'F' => 20,  // Total
             'G' => 20,  // Jumlah Bayar
             'H' => 20,  // Kembalian
+            'I' => 20,  // Kembalian
         ];
     }
 }

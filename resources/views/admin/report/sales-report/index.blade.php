@@ -1,19 +1,20 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Laporan Produk Terjual
+    Laporan Penjualan
 @endsection
 
 @section('content')
     <x-content.container-fluid>
-        <x-content.heading-page :title="'Halaman Laporan Produk Terjual'" />
 
-        <x-content.table-container>
+        <x-content.heading-page :title="'Halaman Laporan Penjualan'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Laporan Penjualan']]" />
 
-            <x-content.table-header :title="'Filter Laporan Produk Terjual'" :icon="'fas fa-solid fa-filter'" />
+        {{-- <x-content.table-container>
 
-            {{-- <div class="card-body">
-                <form action="" method="GET">
+            <x-content.table-header :title="'Filter Laporan Detail Transaksi'" :icon="'fas fa-solid fa-filter'" />
+
+            <div class="card-body">
+                <form action="{{ route('admin.report-detail.index') }}" method="GET">
                     @csrf
 
                     <div class="row">
@@ -22,9 +23,10 @@
                                 <label for="cashier_id">Pilih Kasir</label>
                                 <select name="cashier_id" id="cashier_id" class="form-control" required>
                                     <option value="">-- Pilih Kasir --</option>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" {{ $cashierId == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }}
+                                    @foreach ($cashiers as $cashier)
+                                        <option value="{{ $cashier->id }}"
+                                            {{ request('cashier_id') == $cashier->id ? 'selected' : '' }}>
+                                            {{ $cashier->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -52,13 +54,13 @@
                         <button type="submit"
                             class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2 mr-3">Tampilkan
                             Data</button>
-                        <a href="{{ route('admin.report.export.excel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
+                        <a href="{{ route('admin.report-detail.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i
                                 class="fa-solid fa-file-excel"></i> Export Excel</a>
                     </div>
                 </form>
-            </div> --}}
-        </x-content.table-container>
+            </div>
+        </x-content.table-container> --}}
 
         <x-content.table-container>
 
@@ -70,35 +72,15 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="[
-                    'No',
-                    'Tgl Transaksi',
-                    'Kode Transaksi',
-                    'Nama Produk',
-                    'Varian Produk',
-                    'Jenis Pembelian',
-                    'Qty',
-                    'Jumlah Produk',
-                ]" />
+                <x-content.thead :items="['No', 'Tanggal', 'Kasir', 'Total Penjualan']" />
 
                 <x-content.tbody>
-                    @foreach ($transactionDetails as $transactionDetail)
+                    @foreach ($salesReports as $report)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($transactionDetail->transaction->transaction_date)->format('d-m-Y') }}
-                            </td>
-                            <td>{{ $transactionDetail->transaction->transaction_number }}</td>
-                            <td>{{ $transactionDetail->cashierProduct->product->name }}</td>
-                            <td>{{ $transactionDetail->cashierProduct->flavor->flavor_name }}</td>
-                            <td>{{ $transactionDetail->purchase_type }}</td>
-                            <td>{{ $transactionDetail->quantity }}</td>
-                            <td>
-                                @if ($transactionDetail->purchase_type === 'retail')
-                                    {{ $transactionDetail->quantity }}
-                                @elseif ($transactionDetail->purchase_type === 'pack')
-                                    {{ $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack }}
-                                @endif
-                            </td>
+                            <td>{{ $report->report_date }}</td>
+                            <td>{{ $report->user->name }}</td>
+                            <td>{{ number_format($report->total_sales, 2) }}</td>
                         </tr>
                     @endforeach
                 </x-content.tbody>

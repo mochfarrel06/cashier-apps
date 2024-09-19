@@ -5,8 +5,8 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
-use App\Http\Controllers\Admin\Report\ReportProductController;
 use App\Http\Controllers\Admin\Report\ReportTransactionController;
+use App\Http\Controllers\Admin\Report\SalesReportController;
 use App\Http\Controllers\Admin\Transaction\TransactionCashierController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +47,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::get('report-detail', [ReportDetailController::class, 'index'])->name('report-detail.index');
     Route::get('report-detail/export-excel', [ReportDetailController::class, 'exportExcel'])->name('report-detail.exportExcel');
 
-    // Report Product
-    Route::get('report-product', [ReportProductController::class, 'index'])->name('report-product.index');
+    // Report Sales
+    Route::get('sales-report', [SalesReportController::class, 'index'])->name('sales-report.index');
 });

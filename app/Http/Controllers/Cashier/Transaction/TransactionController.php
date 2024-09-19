@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cashier\Transaction;
 
 use App\Http\Controllers\Controller;
 use App\Models\CashierProduct;
+use App\Models\SalesReport;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -35,13 +36,27 @@ class TransactionController extends Controller
         $itemsPerPack = $cashierProduct->product->items_per_pack; // Ambil jumlah item per pack dari produk
         $quantity = $request->quantity;
 
-        // Jika pembelian retail dan kelipatan jumlah isi pack, gunakan harga pack
+        $totalQuantityRequested = $request->purchase_type == 'pack' ? $quantity * $itemsPerPack : $quantity;
+        // Cek ketersediaan stok
+        if ($cashierProduct->stock < $totalQuantityRequested) {
+            return redirect()->back()->with('error', 'Stok tidak mencukupi untuk pembelian ini');
+        }
+
+        // Jika pembelian retail dan kelipatan jumlah isi pack, ubah type menjadi pack
         if ($request->purchase_type == 'retail' && $quantity % $itemsPerPack == 0) {
-            $packs = $quantity / $itemsPerPack; // Jumlah pack yang dibeli
-            $price = $cashierProduct->flavor->price_pack; // Harga pack
-            $total = $price * $packs; // Total harga berdasarkan jumlah pack
+            // Ubah tipe pembelian menjadi pack
+            $packs = $quantity / $itemsPerPack;
+            $price = $cashierProduct->flavor->price_pack;
+            $total = $price * $packs;
+
+            // Ubah quantity menjadi jumlah pack dan type menjadi pack
+            $request->merge([
+                'purchase_type' => 'pack',
+                'quantity' => $packs
+            ]);
         } else {
-            $total = $price * $quantity; // Total harga berdasarkan jumlah eceran
+            // Jika tidak kelipatan, hitung normal
+            $total = $price * $quantity;
         }
 
         // Ambil keranjang dari session
@@ -148,6 +163,23 @@ class TransactionController extends Controller
             $cashierProduct->save();
         }
 
+        // Tambahkan atau perbarui laporan penjualan
+        $existingReport = SalesReport::where('user_id', $user->id)
+            ->whereDate('report_date', now()->format('Y-m-d'))
+            ->first();
+
+        if ($existingReport) {
+            // Jika sudah ada, perbarui total penjualan
+            $existingReport->total_sales += $total;
+            $existingReport->save();
+        } else {
+            // Jika belum ada, buat laporan baru
+            SalesReport::create([
+                'user_id' => $user->id,
+                'report_date' => now(),
+                'total_sales' => $total,
+            ]);
+        }
 
         // Kosongkan keranjang
         session()->forget('cart');

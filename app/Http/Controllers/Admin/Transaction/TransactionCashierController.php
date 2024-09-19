@@ -58,7 +58,8 @@ class TransactionCashierController extends Controller
         return view('admin.transaction-cashier.show', compact('transaction'));
     }
 
-    public function exportPdf(string $id){
+    public function exportPdf(string $id)
+    {
         // Ambil transaksi beserta detailnya
         $transaction = Transaction::with('transactionDetails.cashierProduct.product', 'transactionDetails.cashierProduct.flavor')->findOrFail($id);
 
