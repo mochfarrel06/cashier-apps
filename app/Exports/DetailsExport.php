@@ -92,7 +92,6 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         $lastRow = $this->transactionDetails->count() + 4; // Menghitung total baris data
         $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
         $sheet->mergeCells('C' . ($lastRow + 1) . ':G' . ($lastRow + 1));
-
         $sheet->setCellValue('A' . ($lastRow + 1), 'Total');
 
         $totalProduct = 'H' . ($lastRow + 1);
@@ -101,11 +100,13 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         $totalAll = 'I' . ($lastRow + 1);
         $totalQuantity = $this->transactionDetails->reduce(function ($carry, $detail) {
             // Ambil nilai items_per_pack, default ke 1 jika tidak ada
-            $itemsPerPack = $detail->cashierProduct->product->items_per_pack ?? 1;
+            $itemsPerPack = isset($detail->cashierProduct->product->items_per_pack)
+                ? (int) $detail->cashierProduct->product->items_per_pack
+                : 1;
 
             // Hitung quantity berdasarkan jenis pembelian
-            $productQuantity = ($detail->purchase_type === 'eceran')
-                ? $detail->quantity // Jika eceran, ambil quantity langsung
+            $productQuantity = ($detail->purchase_type === 'retail')
+                ? $detail->quantity // Jika retail, ambil quantity langsung
                 : $detail->quantity * $itemsPerPack; // Jika pack, kalikan dengan items_per_pack
 
             // Tambahkan jumlah produk ke total akumulasi
@@ -118,6 +119,49 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
 
         $total = 'K' . ($lastRow + 1);
         $sheet->setCellValue($total, '=SUM(K4:K' . $lastRow . ')');
+
+        // Informasi Tambahan
+        $infoStartRow = $lastRow + 3;
+
+        $sheet->setCellValue('B' . $infoStartRow, 'Informasi Tambahan');
+        $sheet->mergeCells('B' . $infoStartRow . ':D' . $infoStartRow);
+        $sheet->getStyle('B' . $infoStartRow)->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => ['horizontal' => 'left']
+        ]);
+
+        // Total Pendapatan
+        $sheet->setCellValue('B' . ($infoStartRow + 1), 'Pendapatan:');
+        $sheet->setCellValue('D' . ($infoStartRow + 1), '=SUM(K4:K' . $lastRow . ')');
+
+        // Jumlah Produk
+        $sheet->setCellValue('B' . ($infoStartRow + 2), 'Jumlah Produk Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 2), $totalQuantity . ' Varian');
+
+        // Jumlah Produk Terjual Per Varian
+        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Produk Terjual per Varian:');
+        $flavors = $this->transactionDetails->groupBy('cashierProduct.flavor.flavor_name')->map(function ($group) {
+            return $group->reduce(function ($carry, $detail) {
+                // Ambil nilai items_per_pack, default ke 1 jika tidak ada
+                $itemsPerPack = isset($detail->cashierProduct->product->items_per_pack)
+                    ? (int) $detail->cashierProduct->product->items_per_pack
+                    : 1;
+
+                // Hitung quantity berdasarkan jenis pembelian
+                $productQuantity = ($detail->purchase_type === 'retail')
+                    ? $detail->quantity // Jika retail, ambil quantity langsung
+                    : $detail->quantity * $itemsPerPack; // Jika pack, kalikan dengan items_per_pack
+
+                // Tambahkan jumlah produk ke total akumulasi
+                return $carry + $productQuantity;
+            }, 0);
+        });
+
+        $currentRow = $infoStartRow + 4;
+        foreach ($flavors as $flavorName => $totalVarian) {
+            $sheet->setCellValue('C' . $currentRow, $flavorName . ': ' . $totalVarian);
+            $currentRow++;
+        }
 
         // Style untuk border
         $styleArray = [
@@ -139,6 +183,9 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         $sheet->getStyle('K4:K' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('D' . ($infoStartRow + 1))
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPrice)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
@@ -151,8 +198,8 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             2 => ['font' => ['bold' => true, 'size' => 12], 'alignment' => ['horizontal' => 'center']],
             4 => ['font' => ['bold' => true, 'color' => ['rgb' => '000000']], 'alignment' => ['horizontal' => 'center'], 'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'ADD8E6']]],
             'A' => ['alignment' => ['horizontal' => 'center']],
-            'B' => ['alignment' => ['horizontal' => 'center']],
-            'C' => ['alignment' => ['horizontal' => 'center']],
+            'B' => ['alignment' => ['horizontal' => 'left']],
+            'C' => ['alignment' => ['horizontal' => 'left']],
             'D' => ['alignment' => ['horizontal' => 'center']],
             'E' => ['alignment' => ['horizontal' => 'center']],
             'F' => ['alignment' => ['horizontal' => 'center']],
