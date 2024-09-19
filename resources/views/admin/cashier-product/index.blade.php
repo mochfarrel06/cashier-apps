@@ -29,7 +29,7 @@
                                     class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mr-2 mb-2"><i
                                         class="fas fa-eye"></i></a>
                                 <a href="{{ route('admin.cashier-product.edit', $cashierProduct->id) }}"
-                                    class="bd-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
+                                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
                                         class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.cashier-product.destroy', $cashierProduct->id) }}"
                                     class="d-sm-inline-block btn btn-sm btn-danger shadow-sm mr-2 mb-2 delete-item"><i

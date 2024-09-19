@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     // Route Transaction Cashier
     Route::get('transaction-cashier', [TransactionCashierController::class, 'index'])->name('transaction-cashier.index');
     Route::get('transaction-cashier/{id}/show', [TransactionCashierController::class, 'show'])->name('transaction-cashier.show');
+    Route::get('transaction-cashier/{id}/exportPdf', [TransactionCashierController::class, 'exportPdf'])->name('transaction-cashier.exportPdf');
 
     // Report Transaction
     Route::get('report-transaction', [ReportTransactionController::class, 'index'])->name('report-transaction.index');
