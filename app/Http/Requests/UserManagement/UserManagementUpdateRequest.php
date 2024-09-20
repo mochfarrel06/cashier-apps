@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UserManagement;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserManagementUpdateRequest extends FormRequest
 {
@@ -21,15 +22,26 @@ class UserManagementUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('user_management');
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'avatar' => ['required', 'image', 'max:1000', 'mimes:png,jpg,jpeg'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('users', 'username')->ignore($userId)
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($userId)
+            ],
             'transaction_code' => ['required', 'string'],
             'location' => ['required', 'string'],
-            'role' => ['required', 'in:admin,cashier'],
-            'password' => ['required', 'string', 'min:4', 'confirmed'],
+           'role' => ['required', 'in:admin,cashier'],
+            'password' => ['nullable', 'string', 'min:4', 'confirmed'],
         ];
     }
 
@@ -44,12 +56,8 @@ class UserManagementUpdateRequest extends FormRequest
             'transaction_code.required' => 'Nomor transaksi tidak boleh kosong',
             'location.required' => 'Lokasi tidak boleh kosong',
             'role.required' => 'Role tidak boleh kosong',
-            'password.required' => 'Password tidak boleh kosong',
-            'password.confirmed' => 'Password dan konfirmasi password tidak sama',
-            'avatar.required' => 'Gambar pengguna tidak boleh kosong',
-            'avatar.image' => 'File harus berupa gambar',
-            'avatar.max' => 'Ukuran gambar tidak boleh lebih dari 1000 KB',
-            'avatar.mimes' => 'Format gambar harus berupa PNG, JPG, atau JPEG'
+            'password.min' => 'Password harus memiliki setidaknya 4 karakter',
+            'password.confirmed' => 'Password dan konfirmasi password tidak sama'
         ];
     }
 }

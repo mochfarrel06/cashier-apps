@@ -1,4 +1,4 @@
-@extends('administrator.layouts.master')
+@extends('admin.layouts.master')
 
 @section('title-page')
     Edit
@@ -37,13 +37,21 @@
                             value="{{ $user->email }}">
                     </div>
                     <div class="form-group">
+                        <label for="transaction_code">nomor transaksi</label>
+                        <input type="text" name="transaction_code" id="transaction_code" class="form-control"
+                            value="{{ $user->transaction_code }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Lokasi kasir</label>
+                        <input type="text" name="location" id="location" class="form-control"
+                            value="{{ $user->location }}">
+                    </div>
+                    <div class="form-group">
                         <label for="role">Role</label>
                         <select name="role" id="role" class="form-control">
-                            <option value="Administrator" {{ $user->role == 'Administrator' ? 'selected' : '' }}>
-                                Administrator</option>
-                            <option value="Gudang" {{ $user->role == 'Gudang' ? 'selected' : '' }}>Gudang</option>
-                            <option value="Manajer" {{ $user->role == 'Manajer' ? 'selected' : '' }}>Manajer
-                            </option>
+                            <option value="">-- Pilih Role --</option>
+                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="cashier" {{ $user->role == 'cashier' ? 'selected' : '' }}>Kasir</option>
                         </select>
                     </div>
                     <div class="form-group">
