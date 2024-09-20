@@ -7,7 +7,10 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Transaksi Harian'" />
+        <x-content.heading-page :title="'Halaman Laporan Transaksi Harian'" :breadcrumbs="[
+            ['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')],
+            ['title' => 'Laporan Transaksi'],
+        ]" />
 
         <x-content.table-container>
 
@@ -15,8 +18,8 @@
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-file"></i> Laporan
                     Transaksi Harian
                 </h6>
-                <a href="{{ route('cashier.report.downloadAll') }}"
-                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2">Download Laporan Harian</a>
+                <a href="{{ route('cashier.transaction-report.exportExcel') }}"
+                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2">Download Laporan</a>
             </div>
 
             <x-content.table-body>
@@ -32,7 +35,7 @@
                             <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
                             <td>
-                                <a href="{{ route('cashier.report.showReportDetail', $transaction->id) }}"
+                                <a href="{{ route('cashier.transaction-report.show', $transaction->id) }}"
                                     class="d-sm-inline-block btn btn-sm btn-info shadow-sm">Lihat Detail</a>
                             </td>
                         </tr>

@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Cashier\Dashboard\DashboardController;
-use App\Http\Controllers\Cashier\Report\ReportDetailController;
-use App\Http\Controllers\Cashier\Report\ReportIncomeController;
+use App\Http\Controllers\Cashier\Report\IncomeReportController;
+use App\Http\Controllers\Cashier\Report\TransactionReportController;
 use App\Http\Controllers\Cashier\Transaction\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,16 +36,16 @@ Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:c
     Route::post('transaction/add-to-cart', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');
     Route::post('transaction/checkout', [TransactionController::class, 'checkout'])->name('transaction.checkout');
     Route::post('transaction/remove-from-cart/{id}', [TransactionController::class, 'removeFromCart'])->name('transaction.removeFromCart');
-
     Route::get('transaction/receipt/{id}', [TransactionController::class, 'receipt'])->name('transaction.receipt');
-
     Route::get('transaction/{id}/pdf', [TransactionController::class, 'generatePDF'])->name('transaction.pdf');
 
-    // Route
-    Route::get('report/daily-report', [ReportDetailController::class, 'dailyReport'])->name('report.dailyReport');
-    Route::get('report/{id}/detail', [ReportDetailController::class, 'showReportDetail'])->name('report.showReportDetail');
-    Route::get('report/daily/download', [ReportDetailController::class, 'downloadAllDailyReport'])->name('report.downloadAll');
+    // Report transaction
+    Route::get('transaction-report', [TransactionReportController::class, 'index'])->name('transaction-report.index');
+    Route::get('transaction-report/{id}', [TransactionReportController::class, 'show'])->name('transaction-report.show');
+    Route::get('transaction-report/{id}/pdf', [TransactionReportController::class, 'generatePDF'])->name('transaction-report.pdf');
+    Route::get('transaction-report/report/exportExcel', [TransactionReportController::class, 'exportExcel'])->name('transaction-report.exportExcel');
 
-    Route::get('report/income', [ReportIncomeController::class, 'dailyIncome'])->name('report-income.income');
-    Route::get('report/download', [ReportIncomeController::class, 'downloadDailyIncome'])->name('report-income.income.download');
+    // Income Report
+    Route::get('income-report', [IncomeReportController::class, 'index'])->name('income-report.index');
+    Route::get('income-report/download', [IncomeReportController::class, 'exportPdf'])->name('income-report.download');
 });

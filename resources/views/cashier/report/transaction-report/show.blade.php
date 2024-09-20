@@ -7,15 +7,25 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Laporan Harian'" :breadcrumbs="[
-            ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Varian Produk', 'url' => route('admin.flavor.index')],
-            ['title' => 'Lihat'],
+        <x-content.heading-page :title="'Detail Transaksi'" :breadcrumbs="[
+            ['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')],
+            ['title' => 'Laporan Transaksi', 'url' => route('cashier.transaction-report.index')],
+            ['title' => 'Detail Transaksi'],
         ]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Detail Transaksi'" :icon="'fas fa-bread-slice'" />
+            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-circle-info"></i> Detail
+                    Transaksi</h6>
+                <div class="d-flex">
+                    <a href="{{ route('cashier.transaction-report.pdf', $transaction->id) }}"
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-2">Cetak
+                        PDF</a>
+                    <a href="{{ route('cashier.transaction-report.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm">Kembali</a>
+                </div>
+            </div>
 
             <x-content.table-body>
 
@@ -46,11 +56,11 @@
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Rincian Produk'" :icon="'fas fa-bread-slice'" />
+            <x-content.table-header :title="'Rincian Produk'" :icon="'fas fa-solid fa-box'" />
 
             <x-content.table-body>
 
-                <x-content.thead :items="['Nama Produk', 'Varian Produk', 'Jenis Pembelian', 'Jumlah', 'Harga', 'Total']" />
+                <x-content.thead :items="['Nama Produk', 'Varian Produk', 'Jenis Pembelian', 'Jumlah', 'Harga Satuan', 'Total']" />
 
                 <tbody>
                     @foreach ($transaction->transactionDetails as $detail)
@@ -85,13 +95,6 @@
 
             </x-content.table-body>
         </x-content.table-container>
-
-        <div class="row mt-3 ml-2">
-            <a href="{{ route('cashier.transaction.pdf', $transaction->id) }}" class="btn btn-secondary mr-2">Cetak
-                PDF</a>
-            <a href="{{ route('cashier.report.dailyReport') }}" class="btn btn-warning">Kembali</a>
-        </div>
-
 
     </x-content.container-fluid>
 @endsection
