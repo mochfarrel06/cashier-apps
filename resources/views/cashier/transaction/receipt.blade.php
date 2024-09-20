@@ -12,16 +12,16 @@
         <x-content.table-container>
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-shop"></i>
+                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-circle-info"></i>
                     Detail Transaksi
                 </h6>
                 <div class="d-flex">
-                    <a href="{{ route('cashier.transaction.index') }}"
-                        class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">Kembali ke Daftar
-                        Transaksi</a>
                     <a href="{{ route('cashier.transaction.pdf', $transaction->id) }}"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">Cetak
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-3">Cetak
                         Nota</a>
+                    <a href="{{ route('cashier.transaction.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm">Kembali ke Daftar
+                        Transaksi</a>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
         </x-content.table-container>
 
         <x-content.table-container>
-            <x-content.table-header :title="'Rincian Produk'" :icon="'fas fa-bread-slice'" />
+            <x-content.table-header :title="'Rincian Produk'" :icon="'fas fa-box'" />
 
             <x-content.table-body>
 

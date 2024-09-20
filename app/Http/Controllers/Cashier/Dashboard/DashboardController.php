@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\CashierProduct;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -28,6 +27,7 @@ class DashboardController extends Controller
 
         // Hitung total pendapatan
         $totalIncome = $transactions->sum('total');
+        $formattedIncome = 'Rp ' . number_format($totalIncome, 0, ',', '.');
 
         $cards = [
             [
@@ -46,7 +46,7 @@ class DashboardController extends Controller
                 'bg_color' => 'info',
                 'icon' => 'far fas fa-regular fa-money-bill',
                 'title' => 'Pendapatan Hari ini',
-                'value' => 'Rp ' . $totalIncome,
+                'value' => $formattedIncome,
             ],
         ];
 

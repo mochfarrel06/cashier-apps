@@ -138,7 +138,7 @@
                             <div class="form-group">
                                 <label for="payment_type">Metode Pembayaran</label>
                                 <select class="form-control" name="payment_type">
-                                    <option value="cash">Tunai</option>
+                                    <option value="tunai">Tunai</option>
                                     <option value="nontunai">Non Tunai</option>
                                 </select>
                             </div>

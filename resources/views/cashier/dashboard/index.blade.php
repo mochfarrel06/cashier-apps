@@ -28,7 +28,7 @@
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $cashierProduct->product->name ?? '' }}</td>
-                            <td>{{ $cashierProduct->flavor->flavor_name }}</td>
+                            <td>{{ $cashierProduct->flavor->flavor_name ?? '' }}</td>
                             <td>{{ $cashierProduct->stock ?? '' }}</td>
                         </tr>
                     @endforeach
