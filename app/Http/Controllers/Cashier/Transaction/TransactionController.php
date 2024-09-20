@@ -92,7 +92,7 @@ class TransactionController extends Controller
         // Simpan keranjang ke session
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang belanja!');
     }
 
     public function removeFromCart(Request $request, $index)
@@ -106,7 +106,7 @@ class TransactionController extends Controller
             session()->put('cart', array_values($cart)); // Reindex array
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang!');
+        return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang belanja!');
     }
 
     public function checkout(Request $request)
@@ -153,14 +153,14 @@ class TransactionController extends Controller
             $cashierProduct = CashierProduct::findOrFail($item['cashier_product_id']); // Menggunakan findOrFail untuk mendapatkan cashierProduct berdasarkan ID
 
             // Jika pembelian eceran, kurangi stok dengan jumlah yang dibeli
-           // Mengurangi stok berdasarkan jenis pembelian
+            // Mengurangi stok berdasarkan jenis pembelian
             $quantitySold = $item['purchase_type'] == 'retail' ? $item['quantity'] : ($cashierProduct->product->items_per_pack * $item['quantity']);
             $cashierProduct->stock -= $quantitySold;
 
             // Simpan perubahan stok
             $cashierProduct->save();
 
-             // Cek stok harian
+            // Cek stok harian
             $currentDate = now()->format('Y-m-d');
             $dailyStock = StockReport::where('cashier_product_id', $cashierProduct->id)
                 ->whereDate('stock_date', $currentDate)

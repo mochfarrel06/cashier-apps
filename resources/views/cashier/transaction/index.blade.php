@@ -7,10 +7,10 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Kasir'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
+        <x-content.heading-page :title="'Halaman Transaksi Kasir'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
 
         <x-content.table-container>
-            <x-content.table-header :title="'Tambah Produk'" :icon="'fas fa-solid fa-shop'" />
+            <x-content.table-header :title="'Tambah Produk Transaksi'" :icon="'fas fa-solid fa-shop'" />
 
             <div class="card-body">
                 <form action="{{ route('cashier.transaction.addToCart') }}" method="POST">
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label for="quantity">Jumlah</label>
                                 <input type="number" class="form-control" name="quantity" id="quantity"
-                                    placeholder="Masukkan jumlah" required>
+                                    placeholder="Masukkan jumlah pembelian" required>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                                                 <td>{{ $item['product_name'] }}</td>
                                                 <td>{{ $item['flavor_name'] }}</td>
                                                 <td>{{ $item['quantity'] }}</td>
-                                                <td>{{ $item['purchase_type'] }}</td>
+                                                <td>{{ ucfirst($item['purchase_type']) }}</td>
                                                 <td>Rp {{ number_format($item['price'] ?? 0, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item['total'] ?? 0, 0, ',', '.') }}</td>
                                                 <td>
@@ -107,7 +107,7 @@
                                                         method="POST">
                                                         @csrf
                                                         <button type="submit"
-                                                            class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">Hapus</button>
+                                                            class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">x</button>
                                                     </form>
                                                 </td>
                                                 @php $total += $item['total']; @endphp
@@ -152,7 +152,6 @@
                                 <label for="change_amount">Kembalian</label>
                                 <input type="text" name="change_amount" id="change_amount" class="form-control" readonly>
                             </div>
-
 
                             <button type="submit"
                                 class="d-sm-inline-block btn btn-sm btn-success shadow-sm mt-3">Selesaikan

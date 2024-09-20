@@ -28,9 +28,10 @@ Route::post('logout', [LoginController::class, 'destroy'])->name('destroy');
 
 
 Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:cashier'], function () {
-
+    // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
+    // Transaction
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::post('transaction/add-to-cart', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');
     Route::post('transaction/checkout', [TransactionController::class, 'checkout'])->name('transaction.checkout');
