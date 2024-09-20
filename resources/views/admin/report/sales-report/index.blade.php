@@ -9,12 +9,20 @@
 
         <x-content.heading-page :title="'Halaman Laporan Penjualan'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Laporan Penjualan']]" />
 
-        {{-- <x-content.table-container>
+        <x-content.table-container>
 
-            <x-content.table-header :title="'Filter Laporan Detail Transaksi'" :icon="'fas fa-solid fa-filter'" />
+            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-filter"></i>
+                    Filter Laporan Detail Transaksi
+                </h6>
+                <a href="{{ route('admin.sales-report.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
+                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i class="fa-solid fa-file-excel"></i>
+                    Export
+                    Excel</a>
+            </div>
 
             <div class="card-body">
-                <form action="{{ route('admin.report-detail.index') }}" method="GET">
+                <form action="{{ route('admin.sales-report.index') }}" method="GET">
                     @csrf
 
                     <div class="row">
@@ -23,10 +31,9 @@
                                 <label for="cashier_id">Pilih Kasir</label>
                                 <select name="cashier_id" id="cashier_id" class="form-control" required>
                                     <option value="">-- Pilih Kasir --</option>
-                                    @foreach ($cashiers as $cashier)
-                                        <option value="{{ $cashier->id }}"
-                                            {{ request('cashier_id') == $cashier->id ? 'selected' : '' }}>
-                                            {{ $cashier->name }}
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}" {{ $cashierId == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -51,16 +58,11 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit"
-                            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2 mr-3">Tampilkan
-                            Data</button>
-                        <a href="{{ route('admin.report-detail.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
-                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i
-                                class="fa-solid fa-file-excel"></i> Export Excel</a>
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </div>
                 </form>
             </div>
-        </x-content.table-container> --}}
+        </x-content.table-container>
 
         <x-content.table-container>
 
