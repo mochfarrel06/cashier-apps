@@ -92,7 +92,7 @@ class TransactionController extends Controller
         // Simpan keranjang ke session
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang belanja!');
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
     public function removeFromCart(Request $request, $index)
@@ -106,7 +106,7 @@ class TransactionController extends Controller
             session()->put('cart', array_values($cart)); // Reindex array
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang belanja!');
+        return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang!');
     }
 
     public function checkout(Request $request)
