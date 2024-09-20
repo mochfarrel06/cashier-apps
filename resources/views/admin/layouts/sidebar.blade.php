@@ -31,7 +31,7 @@
     <!-- End nav item carts -->
 
     <!-- Heading -->
-    {{-- <div class="sidebar-heading">
+    <div class="sidebar-heading">
         Manajemen Pengguna
     </div>
 
@@ -39,7 +39,7 @@
         <a class="nav-link" href="{{ route('admin.user-management.index') }}">
             <i class="fas fa-fw fa-solid fa-user"></i>
             <span>Pengguna</span></a>
-    </li> --}}
+    </li>
     <!-- End nav item report -->
 
     <!-- Divider -->
