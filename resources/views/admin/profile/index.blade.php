@@ -51,6 +51,17 @@
                                 <input type="text" class="form-control" value="{{ auth()->user()->role }}" disabled>
                             </div>
 
+                            <div class="form-group">
+                                <label for="transaction_code">nomor transaksi</label>
+                                <input type="text" name="transaction_code" id="transaction_code" class="form-control"
+                                    value="{{ auth()->user()->transaction_code }}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Lokasi</label>
+                                <input type="text" name="location" id="location" class="form-control"
+                                    value="{{ auth()->user()->location }}" disabled>
+                            </div>
+
                             <a href="{{ route('admin.profile.editProfile') }}" class="btn btn-success mt-3 mr-2">Edit
                                 Profil</a>
                             <a href="{{ route('admin.profile.editPassword') }}" class="btn btn-warning mt-3">Ganti

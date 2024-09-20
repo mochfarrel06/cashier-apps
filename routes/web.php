@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Cashier\Dashboard\DashboardController;
 use App\Http\Controllers\Cashier\Report\ReportDetailController;
 use App\Http\Controllers\Cashier\Report\ReportIncomeController;
@@ -30,6 +31,10 @@ Route::post('logout', [LoginController::class, 'destroy'])->name('destroy');
 Route::group(['prefix' => 'cashier', 'as' => 'cashier.', 'middleware' => 'role:cashier'], function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('profile/edit-profile', [ProfileController::class, 'editProfile'])->name('profile.editProfile');
+    Route::put('profile/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.updateProfile');
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::post('transaction/add-to-cart', [TransactionController::class, 'addToCart'])->name('transaction.addToCart');

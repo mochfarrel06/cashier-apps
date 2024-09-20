@@ -4,13 +4,13 @@ use App\Http\Controllers\Admin\CashierProduct\CashierProductController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Flavor\FlavorController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
 use App\Http\Controllers\Admin\Report\ReportTransactionController;
 use App\Http\Controllers\Admin\Report\SalesReportController;
 use App\Http\Controllers\Admin\Report\StockReportController;
 use App\Http\Controllers\Admin\Transaction\TransactionCashierController;
 use App\Http\Controllers\Admin\UserManagement\UserManagementController;
-use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin'], function () {
