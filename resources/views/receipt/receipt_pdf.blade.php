@@ -80,7 +80,7 @@
                     <td>{{ ucfirst($detail->purchase_type) }}</td>
                     <td>{{ $detail->quantity }}</td>
                     <td>Rp {{ number_format($detail->price, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($detail->total_price, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($detail->price * $detail->quantity, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
             <!-- Row for Total, Bayar, and Kembalian -->

@@ -94,7 +94,6 @@ class TransactionController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
-
     public function removeFromCart(Request $request, $index)
     {
         // Ambil keranjang dari session
@@ -202,9 +201,9 @@ class TransactionController extends Controller
         $transaction = Transaction::with('transactionDetails.cashierProduct.product', 'transactionDetails.cashierProduct.flavor')->findOrFail($id);
 
         // Generate PDF menggunakan view receipt
-        $pdf = Pdf::loadView('cashier.transaction.receipt_pdf', compact('transaction'));
+        $pdf = Pdf::loadView('receipt.receipt_pdf', compact('transaction'));
 
         // Download PDF
-        return $pdf->download('receipt-transaction-' . $transaction->transaction_number . '.pdf');
+        return $pdf->download('Nota-' . $transaction->transaction_number . '.pdf');
     }
 }

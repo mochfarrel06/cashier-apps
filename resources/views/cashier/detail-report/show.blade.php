@@ -19,12 +19,21 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="['Kode Transaksi', 'Tanggal Transaksi', 'Total Bayar', 'Kembalian']" />
+                <x-content.thead :items="[
+                    'Kode Transaksi',
+                    'Tanggal Transaksi',
+                    'Jenis Pembayaran',
+                    'Total',
+                    'Total Bayar',
+                    'Kembalian',
+                ]" />
 
                 <x-content.tbody>
                     <tr>
                         <td>{{ $transaction->transaction_number }}</td>
-                        <td>{{ $transaction->transaction_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
+                        <td>{{ ucfirst($transaction->payment_type) }}</td>
+                        <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
                     </tr>

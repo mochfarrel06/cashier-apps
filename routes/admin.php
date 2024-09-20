@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Report\ReportDetailController;
 use App\Http\Controllers\Admin\Report\ReportTransactionController;
 use App\Http\Controllers\Admin\Report\SalesReportController;
+use App\Http\Controllers\Admin\Report\StockReportController;
 use App\Http\Controllers\Admin\Transaction\TransactionCashierController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -49,4 +50,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
 
     // Report Sales
     Route::get('sales-report', [SalesReportController::class, 'index'])->name('sales-report.index');
+    Route::get('stock-report', [StockReportController::class, 'index'])->name('stock-report.index');
+    Route::post('stock-report/generateReport', [StockReportController::class, 'generateReport'])->name('stock-report.generateReport');
 });
