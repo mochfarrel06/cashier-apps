@@ -8,6 +8,7 @@ use App\Http\Requests\CashierProduct\CashierProductUpdateRequest;
 use App\Models\CashierProduct;
 use App\Models\Flavor;
 use App\Models\Product;
+use App\Models\StockReport;
 use App\Models\User;
 
 class CashierProductController extends Controller
@@ -67,6 +68,8 @@ class CashierProductController extends Controller
             ]);
 
             $cashierProduct->save();
+
+            $this->addStockToDailyReport($cashierProduct, $request->stock);
 
             session()->flash('success', 'Berhasil menambahkan produk untuk kasir');
             return response()->json(['success' => true], 200);
@@ -133,7 +136,6 @@ class CashierProductController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -149,4 +151,30 @@ class CashierProductController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    private function addStockToDailyReport($cashierProduct, $stockIn)
+{
+    $currentDate = now()->format('Y-m-d');
+
+    // Cek jika ada catatan stok harian untuk produk ini
+    $dailyStock = StockReport::where('cashier_product_id', $cashierProduct->id)
+        ->whereDate('stock_date', $currentDate)
+        ->first();
+
+    if ($dailyStock) {
+        // Update stok yang ada
+        $dailyStock->stock_in += $stockIn;
+        $dailyStock->current_stock += $stockIn;
+        $dailyStock->save();
+    } else {
+        // Buat catatan stok baru
+        StockReport::create([
+            'cashier_product_id' => $cashierProduct->id,
+            'stock_date' => $currentDate,
+            'stock_in' => $stockIn,
+            'stock_out' => 0, // Stok keluar belum ada
+            'current_stock' => $stockIn,
+        ]);
+    }
+}
 }

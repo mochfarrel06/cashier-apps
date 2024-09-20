@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cashier\Transaction;
 use App\Http\Controllers\Controller;
 use App\Models\CashierProduct;
 use App\Models\SalesReport;
+use App\Models\StockReport;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -152,14 +153,33 @@ class TransactionController extends Controller
             $cashierProduct = CashierProduct::findOrFail($item['cashier_product_id']); // Menggunakan findOrFail untuk mendapatkan cashierProduct berdasarkan ID
 
             // Jika pembelian eceran, kurangi stok dengan jumlah yang dibeli
-            if ($item['purchase_type'] == 'retail') {
-                $cashierProduct->stock -= $item['quantity'];
-            } else if ($item['purchase_type'] == 'pack') {
-                $cashierProduct->stock -= ($cashierProduct->product->items_per_pack * $item['quantity']);
-            }
+           // Mengurangi stok berdasarkan jenis pembelian
+            $quantitySold = $item['purchase_type'] == 'retail' ? $item['quantity'] : ($cashierProduct->product->items_per_pack * $item['quantity']);
+            $cashierProduct->stock -= $quantitySold;
 
             // Simpan perubahan stok
             $cashierProduct->save();
+
+             // Cek stok harian
+            $currentDate = now()->format('Y-m-d');
+            $dailyStock = StockReport::where('cashier_product_id', $cashierProduct->id)
+                ->whereDate('stock_date', $currentDate)
+                ->first();
+
+            // Update atau buat stok harian
+            if ($dailyStock) {
+                $dailyStock->stock_out += $quantitySold; // Tambah stok keluar
+                $dailyStock->current_stock = $cashierProduct->stock; // Update stok saat ini
+                $dailyStock->save();
+            } else {
+                StockReport::create([
+                    'cashier_product_id' => $cashierProduct->id,
+                    'stock_date' => $currentDate,
+                    'stock_in' => 0, // Stok masuk
+                    'stock_out' => $quantitySold, // Stok keluar
+                    'current_stock' => $cashierProduct->stock, // Stok saat ini
+                ]);
+            }
         }
 
         // Tambahkan atau perbarui laporan penjualan

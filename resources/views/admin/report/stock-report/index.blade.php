@@ -13,27 +13,28 @@
         ]" /> --}}
 
         <!-- Tombol untuk membuat laporan stok harian -->
-        <form action="{{ route('admin.stock-report.generateReport') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-primary mb-3">Buat Laporan Stok Harian</button>
-        </form>
-
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Nama Kasir</th>
                     <th>Tanggal</th>
                     <th>Nama Produk</th>
-                    <th>Varian Rasa</th>
-                    <th>Stok Tersedia</th>
+                    <th>Varian Produk</th>
+                    <th>Stok Masuk</th>
+                    <th>Stok Keluar</th>
+                    <th>Sisa Stok</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($stockReports as $report)
                     <tr>
-                        <td>{{ $report->report_date }}</td>
-                        <td>{{ $report->product->name }}</td>
-                        <td>{{ $report->flavor ? $report->flavor->flavor_name : '-' }}</td>
-                        <td>{{ $report->stock }}</td>
+                        <td>{{ $report->cashierProduct->user->name }}</td>
+                        <td>{{ $report->stock_date }}</td>
+                        <td>{{ $report->cashierProduct->product->name }}</td>
+                        <td>{{ $report->cashierProduct->flavor->flavor_name ?? 'N/A' }}</td>
+                        <td>{{ $report->stock_in }}</td>
+                        <td>{{ $report->stock_out }}</td>
+                        <td>{{ $report->current_stock }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -9,28 +9,18 @@ class StockReport extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
-        'product_id',
-        'flavor_id',
-        'report_date',
-        'stock',
+        'cashier_product_id',
+        'stock_date',
+        'stock_in',
+        'stock_out',
+        'current_stock',
     ];
 
     // Relasi ke User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     // Relasi ke Product
-    public function product()
+    public function cashierProduct()
     {
-        return $this->belongsTo(Product::class);
-    }
-
-    // Relasi ke Flavor
-    public function flavor()
-    {
-        return $this->belongsTo(Flavor::class);
+        return $this->belongsTo(CashierProduct::class);
     }
 }
