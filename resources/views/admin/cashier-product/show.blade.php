@@ -7,15 +7,15 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Lihat Kasir Produk'" :breadcrumbs="[
+        <x-content.heading-page :title="'Lihat Produk Kasir'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Kasir Produk', 'url' => route('admin.cashier-product.index')],
+            ['title' => 'Produk Kasir', 'url' => route('admin.cashier-product.index')],
             ['title' => 'Lihat'],
         ]" />
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Informasi Kasir Produk'" :icon="'fas fa-solid fa-eye'" />
+            <x-content.table-header :title="'Informasi Produk Kasir'" :icon="'fas fa-solid fa-eye'" />
 
             <div class="card-body">
                 <form>
@@ -56,7 +56,7 @@
                     </div>
 
                     <a href="{{ route('admin.cashier-product.index') }}"
-                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-4">Kembali</a>
+                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-3">Kembali</a>
                 </form>
             </div>
 

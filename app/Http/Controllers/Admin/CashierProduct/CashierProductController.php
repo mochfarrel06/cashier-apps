@@ -153,28 +153,28 @@ class CashierProductController extends Controller
     }
 
     private function addStockToDailyReport($cashierProduct, $stockIn)
-{
-    $currentDate = now()->format('Y-m-d');
+    {
+        $currentDate = now()->format('Y-m-d');
 
-    // Cek jika ada catatan stok harian untuk produk ini
-    $dailyStock = StockReport::where('cashier_product_id', $cashierProduct->id)
-        ->whereDate('stock_date', $currentDate)
-        ->first();
+        // Cek jika ada catatan stok harian untuk produk ini
+        $dailyStock = StockReport::where('cashier_product_id', $cashierProduct->id)
+            ->whereDate('stock_date', $currentDate)
+            ->first();
 
-    if ($dailyStock) {
-        // Update stok yang ada
-        $dailyStock->stock_in += $stockIn;
-        $dailyStock->current_stock += $stockIn;
-        $dailyStock->save();
-    } else {
-        // Buat catatan stok baru
-        StockReport::create([
-            'cashier_product_id' => $cashierProduct->id,
-            'stock_date' => $currentDate,
-            'stock_in' => $stockIn,
-            'stock_out' => 0, // Stok keluar belum ada
-            'current_stock' => $stockIn,
-        ]);
+        if ($dailyStock) {
+            // Update stok yang ada
+            $dailyStock->stock_in += $stockIn;
+            $dailyStock->current_stock += $stockIn;
+            $dailyStock->save();
+        } else {
+            // Buat catatan stok baru
+            StockReport::create([
+                'cashier_product_id' => $cashierProduct->id,
+                'stock_date' => $currentDate,
+                'stock_in' => $stockIn,
+                'stock_out' => 0, // Stok keluar belum ada
+                'current_stock' => $stockIn,
+            ]);
+        }
     }
-}
 }

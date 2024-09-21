@@ -23,7 +23,7 @@
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $cashierProduct->user->name ?? '' }}</td>
                             <td>{{ $cashierProduct->product->name ?? '' }}</td>
-                            <td>{{ $cashierProduct->flavor->flavor_name }}</td>
+                            <td>{{ $cashierProduct->flavor->flavor_name ?? '' }}</td>
                             <td>
                                 <a href="{{ route('admin.cashier-product.show', $cashierProduct->id) }}"
                                     class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mr-2 mb-2"><i

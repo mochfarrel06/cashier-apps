@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-3">
                         <button type="submit" id="submit-btn"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm">Edit</button>
                         <a href="{{ route('admin.cashier-product.index') }}"

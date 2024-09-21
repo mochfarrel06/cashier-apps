@@ -24,8 +24,8 @@ class CashierProductStoreRequest extends FormRequest
         return [
             'user_id' => ['required', 'exists:users,id'],
             'product_id' => ['required', 'exists:products,id'],
-            'flavor_id' => ['nullable', 'exists:flavors,id'],
-            'stock' => ['required', 'numeric']
+            'flavor_id' => ['required', 'exists:flavors,id'],
+            'stock' => ['required', 'numeric', 'min:1']
         ];
     }
 
@@ -34,7 +34,9 @@ class CashierProductStoreRequest extends FormRequest
         return [
             'user_id.required' => 'Data kasir tidak boleh kosong',
             'product_id.required' => 'Data produk tidak boleh kosong',
-            'stock.required' => 'Stok produk tidak boleh kosong'
+            'flavor_id.required' => 'Varian produk tidak boleh kosong',
+            'stock.required' => 'Jumlah produk tidak boleh kosong',
+            'stock.min' => 'Jumlah produk tidak boleh kurang dari 1'
         ];
     }
 }

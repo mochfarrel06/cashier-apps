@@ -50,9 +50,9 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="flavor_id">Varian Rasa</label>
+                                <label for="flavor_id">Varian Produk</label>
                                 <select name="flavor_id" id="flavor_id" class="form-control">
-                                    <option value="">Pilih Varian Rasa</option>
+                                    <option value="">-- Pilih Varian Produk --</option>
                                     <!-- Flavors akan dimuat di sini secara dinamis -->
                                 </select>
                             </div>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-3">
                         <button type="submit" id="submit-btn"
                             class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tambah</button>
                         <a href="{{ route('admin.cashier-product.index') }}"

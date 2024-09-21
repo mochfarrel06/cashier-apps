@@ -25,14 +25,15 @@ class CashierProductUpdateRequest extends FormRequest
             'user_id' => ['nullable', 'exists:users,id'],
             'product_id' => ['nullable', 'exists:products,id'],
             'flavor_id' => ['nullable', 'exists:flavors,id'],
-            'stock' => ['required', 'numeric']
+            'stock' => ['required', 'numeric', 'min:1']
         ];
     }
 
     public function messages()
     {
         return [
-            'stock.required' => 'Stok produk tidak boleh kosong'
+            'stock.required' => 'Stok produk tidak boleh kosong',
+            'stock.min' => 'Stok produk tidak boleh kurang dari 1'
         ];
     }
 }
