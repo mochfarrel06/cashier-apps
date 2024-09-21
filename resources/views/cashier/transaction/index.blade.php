@@ -60,8 +60,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="quantity">Jumlah</label>
-                                <input type="number" class="form-control" name="quantity" id="quantity"
-                                    placeholder="Masukkan jumlah pembelian" required>
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    name="quantity" id="quantity" placeholder="Masukkan jumlah pembelian" required>
                             </div>
                         </div>
                     </div>

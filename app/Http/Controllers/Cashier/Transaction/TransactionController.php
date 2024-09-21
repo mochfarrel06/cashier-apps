@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cashier\Transaction;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transaction\AddToCartStoreRequest;
 use App\Models\CashierProduct;
 use App\Models\SalesReport;
 use App\Models\StockReport;
@@ -22,70 +23,73 @@ class TransactionController extends Controller
         return view('cashier.transaction.index', compact('cashierProducts'));
     }
 
-    public function addToCart(Request $request)
+    public function addToCart(AddToCartStoreRequest $request)
     {
         // Ambil produk dari CashierProduct berdasarkan cashier_product_id
         $cashierProduct = CashierProduct::where('id', $request->cashier_product_id)
             ->where('user_id', auth()->user()->id)
-            ->firstOrFail(); // Menggunakan firstOrFail untuk memastikan produk ditemukan
+            ->firstOrFail();
 
         // Tentukan harga berdasarkan jenis pembelian (retail atau pack)
-        $price = $request->purchase_type == 'retail' ? $cashierProduct->flavor->price_retail : $cashierProduct->flavor->price_pack;
-        $total = $price * $request->quantity;
+        $priceRetail = $cashierProduct->flavor->price_retail;
+        $pricePack = $cashierProduct->flavor->price_pack;
 
         // Cek apakah pembelian dalam kelipatan pack
-        $itemsPerPack = $cashierProduct->product->items_per_pack; // Ambil jumlah item per pack dari produk
+        $itemsPerPack = $cashierProduct->product->items_per_pack;
         $quantity = $request->quantity;
-
-        $totalQuantityRequested = $request->purchase_type == 'pack' ? $quantity * $itemsPerPack : $quantity;
-        // Cek ketersediaan stok
-        if ($cashierProduct->stock < $totalQuantityRequested) {
-            return redirect()->back()->with('error', 'Stok tidak mencukupi untuk pembelian ini');
-        }
-
-        // Jika pembelian retail dan kelipatan jumlah isi pack, ubah type menjadi pack
-        if ($request->purchase_type == 'retail' && $quantity % $itemsPerPack == 0) {
-            // Ubah tipe pembelian menjadi pack
-            $packs = $quantity / $itemsPerPack;
-            $price = $cashierProduct->flavor->price_pack;
-            $total = $price * $packs;
-
-            // Ubah quantity menjadi jumlah pack dan type menjadi pack
-            $request->merge([
-                'purchase_type' => 'pack',
-                'quantity' => $packs
-            ]);
-        } else {
-            // Jika tidak kelipatan, hitung normal
-            $total = $price * $quantity;
-        }
 
         // Ambil keranjang dari session
         $cart = session()->get('cart', []);
 
-        // Cek apakah produk sudah ada di keranjang
-        $existingProductIndex = null;
-        foreach ($cart as $index => $item) {
-            if ($item['cashier_product_id'] == $request->cashier_product_id && $item['purchase_type'] == $request->purchase_type) {
-                $existingProductIndex = $index;
-                break;
+        // Hitung total stok yang telah digunakan di keranjang
+        $usedStock = 0;
+        foreach ($cart as $item) {
+            if ($item['cashier_product_id'] == $request->cashier_product_id) {
+                $usedStock += $item['purchase_type'] == 'pack' ? $item['quantity'] * $itemsPerPack : $item['quantity'];
             }
         }
 
-        // Jika produk sudah ada di keranjang, tambahkan quantity-nya
-        if ($existingProductIndex !== null) {
-            $cart[$existingProductIndex]['quantity'] += $request->quantity;
-            $cart[$existingProductIndex]['total'] += $total;
-        } else {
-            // Tambahkan produk ke keranjang
+        // Hitung total quantity yang diminta berdasarkan jenis pembelian
+        $totalQuantityRequested = $quantity;
+
+        // Cek ketersediaan stok termasuk stok yang telah digunakan di keranjang
+        if ($cashierProduct->stock - $usedStock < $totalQuantityRequested) {
+            return redirect()->back()->with('error', 'Stok tidak mencukupi untuk pembelian ini');
+        }
+
+        // Jika jumlah tidak kelipatan pack, ubah menjadi kombinasi pack dan retail
+        $packs = intdiv($quantity, $itemsPerPack); // Jumlah pack
+        $remainingRetail = $quantity % $itemsPerPack; // Sisa retail
+
+        // Jika ada pack
+        if ($packs > 0) {
+            $totalPackPrice = $packs * $pricePack;
+
+            // Tambahkan produk dalam bentuk pack ke keranjang
             $cart[] = [
                 'cashier_product_id' => $request->cashier_product_id,
                 'product_name' => $cashierProduct->product->name,
-                'flavor_name' => $cashierProduct->flavor->flavor_name, // Menambahkan flavor_name
-                'quantity' => $request->quantity,
-                'purchase_type' => $request->purchase_type,
-                'price' => $price,
-                'total' => $total,
+                'flavor_name' => $cashierProduct->flavor->flavor_name,
+                'quantity' => $packs,
+                'purchase_type' => 'pack',
+                'price' => $pricePack,
+                'total' => $totalPackPrice,
+            ];
+        }
+
+        // Jika ada sisa retail
+        if ($remainingRetail > 0) {
+            $totalRetailPrice = $remainingRetail * $priceRetail;
+
+            // Tambahkan produk dalam bentuk retail ke keranjang
+            $cart[] = [
+                'cashier_product_id' => $request->cashier_product_id,
+                'product_name' => $cashierProduct->product->name,
+                'flavor_name' => $cashierProduct->flavor->flavor_name,
+                'quantity' => $remainingRetail,
+                'purchase_type' => 'retail',
+                'price' => $priceRetail,
+                'total' => $totalRetailPrice,
             ];
         }
 
