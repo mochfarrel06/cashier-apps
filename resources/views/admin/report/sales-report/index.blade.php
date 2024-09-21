@@ -13,7 +13,7 @@
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-filter"></i>
-                    Filter Laporan Detail Transaksi
+                    Filter Laporan Penjualan
                 </h6>
             </div>
 
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tampilkan
+                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-2">Tampilkan
                             Data</button>
                         <a href="{{ route('admin.sales-report.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
@@ -70,7 +70,7 @@
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-file"></i> Laporan
-                    Transaksi Per Kasir
+                    Penjualan
                 </h6>
             </div>
 

@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'role:admin
     Route::get('sales-report', [SalesReportController::class, 'index'])->name('sales-report.index');
     Route::get('sales-report/export-excel', [SalesReportController::class, 'exportExcel'])->name('sales-report.exportExcel');
 
+    // Report Stock
     Route::get('stock-report', [StockReportController::class, 'index'])->name('stock-report.index');
     Route::get('stock-report/export-excel', [StockReportController::class, 'exportExcel'])->name('stock-report.exportExcel');
 
