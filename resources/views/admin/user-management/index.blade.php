@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Pengguna
+    Data Pengguna
 @endsection
 
 @section('content')
@@ -21,15 +21,17 @@
                     @foreach ($users as $user)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->name ?? '' }}</td>
                             <td>{{ $user->transaction_code ?? '' }}</td>
                             <td>{{ $user->location ?? '' }}</td>
                             <td>{{ $user->role ?? '' }}</td>
                             <td>
                                 <a href="{{ route('admin.user-management.edit', $user->id) }}"
-                                    class="btn btn-success mr-2 mb-2"><i class="fas fa-edit"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mr-2 mb-2"><i
+                                        class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.user-management.destroy', $user->id) }}"
-                                    class="btn btn-danger mr-2 mb-2 delete-item"><i class="fas fa-trash"></i></a>
+                                    class="d-sm-inline-block btn btn-sm btn-danger shadow-sm mr-2 mb-2 delete-item"><i
+                                        class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

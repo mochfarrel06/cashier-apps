@@ -37,7 +37,7 @@
                             value="{{ $user->email }}">
                     </div>
                     <div class="form-group">
-                        <label for="transaction_code">nomor transaksi</label>
+                        <label for="transaction_code">Nomor Transaksi</label>
                         <input type="text" name="transaction_code" id="transaction_code" class="form-control"
                             value="{{ $user->transaction_code }}">
                     </div>
@@ -63,8 +63,10 @@
                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn btn-success mt-3">Edit</button>
-                    <a href="{{ route('admin.user-management.index') }}" class="btn btn-warning mt-3 ml-2">Kembali</a>
+                    <button type="submit" id="submit-btn"
+                        class="d-sm-inline-block btn btn-sm btn-success mt-3">Edit</button>
+                    <a href="{{ route('admin.user-management.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning mt-3 ml-2">Kembali</a>
                 </form>
             </x-content.card-body>
 

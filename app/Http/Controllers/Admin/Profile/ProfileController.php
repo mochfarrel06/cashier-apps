@@ -7,13 +7,13 @@ use App\Http\Requests\Profile\ProfilePasswordUpdateRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use App\Models\User;
 use App\Traits\ProfileUploadTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
     use ProfileUploadTrait;
-    public function index(){
+    public function index()
+    {
         return view('admin.profile.index');
     }
 

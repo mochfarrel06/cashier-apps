@@ -26,27 +26,27 @@
                             <div class="form-group">
                                 <label for="name">Nama</label>
                                 <input type="text" name="name" id="name" class="form-control"
-                                    placeholder="Masukkan nama pengguna" value="{{ old('name') }}">
+                                    placeholder="Masukkan nama" value="{{ old('name') }}">
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" name="username" id="username" class="form-control"
-                                    placeholder="Masukkan username pengguna" value="{{ old('username') }}">
+                                    placeholder="Masukkan username" value="{{ old('username') }}">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control"
-                                    placeholder="Masukkan email pengguna" value="{{ old('email') }}">
+                                    placeholder="Masukkan email" value="{{ old('email') }}">
                             </div>
                             <div class="form-group">
-                                <label for="transaction_code">nomor transaksi</label>
+                                <label for="transaction_code">Nomor Transaksi</label>
                                 <input type="text" name="transaction_code" id="transaction_code" class="form-control"
-                                    placeholder="Masukkan nomor transaksi pengguna" value="{{ old('transaction_code') }}">
+                                    placeholder="Masukkan nomor transaksi" value="{{ old('transaction_code') }}">
                             </div>
                             <div class="form-group">
                                 <label for="location">Lokasi kasir</label>
                                 <input type="text" name="location" id="location" class="form-control"
-                                    placeholder="Masukkan Lokasi kasir pengguna" value="{{ old('location') }}">
+                                    placeholder="Masukkan lokasi kasir" value="{{ old('location') }}">
                             </div>
                             <div class="form-group">
                                 <label for="role">Role</label>
@@ -70,7 +70,7 @@
 
                         <div class="col-lg-5">
                             <div class="form-group">
-                                <label for="avatar" class="form-label">Gambar Profile</label>
+                                <label for="avatar" class="form-label">Gambar Pengguna</label>
                                 <div class="image-upload-wrapper">
                                     <input class="form-control @error('item_code') is-invalid @enderror" type="file"
                                         id="avatar" name="avatar" onchange="previewImage(event)">
@@ -86,8 +86,10 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn btn-primary mt-3">Tambah</button>
-                    <a href="{{ route('admin.user-management.index') }}" class="btn btn-warning mt-3 ml-2">Kembali</a>
+                    <button type="submit" id="submit-btn"
+                        class="d-sm-inline-block btn btn-sm btn-primary mt-3">Tambah</button>
+                    <a href="{{ route('admin.user-management.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning mt-3 ml-2">Kembali</a>
                 </form>
             </x-content.card-body>
 

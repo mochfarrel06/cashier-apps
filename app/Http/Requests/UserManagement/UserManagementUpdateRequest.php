@@ -40,7 +40,7 @@ class UserManagementUpdateRequest extends FormRequest
             ],
             'transaction_code' => ['required', 'string'],
             'location' => ['required', 'string'],
-           'role' => ['required', 'in:admin,cashier'],
+            'role' => ['required', 'in:admin,cashier'],
             'password' => ['nullable', 'string', 'min:4', 'confirmed'],
         ];
     }

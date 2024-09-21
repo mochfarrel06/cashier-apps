@@ -7,7 +7,6 @@ use App\Http\Requests\UserManagement\UserManagementStoreRequest;
 use App\Http\Requests\UserManagement\UserManagementUpdateRequest;
 use App\Models\User;
 use App\Traits\ProfileUploadTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserManagementController extends Controller
@@ -42,7 +41,7 @@ class UserManagementController extends Controller
 
             $user = new User();
             $user->name = $request->name;
-            $user->avatar =  isset($imagePath) ? $imagePath : 'avatar';
+            $user->avatar = isset($imagePath) ? $imagePath : 'avatar';
             $user->username = $request->username;
             $user->email = $request->email;
             $user->transaction_code = $request->transaction_code;
@@ -89,6 +88,8 @@ class UserManagementController extends Controller
             $user->name = $request->name;
             $user->username = $request->username;
             $user->email = $request->email;
+            $user->transaction_code = $request->transaction_code;
+            $user->location = $request->location;
             $user->role = $request->role;
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
