@@ -50,11 +50,10 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit"
-                            class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2 mr-3">Tampilkan
+                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-2">Tampilkan
                             Data</button>
                         <a href="{{ route('admin.report-transaction.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
-                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i
+                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                 class="fa-solid fa-file-excel"></i> Export Excel</a>
                     </div>
                 </form>
@@ -65,7 +64,7 @@
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-file"></i> Laporan
-                    Transaksi Per Kasir
+                    Transaksi
                 </h6>
             </div>
 

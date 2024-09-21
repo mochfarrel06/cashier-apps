@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Transaction;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -144,7 +143,6 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'I' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
-
 
     // Mengatur kolom dimulai dari baris ke-4 (karena baris 1 dan 2 untuk heading custom)
     public function startCell(): string
