@@ -129,7 +129,6 @@ class TransactionController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
-
     public function removeFromCart(Request $request, $index)
     {
         // Ambil keranjang dari session

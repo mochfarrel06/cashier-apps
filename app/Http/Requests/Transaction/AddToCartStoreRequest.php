@@ -33,8 +33,8 @@ class AddToCartStoreRequest extends FormRequest
         return [
             'quantity.required' => 'Jumlah produk tidak boleh kosong',
             'quantity.min:1' => 'Jumlah produk tidak boleh kurang dari 1',
-            'cashier_product_id..required' => 'Data kasir produk tidak boleh kosong',
-            'purchase_type..required' => 'Type pembelian tidak boleh kosong',
+            'cashier_product_id.required' => 'Data kasir produk tidak boleh kosong',
+            'purchase_type.required' => 'Type pembelian tidak boleh kosong',
         ];
     }
 }
