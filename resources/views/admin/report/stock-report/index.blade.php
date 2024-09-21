@@ -1,19 +1,19 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Laporan Detail Transaksi
+    Laporan Stok
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Stok Produk'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Laporan Stok produk']]" />
+        <x-content.heading-page :title="'Halaman Laporan Stok'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Laporan Stok']]" />
 
         <x-content.table-container>
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-filter"></i>
-                    Filter Laporan Detail Transaksi
+                    Filter Laporan Stok
                 </h6>
             </div>
 
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tampilkan
+                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-2">Tampilkan
                             Data</button>
                         <a href="{{ route('admin.stock-report.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
                             class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
