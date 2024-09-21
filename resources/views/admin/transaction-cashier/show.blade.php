@@ -9,7 +9,14 @@
 
         <x-content.heading-page :title="'Halaman Detail Transaksi'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Data Transaksi', 'url' => route('admin.transaction-cashier.index')],
+            [
+                'title' => 'Data Transaksi',
+                'url' => route('admin.transaction-cashier.index', [
+                    'cashier_id' => request('cashier_id'),
+                    'start_date' => request('start_date'),
+                    'end_date' => request('end_date'),
+                ]),
+            ],
             ['title' => 'Detail Transaksi'],
         ]" />
 

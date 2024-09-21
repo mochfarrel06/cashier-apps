@@ -11,7 +11,7 @@
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Filter Laporan Transaksi'" :icon="'fas fa-solid fa-filter'" />
+            <x-content.table-header :title="'Filter Laporan Data Transaksi'" :icon="'fas fa-solid fa-filter'" />
 
             <div class="card-body">
                 <form action="" method="GET">
@@ -61,24 +61,24 @@
         <x-content.table-container>
 
             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-money-bill"></i>
-                    Laporan
+                <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-handshake"></i>
+                    Laporan Data
                     Transaksi
                 </h6>
             </div>
 
             <x-content.table-body>
 
-                <x-content.thead :items="['No', 'Kode Transaksi', 'Jumlah Bayar', 'Kembalian', 'Tanggal Transaksi', 'Aksi']" />
+                <x-content.thead :items="['No', 'Kode Transaksi', 'Tanggal Transaksi', 'Jumlah Bayar', 'Kembalian', 'Aksi']" />
 
                 <x-content.tbody>
                     @foreach ($transactions as $transaction)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $transaction->transaction_number }}</td>
+                            <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                             <td>Rp {{ number_format($transaction->paid_amount ?? 0, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($transaction->change_amount ?? 0, 0, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                             <td>
                                 <a href="{{ route('admin.transaction-cashier.show', ['id' => $transaction->id, 'cashier_id' => request('cashier_id'), 'start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
                                     class="d-sm-inline-block btn btn-sm btn-info shadow-sm">Lihat Detail</a>
