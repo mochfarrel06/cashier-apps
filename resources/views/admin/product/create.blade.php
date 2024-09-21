@@ -9,7 +9,7 @@
 
         <x-content.heading-page :title="'Tambah Data Produk'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
-            ['title' => 'Data Produk', 'url' => route('admin.product.index')],
+            ['title' => 'Produk', 'url' => route('admin.product.index')],
             ['title' => 'Tambah'],
         ]" />
 

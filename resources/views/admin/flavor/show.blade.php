@@ -64,7 +64,7 @@
                     </div>
 
                     <a href="{{ route('admin.flavor.index') }}"
-                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-4">Kembali</a>
+                        class="d-sm-inline-block btn btn-sm btn-warning shadow-sm mt-3">Kembali</a>
                 </form>
             </div>
 

@@ -24,8 +24,8 @@ class FlavorStoreRequest extends FormRequest
         return [
             'product_id' => ['required', 'numeric', 'exists:products,id'],
             'flavor_name' => ['required', 'string'],
-            'price_retail' => ['required', 'numeric'],
-            'price_pack' => ['required', 'numeric'],
+            'price_retail' => ['required', 'numeric', 'min:1'],
+            'price_pack' => ['required', 'numeric', 'min:1'],
 
         ];
     }
@@ -35,9 +35,10 @@ class FlavorStoreRequest extends FormRequest
         return [
             'product_id.required' => 'Data produk tidak boleh kosong',
             'flavor_name.required' => 'Varian produk tidak boleh kosong',
-            'price_retail.required' => 'Harga Produk Eceran tidak boleh kosong',
-            'price_pack.required' => 'Harga Produk Per Pack tidak boleh kosong',
-
+            'price_retail.required' => 'Harga produk Eceran tidak boleh kosong',
+            'price_retail.min' => 'Harga produk eceran tidak boleh kurang dari 1',
+            'price_pack.required' => 'Harga produk per Pack tidak boleh kosong',
+            'price_pack.min' => 'Harga produk per pack tidak boleh kurang dari 1',
         ];
     }
 }

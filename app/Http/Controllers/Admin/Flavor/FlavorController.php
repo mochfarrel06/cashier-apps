@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Flavor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Flavor\FlavorStoreRequest;
+use App\Http\Requests\Flavor\FlavorUpdateRequest;
 use App\Models\Flavor;
 use App\Models\Product;
 
@@ -78,7 +79,7 @@ class FlavorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(FlavorStoreRequest $request, string $id)
+    public function update(FlavorUpdateRequest $request, string $id)
     {
         try {
             $flavor = Flavor::findOrFail($id);

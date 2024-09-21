@@ -25,18 +25,19 @@ class TransactionController extends Controller
 
     public function addToCart(AddToCartStoreRequest $request)
     {
-        // Ambil produk dari CashierProduct berdasarkan cashier_product_id
         $cashierProduct = CashierProduct::where('id', $request->cashier_product_id)
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
         // Tentukan harga berdasarkan jenis pembelian (retail atau pack)
-        $priceRetail = $cashierProduct->flavor->price_retail;
-        $pricePack = $cashierProduct->flavor->price_pack;
+        $price = $request->purchase_type == 'retail' ? $cashierProduct->flavor->price_retail : $cashierProduct->flavor->price_pack;
+        $total = $price * $request->quantity;
 
-        // Cek apakah pembelian dalam kelipatan pack
         $itemsPerPack = $cashierProduct->product->items_per_pack;
         $quantity = $request->quantity;
+
+        // Hitung total quantity yang diminta berdasarkan jenis pembelian
+        $totalQuantityRequested = $request->purchase_type == 'pack' ? $quantity * $itemsPerPack : $quantity;
 
         // Ambil keranjang dari session
         $cart = session()->get('cart', []);
@@ -49,47 +50,76 @@ class TransactionController extends Controller
             }
         }
 
-        // Hitung total quantity yang diminta berdasarkan jenis pembelian
-        $totalQuantityRequested = $quantity;
-
         // Cek ketersediaan stok termasuk stok yang telah digunakan di keranjang
         if ($cashierProduct->stock - $usedStock < $totalQuantityRequested) {
             return redirect()->back()->with('error', 'Stok tidak mencukupi untuk pembelian ini');
         }
 
-        // Jika jumlah tidak kelipatan pack, ubah menjadi kombinasi pack dan retail
-        $packs = intdiv($quantity, $itemsPerPack); // Jumlah pack
-        $remainingRetail = $quantity % $itemsPerPack; // Sisa retail
+        // Jika pembelian retail dan kelipatan jumlah isi pack, ubah type menjadi pack
+        if ($request->purchase_type == 'retail' && $quantity % $itemsPerPack == 0) {
+            $packs = $quantity / $itemsPerPack;
+            $price = $cashierProduct->flavor->price_pack;
+            $total = $price * $packs;
 
-        // Jika ada pack
-        if ($packs > 0) {
-            $totalPackPrice = $packs * $pricePack;
-
-            // Tambahkan produk dalam bentuk pack ke keranjang
-            $cart[] = [
-                'cashier_product_id' => $request->cashier_product_id,
-                'product_name' => $cashierProduct->product->name,
-                'flavor_name' => $cashierProduct->flavor->flavor_name,
-                'quantity' => $packs,
+            $request->merge([
                 'purchase_type' => 'pack',
-                'price' => $pricePack,
-                'total' => $totalPackPrice,
-            ];
+                'quantity' => $packs
+            ]);
+        } else {
+            $total = $price * $quantity;
         }
 
-        // Jika ada sisa retail
-        if ($remainingRetail > 0) {
-            $totalRetailPrice = $remainingRetail * $priceRetail;
+        // Cek apakah produk sudah ada di keranjang
+        $existingProductIndex = null;
+        foreach ($cart as $index => $item) {
+            if ($item['cashier_product_id'] == $request->cashier_product_id && $item['purchase_type'] == $request->purchase_type) {
+                $existingProductIndex = $index;
+                break;
+            }
+        }
 
-            // Tambahkan produk dalam bentuk retail ke keranjang
+        // Jika produk sudah ada di keranjang, tambahkan quantity dan update total harga
+        if ($existingProductIndex !== null) {
+            // Update quantity dan total
+            $cart[$existingProductIndex]['quantity'] += $request->quantity;
+            $cart[$existingProductIndex]['total'] += $total;
+
+            // Cek apakah jumlah retail bisa diubah menjadi pack
+            if ($request->purchase_type == 'retail' && $cart[$existingProductIndex]['quantity'] >= $itemsPerPack) {
+                // Ubah jumlah retail menjadi pack
+                $packs = intdiv($cart[$existingProductIndex]['quantity'], $itemsPerPack);
+                $remainingRetail = $cart[$existingProductIndex]['quantity'] % $itemsPerPack;
+                $price = $cashierProduct->flavor->price_pack;
+                $totalPack = $price * $packs;
+
+                // Update quantity dan harga
+                $cart[$existingProductIndex]['purchase_type'] = 'pack';
+                $cart[$existingProductIndex]['quantity'] = $packs;
+                $cart[$existingProductIndex]['total'] = $totalPack;
+
+                // Jika ada sisa retail, tambahkan sebagai item retail baru
+                if ($remainingRetail > 0) {
+                    $cart[] = [
+                        'cashier_product_id' => $request->cashier_product_id,
+                        'product_name' => $cashierProduct->product->name,
+                        'flavor_name' => $cashierProduct->flavor->flavor_name,
+                        'quantity' => $remainingRetail,
+                        'purchase_type' => 'retail',
+                        'price' => $cashierProduct->flavor->price_retail,
+                        'total' => $cashierProduct->flavor->price_retail * $remainingRetail,
+                    ];
+                }
+            }
+        } else {
+            // Tambahkan produk ke keranjang jika belum ada
             $cart[] = [
                 'cashier_product_id' => $request->cashier_product_id,
                 'product_name' => $cashierProduct->product->name,
                 'flavor_name' => $cashierProduct->flavor->flavor_name,
-                'quantity' => $remainingRetail,
-                'purchase_type' => 'retail',
-                'price' => $priceRetail,
-                'total' => $totalRetailPrice,
+                'quantity' => $request->quantity,
+                'purchase_type' => $request->purchase_type,
+                'price' => $price,
+                'total' => $total,
             ];
         }
 
@@ -98,6 +128,7 @@ class TransactionController extends Controller
 
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
+
 
     public function removeFromCart(Request $request, $index)
     {
