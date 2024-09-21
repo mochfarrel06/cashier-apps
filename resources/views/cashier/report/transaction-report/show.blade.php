@@ -1,13 +1,13 @@
 @extends('cashier.layouts.master')
 
 @section('title-page')
-    Lihat
+    Detail Transaksi
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Detail Transaksi'" :breadcrumbs="[
+        <x-content.heading-page :title="'Halaman Detail Transaksi'" :breadcrumbs="[
             ['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')],
             ['title' => 'Laporan Transaksi', 'url' => route('cashier.transaction-report.index')],
             ['title' => 'Detail Transaksi'],
