@@ -136,7 +136,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
 
         // Jumlah Produk
         $sheet->setCellValue('B' . ($infoStartRow + 2), 'Jumlah Produk Terjual:');
-        $sheet->setCellValue('D' . ($infoStartRow + 2), $totalQuantity . ' Varian');
+        $sheet->setCellValue('D' . ($infoStartRow + 2), $totalQuantity);
 
         // Jumlah Produk Terjual Per Varian
         $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Produk Terjual per Varian:');

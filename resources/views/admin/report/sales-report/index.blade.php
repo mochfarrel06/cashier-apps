@@ -15,10 +15,6 @@
                 <h6 class="m-0 font-weight-bold mb-2" style="color: #722c75"><i class="fas fa-solid fa-filter"></i>
                     Filter Laporan Detail Transaksi
                 </h6>
-                <a href="{{ route('admin.sales-report.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
-                    class="d-sm-inline-block btn btn-sm btn-success shadow-sm mb-2"><i class="fa-solid fa-file-excel"></i>
-                    Export
-                    Excel</a>
             </div>
 
             <div class="card-body">
@@ -58,7 +54,13 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tampilkan
+                            Data</button>
+                        <a href="{{ route('admin.sales-report.exportExcel', ['cashier_id' => $cashierId, 'start_date' => $startDate, 'end_date' => $endDate]) }}"
+                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                                class="fa-solid fa-file-excel"></i>
+                            Export
+                            Excel</a>
                     </div>
                 </form>
             </div>
@@ -80,9 +82,9 @@
                     @foreach ($salesReports as $report)
                         <tr>
                             <td class="index">{{ $loop->index + 1 }}</td>
-                            <td>{{ $report->report_date }}</td>
+                            <td>{{ \Carbon\Carbon::parse($report->report_date)->format('d-m-Y') }}</td>
                             <td>{{ $report->user->name }}</td>
-                            <td>{{ number_format($report->total_sales, 2) }}</td>
+                            <td>Rp {{ number_format($report->total_sales ?? '0', '0', ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </x-content.tbody>

@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\SalesReport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -29,8 +28,8 @@ class SalesExport implements FromCollection,  WithHeadings, WithMapping, WithSty
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return $this->salesReports;
@@ -39,7 +38,10 @@ class SalesExport implements FromCollection,  WithHeadings, WithMapping, WithSty
     public function headings(): array
     {
         return [
-            'No', 'Tanggal', 'Kasir', 'Total Penjualan'
+            'No',
+            'Tanggal',
+            'Kasir',
+            'Total Penjualan'
         ];
     }
 
@@ -68,6 +70,10 @@ class SalesExport implements FromCollection,  WithHeadings, WithMapping, WithSty
         }
 
         $lastRow = $this->salesReports->count() + 4; // Menghitung total baris data
+        $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
+        $sheet->setCellValue('A' . ($lastRow + 1), 'Total');
+        $total = 'D' . ($lastRow + 1);
+        $sheet->setCellValue($total, '=SUM(D4:D' . $lastRow . ')');
 
         // Style untuk border
         $styleArray = [
@@ -80,6 +86,13 @@ class SalesExport implements FromCollection,  WithHeadings, WithMapping, WithSty
         ];
 
         $sheet->getStyle('A4:D' . ($lastRow + 1))->applyFromArray($styleArray);
+
+        $sheet->getStyle('D4:D' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle($total)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
 
         return [
             // Style untuk judul dan periode
