@@ -42,6 +42,8 @@ class ProfileController extends Controller
             $user->email = $request->email;
             $user->avatar = isset($imagePath) ? $imagePath : $user->avatar;
             $user->username = $request->username;
+            $user->transaction_code = $request->transaction_code;
+            $user->location = $request->location;
 
             // Cek apakah ada perubahan data
             if ($user->isDirty()) {

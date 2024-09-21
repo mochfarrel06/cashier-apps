@@ -1,13 +1,17 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Edit Profile
+    Edit Profil
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Edit Profil'" />
+        <x-content.heading-page :title="'Halaman Edit Profil'" :breadcrumbs="[
+            ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['title' => 'Profil', 'url' => route('admin.profile.index')],
+            ['title' => 'Edit Profil'],
+        ]" />
 
         <x-content.table-container>
 
@@ -22,7 +26,7 @@
                     <div class="row">
                         <div class="col-lg-5">
                             <div class="form-group">
-                                <label for="avatar" class="form-label">Gambar Penggguna</label>
+                                <label for="avatar" class="form-label">Gambar Pengguna</label>
                                 <div class="image-upload-wrapper">
                                     <input class="form-control" type="file" id="avatar" name="avatar"
                                         onchange="previewImage(event)">
@@ -77,9 +81,11 @@
                         </div>
                     </div>
 
-                    <div class="mt-2">
-                        <button type="submit" id="submit-btn" class="btn btn-success">Edit</button>
-                        <a href="{{ route('admin.profile.index') }}" class="btn btn-warning ml-2">Kembali</a>
+                    <div class="mt-3">
+                        <button type="submit" id="submit-btn"
+                            class="d-sm-inline-block btn btn-sm btn-success">Edit</button>
+                        <a href="{{ route('admin.profile.index') }}"
+                            class="d-sm-inline-block btn btn-sm btn-warning ml-2">Kembali</a>
                     </div>
                 </form>
             </x-content.card-body>

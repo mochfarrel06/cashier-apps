@@ -53,7 +53,7 @@ class ProfileUpdateRequest extends FormRequest
             'username.required' => 'Username tidak boleh kosong',
             'username.unique' => 'Username sudah di tambahkan',
             'transaction_code.required' => 'Nomor transaksi tidak boleh kosong',
-            'location.required' => 'Email tidak boleh kosong',
+            'location.required' => 'Lokasi tidak boleh kosong',
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah di tambahkan',
             'avatar.image' => 'File harus berupa gambar',

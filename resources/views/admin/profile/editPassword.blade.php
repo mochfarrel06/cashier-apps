@@ -7,7 +7,11 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Edit Password'" />
+        <x-content.heading-page :title="'Halaman Edit Password'" :breadcrumbs="[
+            ['title' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['title' => 'Profil', 'url' => route('admin.profile.index')],
+            ['title' => 'Edit Password'],
+        ]" />
 
         <x-content.table-container>
 
@@ -37,8 +41,10 @@
                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn btn-primary mt-3">Edit</button>
-                    <a href="{{ route('admin.profile.index') }}" class="btn btn-warning ml-2 mt-3">Kembali</a>
+                    <button type="submit" id="submit-btn"
+                        class="d-sm-inline-block btn btn-sm btn-success mt-3">Edit</button>
+                    <a href="{{ route('admin.profile.index') }}"
+                        class="d-sm-inline-block btn btn-sm btn-warning ml-2 mt-3">Kembali</a>
                 </form>
             </x-content.card-body>
 

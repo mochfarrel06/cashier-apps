@@ -31,6 +31,7 @@ class ProfilePasswordUpdateRequest extends FormRequest
     {
         return [
             'current_password.required' => 'Password saat ini harus diisi.',
+            'current_password.current_password' => 'Password tidak sama dengan sebelumnya',
             'password.required' => 'Password baru harus diisi.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
             'password.different' => 'Password baru harus berbeda dengan password saat ini.',

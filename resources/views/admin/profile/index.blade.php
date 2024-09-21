@@ -1,13 +1,13 @@
 @extends('admin.layouts.master')
 
 @section('title-page')
-    Profile
+    Profil
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Profil'" />
+        <x-content.heading-page :title="'Halaman Profil'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('admin.dashboard')], ['title' => 'Profil']]" />
 
         <div class="row">
             <div class="col-lg-4 mb-4">
@@ -52,7 +52,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="transaction_code">nomor transaksi</label>
+                                <label for="transaction_code">Nomor transaksi</label>
                                 <input type="text" name="transaction_code" id="transaction_code" class="form-control"
                                     value="{{ auth()->user()->transaction_code }}" disabled>
                             </div>
@@ -62,9 +62,11 @@
                                     value="{{ auth()->user()->location }}" disabled>
                             </div>
 
-                            <a href="{{ route('admin.profile.editProfile') }}" class="btn btn-success mt-3 mr-2">Edit
+                            <a href="{{ route('admin.profile.editProfile') }}"
+                                class="d-sm-inline-block btn btn-sm btn-success mt-3 mr-2">Edit
                                 Profil</a>
-                            <a href="{{ route('admin.profile.editPassword') }}" class="btn btn-warning mt-3">Ganti
+                            <a href="{{ route('admin.profile.editPassword') }}"
+                                class="d-sm-inline-block btn btn-sm btn-warning mt-3">Ganti
                                 Password</a>
                         </form>
                     </x-content.card-body>
