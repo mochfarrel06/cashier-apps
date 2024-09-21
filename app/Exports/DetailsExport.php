@@ -138,8 +138,21 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         $sheet->setCellValue('B' . ($infoStartRow + 2), 'Jumlah Produk Terjual:');
         $sheet->setCellValue('D' . ($infoStartRow + 2), $totalQuantity);
 
+        // Tambahkan perhitungan jumlah pack terjual
+        $packCount = $this->transactionDetails->reduce(function ($carry, $detail) {
+            // Periksa apakah jenis pembelian adalah 'pack'
+            if ($detail->purchase_type === 'pack') {
+                return $carry + $detail->quantity; // Tambahkan jumlah pack terjual
+            }
+            return $carry;
+        }, 0);
+
+        // Jumlah pack terjual
+        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Pack/Box Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 3), $packCount); // Ganti nilai '2' dengan jumlah pack yang terjual
+
         // Jumlah Produk Terjual Per Varian
-        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Produk Terjual per Varian:');
+        $sheet->setCellValue('B' . ($infoStartRow + 4), 'Jumlah Produk Terjual per Varian:');
         $flavors = $this->transactionDetails->groupBy('cashierProduct.flavor.flavor_name')->map(function ($group) {
             return $group->reduce(function ($carry, $detail) {
                 // Ambil nilai items_per_pack, default ke 1 jika tidak ada
@@ -157,11 +170,13 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             }, 0);
         });
 
-        $currentRow = $infoStartRow + 4;
+        $currentRow = $infoStartRow + 5;
         foreach ($flavors as $flavorName => $totalVarian) {
             $sheet->setCellValue('C' . $currentRow, $flavorName . ': ' . $totalVarian);
             $currentRow++;
         }
+
+
 
         // Style untuk border
         $styleArray = [
