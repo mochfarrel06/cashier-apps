@@ -17,7 +17,7 @@
 
         <x-content.table-container>
 
-            <x-content.table-header :title="'Tabel Stok Produk Hari ini'" :icon="'fas fa-circle-exclamation'" />
+            <x-content.table-header :title="'Tabel Produk Hari ini'" :icon="'fas fa-circle-exclamation'" />
 
             <x-content.table-body>
 
