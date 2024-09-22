@@ -19,9 +19,9 @@ class StockReportController extends Controller
 
         // Filter berdasarkan tanggal
         if ($startDate && $endDate) {
-            // Menambah satu hari ke endDate untuk menyertakan seluruh hari tersebut
-            $endDate = Carbon::parse($endDate)->addDay()->format('Y-m-d');
-            $query->whereBetween('stock_date', [$startDate, $endDate]);
+            // Menggunakan filter tanggal secara langsung tanpa menambah hari
+            $query->whereDate('stock_date', '>=', $startDate)
+                ->whereDate('stock_date', '<=', $endDate);
         }
 
         // Filter berdasarkan kasir jika diberikan

@@ -124,6 +124,9 @@ class CashierProductController extends Controller
             // Simpan perubahan jika ada perubahan data
             if ($cashierProduct->isDirty()) {
                 $cashierProduct->save();
+
+                $this->addStockToDailyReport($cashierProduct, $request->stock);
+
                 session()->flash('success', 'Berhasil melakukan perubahan pada produk kasir');
                 return response()->json(['success' => true], 200);
             } else {

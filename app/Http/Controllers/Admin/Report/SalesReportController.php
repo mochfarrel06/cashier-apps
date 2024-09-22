@@ -19,9 +19,9 @@ class SalesReportController extends Controller
 
         // Filter berdasarkan tanggal
         if ($startDate && $endDate) {
-            // Menambah satu hari ke endDate untuk menyertakan seluruh hari tersebut
-            $endDate = Carbon::parse($endDate)->addDay()->format('Y-m-d');
-            $query->whereBetween('report_date', [$startDate, $endDate]);
+            // Menggunakan filter tanggal secara langsung tanpa menambah hari
+            $query->whereDate('report_date', '>=', $startDate)
+                ->whereDate('report_date', '<=', $endDate);
         }
 
         // Filter berdasarkan kasir jika diberikan
