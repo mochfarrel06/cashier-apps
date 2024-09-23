@@ -17,7 +17,7 @@
                 </h6>
                 <div class="d-flex">
                     <a href="{{ route('cashier.transaction.pdf', $transaction->id) }}"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-3">Cetak
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-3">Unduh
                         Nota</a>
                     <a href="{{ route('cashier.transaction.index') }}"
                         class="d-sm-inline-block btn btn-sm btn-warning shadow-sm">Kembali ke Daftar

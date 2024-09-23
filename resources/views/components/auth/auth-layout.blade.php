@@ -43,7 +43,7 @@
         <!-- End Form Password -->
 
         <!-- Button Submit -->
-        <button type="submit" class="btn btn-primary btn-user btn-block mt-5">Login</button>
+        <button type="submit" class="btn btn-primary btn-user btn-block mt-5">Masuk</button>
         <!-- End Button Submit -->
 
     </form>

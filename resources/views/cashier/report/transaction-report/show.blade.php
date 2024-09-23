@@ -8,7 +8,7 @@
     <x-content.container-fluid>
 
         <x-content.heading-page :title="'Halaman Detail Transaksi'" :breadcrumbs="[
-            ['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')],
+            ['title' => 'Beranda', 'url' => route('cashier.dashboard.index')],
             ['title' => 'Laporan Transaksi', 'url' => route('cashier.transaction-report.index')],
             ['title' => 'Detail Transaksi'],
         ]" />
@@ -20,7 +20,7 @@
                     Transaksi</h6>
                 <div class="d-flex">
                     <a href="{{ route('cashier.transaction-report.pdf', $transaction->id) }}"
-                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-2">Cetak
+                        class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm mr-2">Unduh
                         PDF</a>
                     <a href="{{ route('cashier.transaction-report.index') }}"
                         class="d-sm-inline-block btn btn-sm btn-warning shadow-sm">Kembali</a>

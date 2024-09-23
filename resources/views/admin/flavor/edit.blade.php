@@ -68,7 +68,7 @@
 
                     <div class="mt-4">
                         <button type="submit" id="submit-btn"
-                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm">Edit</button>
+                            class="d-sm-inline-block btn btn-sm btn-success shadow-sm">Save</button>
                         <a href="{{ route('admin.flavor.index') }}"
                             class="d-sm-inline-block btn btn-sm btn-warning shadow-sm ml-2">Kembali</a>
                     </div>

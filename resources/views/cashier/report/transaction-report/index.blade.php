@@ -8,7 +8,7 @@
     <x-content.container-fluid>
 
         <x-content.heading-page :title="'Halaman Laporan Transaksi Harian'" :breadcrumbs="[
-            ['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')],
+            ['title' => 'Beranda', 'url' => route('cashier.dashboard.index')],
             ['title' => 'Laporan Transaksi'],
         ]" />
 
@@ -19,7 +19,7 @@
                     Transaksi Harian
                 </h6>
                 <a href="{{ route('cashier.transaction-report.exportExcel') }}"
-                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2">Download Laporan</a>
+                    class="d-sm-inline-block btn btn-sm btn-primary shadow-sm mb-2">Unduh Laporan</a>
             </div>
 
             <x-content.table-body>

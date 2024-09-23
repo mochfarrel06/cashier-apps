@@ -1,13 +1,13 @@
 @extends('cashier.layouts.master')
 
 @section('title-page')
-    Dashboard
+    Beranda
 @endsection
 
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Dashboard Kasir'" />
+        <x-content.heading-page :title="'Halaman Beranda Kasir'" />
 
         <x-content.card-row>
             @foreach ($cards as $card)

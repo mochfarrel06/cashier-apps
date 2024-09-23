@@ -7,7 +7,7 @@
 @section('content')
     <x-content.container-fluid>
 
-        <x-content.heading-page :title="'Halaman Transaksi Kasir'" :breadcrumbs="[['title' => 'Dashboard', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
+        <x-content.heading-page :title="'Halaman Transaksi Kasir'" :breadcrumbs="[['title' => 'Beranda', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
 
         <x-content.table-container>
             <x-content.table-header :title="'Tambah Produk Transaksi'" :icon="'fas fa-solid fa-shop'" />
@@ -51,8 +51,8 @@
                                 <label for="purchase_type">Jenis Pembelian</label>
                                 <select class="form-control" name="purchase_type" id="purchase_type" required>
                                     <option value="">-- Jenis Pembelian --</option>
-                                    <option value="retail">Retail</option>
-                                    <option value="pack">Pack</option>
+                                    <option value="retail">Retail/Eceran</option>
+                                    <option value="pack">Pack/Box</option>
                                 </select>
                             </div>
                         </div>
