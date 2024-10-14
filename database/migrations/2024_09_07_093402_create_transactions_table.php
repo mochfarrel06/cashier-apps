@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('transaction_number')->unique();
             $table->decimal('total', 20, 2);
             $table->string('payment_type');
+            $table->decimal('discount', 15, 2)->default(0);
             $table->decimal('paid_amount', 20, 2); // Jumlah yang dibayarkan
             $table->decimal('change_amount', 20, 2); // Kembalian
 
