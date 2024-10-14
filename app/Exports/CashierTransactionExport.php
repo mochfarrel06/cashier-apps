@@ -16,6 +16,9 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
 {
     protected $transactions;
     protected $index = 1;
+    protected $totalQuantity = 0;
+    protected $packCount = 0; // Tambahan variabel untuk jumlah pack terjual
+    protected $flavors = []; // Tambahan variabel untuk menyimpan jumlah produk per varian
 
     public function __construct($transactions)
     {
@@ -68,9 +71,25 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
                 ? $transactionDetail->quantity
                 : $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack;
 
-            // Menambahkan jumlah produk dari setiap item di transaksi
+            // Tambahkan jumlah produk ke total
             $totalProducts += $jumlahProduk;
+
+            // Perhitungan jumlah pack terjual
+            if ($transactionDetail->purchase_type === 'pack') {
+                $this->packCount += $transactionDetail->quantity;
+            }
+
+            // Perhitungan jumlah produk per varian
+            $flavorName = $transactionDetail->cashierProduct->flavor->flavor_name ?? 'Unknown';
+            if (!isset($this->flavors[$flavorName])) {
+                $this->flavors[$flavorName] = 0;
+            }
+
+            $this->flavors[$flavorName] += $jumlahProduk;
         }
+
+        // Tambahkan total produk dari transaksi ini ke totalQuantity
+        $this->totalQuantity += $totalProducts;
 
         return [
             $this->index++, // No
@@ -102,6 +121,36 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
         $totalPendapatanCell = 'H' . ($lastRow + 1);
         $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('net_total'));
 
+        // Informasi Tambahan
+        $infoStartRow = $lastRow + 3;
+
+        $sheet->setCellValue('B' . $infoStartRow, 'Informasi Tambahan');
+        $sheet->mergeCells('B' . $infoStartRow . ':D' . $infoStartRow);
+        $sheet->getStyle('B' . $infoStartRow)->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => ['horizontal' => 'left']
+        ]);
+
+        // Total Pendapatan
+        $sheet->setCellValue('B' . ($infoStartRow + 1), 'Pendapatan:');
+        $sheet->setCellValue('D' . ($infoStartRow + 1), '=SUM(H4:H' . $lastRow . ')');
+
+        // Jumlah Produk
+        $sheet->setCellValue('B' . ($infoStartRow + 2), 'Jumlah Produk Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 2), $this->totalQuantity);
+
+        // Tambahkan perhitungan jumlah pack terjual
+        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Pack/Box Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 3), $this->packCount); // Menampilkan jumlah pack terjual
+
+        // Jumlah Produk Terjual Per Varian
+        $sheet->setCellValue('B' . ($infoStartRow + 4), 'Jumlah Produk Terjual per Varian:');
+        $currentRow = $infoStartRow + 5;
+        foreach ($this->flavors as $flavorName => $totalVarian) {
+            $sheet->setCellValue('C' . $currentRow, $flavorName . ': ' . $totalVarian);
+            $currentRow++;
+        }
+
         // Style untuk border
         $styleArray = [
             'borders' => [
@@ -131,6 +180,9 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPendapatanCell)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('D' . ($infoStartRow + 1))
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
 

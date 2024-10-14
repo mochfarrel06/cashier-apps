@@ -79,7 +79,7 @@
                     <td>{{ $loop->index + 1 }}</td>
                     <td>{{ $transaction->transaction_number }}</td>
                     <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
-                    <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($transaction->net_total, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

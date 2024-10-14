@@ -17,7 +17,7 @@ class IncomeReportController extends Controller
             ->get();
 
         // Hitung total pendapatan
-        $totalIncome = $transactions->sum('total');
+        $totalIncome = $transactions->sum('net_total');
 
         return view('cashier.report.income-report.index', compact('transactions', 'totalIncome'));
     }
@@ -30,7 +30,7 @@ class IncomeReportController extends Controller
             ->get();
 
         // Hitung total pendapatan
-        $totalIncome = $transactions->sum('total');
+        $totalIncome = $transactions->sum('net_total');
 
         // Generate PDF menggunakan view yang berisi laporan pendapatan
         $pdf = Pdf::loadView('cashier.report.income-report.income_pdf', compact('transactions', 'totalIncome'));
