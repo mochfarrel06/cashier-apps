@@ -24,7 +24,7 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="['No', 'Tanggal Transaksi', 'Kode Transaksi', 'Jumlah Bayar', 'Kembalian', 'Aksi']" />
+                <x-content.thead :items="['No', 'Tanggal Transaksi', 'Kode Transaksi', 'Jumlah Bayar', 'Varian Terjual', 'Aksi']" />
 
                 <x-content.tbody>
                     @foreach ($transactions as $transaction)
@@ -33,7 +33,13 @@
                             <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                             <td>{{ $transaction->transaction_number }}</td>
                             <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
+                            <td>
+                                @foreach ($transaction->transactionDetails as $detail)
+                                    {{ $detail->cashierProduct->flavor->flavor_name ?? '' }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </td>
                             <td>
                                 <a href="{{ route('cashier.transaction-report.show', $transaction->id) }}"
                                     class="d-sm-inline-block btn btn-sm btn-info shadow-sm">Lihat Detail</a>

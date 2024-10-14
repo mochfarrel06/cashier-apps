@@ -126,7 +126,8 @@ class TransactionController extends Controller
         // Simpan keranjang ke session
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        // return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return redirect()->back();
     }
 
     public function removeFromCart(Request $request, $index)
@@ -140,7 +141,7 @@ class TransactionController extends Controller
             session()->put('cart', array_values($cart)); // Reindex array
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang!');
+        return redirect()->back();
     }
 
     public function checkout(Request $request)
@@ -151,13 +152,27 @@ class TransactionController extends Controller
             return redirect()->back()->with('error', 'Keranjang masih kosong!');
         }
 
-        // Validasi jumlah bayar
+        // Validasi jumlah bayar dan diskon
         $total = array_sum(array_column($cart, 'total'));
-        $paidAmount = $request->paid_amount;
+        $paidString = $request->paid_amount ?? '0';
+        $paidAmount = (float) str_replace(['Rp ', '.', ' '], '', $paidString);
 
-        if ($paidAmount < $total) {
+
+        // Mengambil dan mengkonversi diskon ke float
+        $discountString = $request->discount ?? '0'; // Jika diskon tidak diinput, gunakan nilai default 0
+        $discount = (float) str_replace(['Rp ', '.', ' '], '', $discountString); // Menghilangkan 'Rp', titik, dan spasi
+
+        // Tambahkan kondisi untuk memeriksa apakah diskon melebihi total
+        if ($discount > $total) {
+            return redirect()->back()->with('error', 'Diskon tidak dapat lebih besar dari total!'); // Pesan jika diskon lebih besar dari total
+        }
+
+        if ($paidAmount < $total - $discount) {
             return redirect()->back()->with('error', 'Jumlah bayar tidak cukup!');
         }
+
+        // Hitung total bersih setelah diskon
+        $netTotal = $total - $discount;
 
         // Ambil kode transaksi dari user yang sedang login
         $user = auth()->user();
@@ -169,9 +184,11 @@ class TransactionController extends Controller
             'transaction_number' => $transactionCode . '-' . time(),
             'transaction_date' => now(),
             'total' => $total,
+            'discount' => $discount, // Simpan nilai diskon
+            'net_total' => $netTotal, // Simpan total bersih setelah diskon
             'payment_type' => $request->payment_type,
             'paid_amount' => $paidAmount,
-            'change_amount' => $paidAmount - $total,
+            'change_amount' => $paidAmount - $netTotal,
         ]);
 
         // Loop melalui item di keranjang
@@ -223,14 +240,14 @@ class TransactionController extends Controller
 
         if ($existingReport) {
             // Jika sudah ada, perbarui total penjualan
-            $existingReport->total_sales += $total;
+            $existingReport->total_sales += $netTotal;
             $existingReport->save();
         } else {
             // Jika belum ada, buat laporan baru
             SalesReport::create([
                 'user_id' => $user->id,
                 'report_date' => now(),
-                'total_sales' => $total,
+                'total_sales' => $netTotal,
             ]);
         }
 

@@ -10,7 +10,7 @@
         <x-content.heading-page :title="'Halaman Transaksi Kasir'" :breadcrumbs="[['title' => 'Beranda', 'url' => route('cashier.dashboard.index')], ['title' => 'Kasir']]" />
 
         <x-content.table-container>
-            <x-content.table-header :title="'Tambah Produk Transaksi'" :icon="'fas fa-solid fa-shop'" />
+            <x-content.table-header :title="'Transaksi Kasir'" :icon="'fas fa-solid fa-shop'" />
 
             <div class="card-body">
                 <form action="{{ route('cashier.transaction.addToCart') }}" method="POST">
@@ -130,9 +130,26 @@
                         <form action="{{ route('cashier.transaction.checkout') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="total">Total Pembayaran</label>
-                                <input type="text" name="total" id="total" class="form-control"
-                                    value="{{ $total }}" readonly>
+                                <label for="total">Total</label>
+                                <input type="hidden" name="total" id="total" value="{{ $total ?? 0 }}">
+                                <input type="text" class="form-control"
+                                    value="Rp {{ number_format($total ?? 0, 0, ',', '.') }}" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="discount">Diskon Produk (Rp)</label>
+                                <input type="text" class="form-control @error('discount') is-invalid @enderror"
+                                    name="discount" id="discount" placeholder="Masukkan Diskon">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="net_total">Total Pembayaran</label>
+                                <input type="hidden" class="form-control @error('net_total') is-invalid @enderror"
+                                    name="net_total" id="net_total" value="{{ $total ?? 0 }}" readonly>
+                                <input type="text" class="form-control"
+                                    value="Rp {{ number_format($total ?? 0, 0, ',', '.') }}" readonly>
+                                <input type="hidden" id="net_total_raw" value="{{ $total ?? 0 }}">
                             </div>
 
                             <div class="form-group">
@@ -145,12 +162,14 @@
 
                             <div class="form-group">
                                 <label for="paid_amount">Bayar</label>
-                                <input type="number" class="form-control" name="paid_amount" id="paid_amount" required>
+                                <input type="text" class="form-control" name="paid_amount" id="paid_amount"
+                                    placeholder="Masukkan jumlah bayar" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="change_amount">Kembalian</label>
-                                <input type="text" name="change_amount" id="change_amount" class="form-control" readonly>
+                                <input type="text" name="change_amount" id="change_amount" class="form-control"
+                                    readonly>
                             </div>
 
                             <button type="submit"
@@ -175,26 +194,56 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const totalInput = document.getElementById('total');
-            const paidAmountInput = document.getElementById('paid_amount');
-            const changeAmountInput = document.getElementById('change_amount');
+        document.getElementById('discount').addEventListener('input', function() {
+            // Menghilangkan karakter yang tidak diinginkan dan mengkonversi ke angka
+            const input = this.value.replace(/[^\d]/g, '');
+            const discountValue = parseFloat(input) || 0;
 
-            // Fungsi untuk menghitung dan memperbarui kembalian
-            function updateChangeAmount() {
-                const total = parseFloat(totalInput.value) || 0;
-                const paidAmount = parseFloat(paidAmountInput.value) || 0;
-                const changeAmount = paidAmount - total;
+            // Format nilai diskon ke dalam Rupiah
+            const formattedDiscount = `Rp ${discountValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+            this.value = formattedDiscount; // Menampilkan diskon yang diformat ke dalam input
 
-                // Update kembalian hanya jika jumlah bayar lebih besar dari total
-                changeAmountInput.value = changeAmount >= 0 ? changeAmount.toFixed(2) : '0.00';
+            const totalInput = document.getElementById('total').value;
+            let netTotal = totalInput;
+
+            // Jika diskon lebih besar dari 0, hitung diskon
+            if (discountValue > 0) {
+                netTotal = totalInput - discountValue;
             }
 
-            // Tambahkan event listener untuk mengupdate kembalian saat jumlah bayar berubah
-            paidAmountInput.addEventListener('input', updateChangeAmount);
+            // Set nilai net_total_raw untuk penggunaan lebih lanjut
+            document.getElementById('net_total_raw').value = netTotal;
 
-            // Tambahkan event listener untuk menghitung kembalian jika total diubah (jika ada elemen yang mengubah total)
-            totalInput.addEventListener('input', updateChangeAmount);
+            // Format nilai netTotal ke dalam rupiah dan tampilkan di input net_total
+            const formattedNetTotal = `Rp ${netTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+            document.getElementById('net_total').value = netTotal;
+            document.getElementById('net_total').nextElementSibling.value = formattedNetTotal;
+
+
+            // Perbarui nilai kembalian ketika diskon berubah
+            updateChangeAmount();
         });
+
+        // Fungsi untuk menghitung dan memperbarui kembalian
+        function updateChangeAmount() {
+            // Menghilangkan karakter yang tidak diinginkan dan mengkonversi ke angka
+            const input = this.value.replace(/[^\d]/g, '');
+            const paidValue = parseFloat(input) || 0;
+
+            // Format nilai diskon ke dalam Rupiah
+            const formattedPaid = `Rp ${paidValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+            this.value = formattedPaid; // Menampilkan diskon yang diformat ke dalam input
+
+            const netTotal = parseFloat(document.getElementById('net_total_raw').value);
+            // const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
+            const changeAmountInput = document.getElementById('change_amount');
+
+            const changeAmount = paidValue - netTotal;
+            const formattedChange = `Rp ${changeAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+            document.getElementById('change_amount').value = changeAmount >= 0 ? formattedChange : "Rp 0";
+        }
+
+        // Event listener untuk input paid_amount
+        document.getElementById('paid_amount').addEventListener('input', updateChangeAmount);
     </script>
 @endpush

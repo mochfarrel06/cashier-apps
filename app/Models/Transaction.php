@@ -16,6 +16,8 @@ class Transaction extends Model
         'transaction_number',
         'total',
         'payment_type',
+        'discount',
+        'net_total',
         'paid_amount',
         'change_amount',
     ];

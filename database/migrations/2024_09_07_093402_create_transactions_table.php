@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('total', 20, 2);
             $table->string('payment_type');
             $table->decimal('discount', 15, 2)->default(0);
+            $table->decimal('net_total', 30, 2);
             $table->decimal('paid_amount', 20, 2); // Jumlah yang dibayarkan
             $table->decimal('change_amount', 20, 2); // Kembalian
 
