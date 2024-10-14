@@ -50,8 +50,8 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             'Sub Total',
             'Diskon',
             'Total',
-            'Jumlah Bayar (Rp)',
-            'Kembalian (Rp)',
+            'Jumlah Bayar',
+            'Kembalian',
         ];
     }
 

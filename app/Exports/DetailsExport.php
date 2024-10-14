@@ -18,6 +18,7 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
     protected $startDate;
     protected $endDate;
     protected $index = 1;
+    protected $netTotal = 0;
 
     public function __construct($transactionDetails, $startDate, $endDate)
     {
@@ -58,6 +59,8 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         $jumlahProduk = $transactionDetail->purchase_type === 'retail'
             ? $transactionDetail->quantity
             : $transactionDetail->quantity * $transactionDetail->cashierProduct->product->items_per_pack;
+
+        $this->netTotal = $transactionDetail->transaction->sum('net_total');
 
         return [
             $this->index++,
@@ -131,12 +134,16 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         ]);
 
         // Total Pendapatan
-        $sheet->setCellValue('B' . ($infoStartRow + 1), 'Pendapatan:');
+        $sheet->setCellValue('B' . ($infoStartRow + 1), 'Pendapatan tanpa diskon:');
         $sheet->setCellValue('D' . ($infoStartRow + 1), '=SUM(K4:K' . $lastRow . ')');
 
+        // Total Pendapatan
+        $sheet->setCellValue('B' . ($infoStartRow + 2), 'Pendapatan dengan diskon:');
+        $sheet->setCellValue('D' . ($infoStartRow + 2), $this->netTotal);
+
         // Jumlah Produk
-        $sheet->setCellValue('B' . ($infoStartRow + 2), 'Jumlah Produk Terjual:');
-        $sheet->setCellValue('D' . ($infoStartRow + 2), $totalQuantity);
+        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Produk Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 3), $totalQuantity);
 
         // Tambahkan perhitungan jumlah pack terjual
         $packCount = $this->transactionDetails->reduce(function ($carry, $detail) {
@@ -148,11 +155,11 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
         }, 0);
 
         // Jumlah pack terjual
-        $sheet->setCellValue('B' . ($infoStartRow + 3), 'Jumlah Pack/Box Terjual:');
-        $sheet->setCellValue('D' . ($infoStartRow + 3), $packCount); // Ganti nilai '2' dengan jumlah pack yang terjual
+        $sheet->setCellValue('B' . ($infoStartRow + 4), 'Jumlah Pack/Box Terjual:');
+        $sheet->setCellValue('D' . ($infoStartRow + 4), $packCount); // Ganti nilai '2' dengan jumlah pack yang terjual
 
         // Jumlah Produk Terjual Per Varian
-        $sheet->setCellValue('B' . ($infoStartRow + 4), 'Jumlah Produk Terjual per Varian:');
+        $sheet->setCellValue('B' . ($infoStartRow + 5), 'Jumlah Produk Terjual per Varian:');
         $flavors = $this->transactionDetails->groupBy('cashierProduct.flavor.flavor_name')->map(function ($group) {
             return $group->reduce(function ($carry, $detail) {
                 // Ambil nilai items_per_pack, default ke 1 jika tidak ada
@@ -197,6 +204,9 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle('D' . ($infoStartRow + 1))
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('D' . ($infoStartRow + 2))
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPrice)

@@ -43,9 +43,11 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'Kasir',
             'Qty',
             'Jumlah Produk',
-            'Jumlah Bayar (Rp)',
-            'Kembalian (Rp)',
-            'Total (Rp)',
+            'Sub Total',
+            'Diskon',
+            'Total',
+            'Jumlah Bayar',
+            'Kembalian',
         ];
     }
 
@@ -71,9 +73,11 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             $transaction->user->name, // Nama kasir
             $transaction->transactionDetails->sum('quantity'), // Jumlah Produk
             $totalProducts,
+            $transaction->total,
+            $transaction->discount,
+            $transaction->net_total, // Total
             $transaction->paid_amount, // Jumlah Bayar
             $transaction->change_amount, // Kembalian
-            $transaction->total, // Total
         ];
     }
 
@@ -81,14 +85,14 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
     public function styles(Worksheet $sheet)
     {
         // Mengatur warna header, garis tabel, dan rata tengah
-        $sheet->mergeCells('A1:I1');
+        $sheet->mergeCells('A1:K1');
         $sheet->setCellValue('A1', 'Laporan Transaksi');
         // Cek jika startDate dan endDate sama
         if ($this->startDate === $this->endDate) {
-            $sheet->mergeCells('A2:I2');
+            $sheet->mergeCells('A2:K2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y'));
         } else {
-            $sheet->mergeCells('A2:I2');
+            $sheet->mergeCells('A2:K2');
             $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse($this->startDate)->format('d-m-Y') . ' - ' . Carbon::parse($this->endDate)->format('d-m-Y'));
         }
 
@@ -97,7 +101,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
         $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
         $sheet->setCellValue('A' . ($lastRow + 1), 'Total Pendapatan');
         $totalPendapatanCell = 'I' . ($lastRow + 1);
-        $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('total'));
+        $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('net_total'));
 
         // Style untuk border
         $styleArray = [
@@ -110,7 +114,7 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
         ];
 
         // Mengatur border pada range sel tabel (A4 sampai H$lastRow)
-        $sheet->getStyle('A4:I' . ($lastRow + 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A4:K' . ($lastRow + 1))->applyFromArray($styleArray);
         // Format untuk kolom Rupiah (F, G, H)
         $sheet->getStyle('G4:G' . $lastRow)
             ->getNumberFormat()
@@ -119,6 +123,12 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle('I4:I' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('J4:J' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('K4:K' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPendapatanCell)
@@ -141,6 +151,8 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'G' => ['alignment' => ['horizontal' => 'center']],
             'H' => ['alignment' => ['horizontal' => 'center']],
             'I' => ['alignment' => ['horizontal' => 'center']],
+            'J' => ['alignment' => ['horizontal' => 'center']],
+            'K' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
 
@@ -163,6 +175,8 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, W
             'G' => 20,  // Jumlah Bayar
             'H' => 20,  // Kembalian
             'I' => 20,  // Kembalian
+            'J' => 20,  // Kembalian
+            'K' => 20,  // Kembalian
         ];
     }
 }

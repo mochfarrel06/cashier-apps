@@ -79,7 +79,7 @@
                             <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                             <td>{{ $transaction->transaction_number }}</td>
                             <td>{{ $transaction->transactionDetails->sum('quantity') }}</td>
-                            <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($transaction->net_total, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($transaction->paid_amount ?? 0, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($transaction->change_amount ?? 0, 0, ',', '.') }}</td>
                         </tr>

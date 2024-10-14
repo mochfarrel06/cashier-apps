@@ -69,7 +69,7 @@
 
             <x-content.table-body>
 
-                <x-content.thead :items="['No', 'Kode Transaksi', 'Tanggal Transaksi', 'Jumlah Bayar', 'Varian terjual', 'Aksi']" />
+                <x-content.thead :items="['No', 'Kode Transaksi', 'Tanggal Transaksi', 'Total', 'Varian terjual', 'Aksi']" />
 
                 <x-content.tbody>
                     @foreach ($transactions as $transaction)
@@ -77,7 +77,7 @@
                             <td class="index">{{ $loop->index + 1 }}</td>
                             <td>{{ $transaction->transaction_number }}</td>
                             <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
-                            <td>Rp {{ number_format($transaction->paid_amount ?? 0, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($transaction->net_total ?? 0, 0, ',', '.') }}</td>
                             <td>
                                 @foreach ($transaction->transactionDetails as $detail)
                                     {{ $detail->cashierProduct->flavor->flavor_name ?? '' }}@if (!$loop->last)
