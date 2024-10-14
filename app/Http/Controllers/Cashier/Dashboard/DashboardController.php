@@ -26,7 +26,7 @@ class DashboardController extends Controller
             ->get();
 
         // Hitung total pendapatan
-        $totalIncome = $transactions->sum('total');
+        $totalIncome = $transactions->sum('net_total');
         $formattedIncome = 'Rp ' . number_format($totalIncome, 0, ',', '.');
 
         $cards = [

@@ -85,15 +85,23 @@
             @endforeach
             <!-- Row for Total, Bayar, and Kembalian -->
             <tr>
-                <th colspan="5">Total</th>
+                <th colspan="5" style="text-align: right">Sub Total</th>
                 <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
             </tr>
             <tr>
-                <th colspan="5">Bayar</th>
+                <th colspan="5" style="text-align: right">Diskon</th>
+                <td>Rp {{ number_format($transaction->discount, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th colspan="5" style="text-align: right">Total</th>
+                <td><strong>Rp {{ number_format($transaction->net_total, 0, ',', '.') }}</strong></td>
+            </tr>
+            <tr>
+                <th colspan="5" style="text-align: right">Bayar</th>
                 <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
             </tr>
             <tr>
-                <th colspan="5">Kembalian</th>
+                <th colspan="5" style="text-align: right">Kembalian</th>
                 <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
             </tr>
         </tbody>

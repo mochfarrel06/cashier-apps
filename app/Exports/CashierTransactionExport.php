@@ -44,9 +44,11 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             'Kode Transaksi',
             'Qty',
             'Jumlah Produk',
+            'Sub Total',
+            'Diskon',
+            'Total',
             'Jumlah Bayar (Rp)',
             'Kembalian (Rp)',
-            'Total (Rp)',
         ];
     }
 
@@ -76,9 +78,11 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             $transaction->transaction_number, // Kode Transaksi
             $transaction->transactionDetails->sum('quantity'), // Jumlah Produk
             $totalProducts,
+            $transaction->total, // Sub Total
+            $transaction->discount,
+            $transaction->net_total, // Total
             $transaction->paid_amount, // Jumlah Bayar
             $transaction->change_amount, // Kembalian
-            $transaction->total, // Total
         ];
     }
 
@@ -86,9 +90,9 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
     public function styles(Worksheet $sheet)
     {
         // Mengatur warna header, garis tabel, dan rata tengah
-        $sheet->mergeCells('A1:H1');
+        $sheet->mergeCells('A1:J1');
         $sheet->setCellValue('A1', 'Laporan Transaksi');
-        $sheet->mergeCells('A2:H2');
+        $sheet->mergeCells('A2:J2');
         $sheet->setCellValue('A2', 'Periode: ' . Carbon::parse(today())->format('d-m-Y'));
 
         // Total Pendapatan di baris akhir setelah data
@@ -96,7 +100,7 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
         $sheet->mergeCells('A' . ($lastRow + 1) . ':B' . ($lastRow + 1));
         $sheet->setCellValue('A' . ($lastRow + 1), 'Total Pendapatan');
         $totalPendapatanCell = 'H' . ($lastRow + 1);
-        $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('total'));
+        $sheet->setCellValue($totalPendapatanCell, $this->transactions->sum('net_total'));
 
         // Style untuk border
         $styleArray = [
@@ -109,7 +113,7 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
         ];
 
         // Mengatur border pada range sel tabel (A4 sampai H$lastRow)
-        $sheet->getStyle('A4:H' . ($lastRow + 1))->applyFromArray($styleArray);
+        $sheet->getStyle('A4:J' . ($lastRow + 1))->applyFromArray($styleArray);
         // Format untuk kolom Rupiah (F, G, H)
         $sheet->getStyle('F4:F' . $lastRow)
             ->getNumberFormat()
@@ -118,6 +122,12 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle('H4:H' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('I4:I' . $lastRow)
+            ->getNumberFormat()
+            ->setFormatCode('"Rp " #,##0');
+        $sheet->getStyle('J4:J' . $lastRow)
             ->getNumberFormat()
             ->setFormatCode('"Rp " #,##0');
         $sheet->getStyle($totalPendapatanCell)
@@ -139,6 +149,8 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             'F' => ['alignment' => ['horizontal' => 'center']],
             'G' => ['alignment' => ['horizontal' => 'center']],
             'H' => ['alignment' => ['horizontal' => 'center']],
+            'I' => ['alignment' => ['horizontal' => 'center']],
+            'J' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
 
@@ -158,6 +170,8 @@ class CashierTransactionExport implements FromCollection, WithHeadings, WithMapp
             'F' => 20,  // Total
             'G' => 20,  // Jumlah Bayar
             'H' => 20,  // Kembalian
+            'I' => 20,  // Jumlah Bayar
+            'J' => 20,  // Kembalian
         ];
     }
 }

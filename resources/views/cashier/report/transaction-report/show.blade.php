@@ -33,8 +33,10 @@
                     'Kode Transaksi',
                     'Tanggal Transaksi',
                     'Jenis Pembayaran',
+                    'Sub Total',
+                    'Diskon',
                     'Total',
-                    'Total Bayar',
+                    'Bayar',
                     'Kembalian',
                 ]" />
 
@@ -44,6 +46,8 @@
                         <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                         <td>{{ ucfirst($transaction->payment_type) }}</td>
                         <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($transaction->discount, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($transaction->net_total, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
                     </tr>
@@ -78,8 +82,18 @@
                 <tfoot>
                     <tr>
                         <td colspan="4"></td>
-                        <td><strong>Total:</strong></td>
+                        <td><strong>Sub Total:</strong></td>
                         <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><strong>Diskon:</strong></td>
+                        <td>Rp {{ number_format($transaction->discount, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><strong>Total:</strong></td>
+                        <td><strong>Rp {{ number_format($transaction->net_total, 0, ',', '.') }}</strong></td>
                     </tr>
                     <tr>
                         <td colspan="4"></td>

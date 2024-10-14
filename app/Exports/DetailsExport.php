@@ -176,8 +176,6 @@ class DetailsExport implements FromCollection, WithHeadings, WithMapping, WithSt
             $currentRow++;
         }
 
-
-
         // Style untuk border
         $styleArray = [
             'borders' => [
