@@ -98,7 +98,9 @@
                             <td>{{ ucfirst($transactionDetail->purchase_type) }}</td>
                             <td>{{ $transactionDetail->quantity }}</td>
                             <td>Rp {{ number_format($transactionDetail->price, 0, ',', '.') }}</td>
-                            <td>Rp {{ $transactionDetail->quantity * $transactionDetail->price }}</td>
+                            <td>Rp
+                                {{ number_format($transactionDetail->quantity * $transactionDetail->price, 0, ',', '.') }}
+                            </td>
                         </tr>
                     @endforeach
                 </x-content.tbody>
